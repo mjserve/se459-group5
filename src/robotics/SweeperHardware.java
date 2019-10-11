@@ -1,16 +1,24 @@
 package robotics;
 
-import navitagion.Coordinates;
-
 public class SweeperHardware {
 
-	public final int DUSTCAP = 50;
-	public final int BATTERYCAP = 150;
+	public final int DUSTCAP;
+	public final int BATTERYCAP;
+	
+	public final int BUFFER = 5;
 	
 	private int battery;
-	private Coordinates coord;
 	private int dust;
 	
+	//Constructor
+	SweeperHardware(int dustCap, int batteryCap){
+		
+		this.DUSTCAP = dustCap;
+		this.BATTERYCAP = batteryCap;
+		
+		this.battery = batteryCap;
+		this.dust = dustCap;
+	}
 	
 	//Getters & Setters
 	public int getBattery() {
@@ -19,10 +27,6 @@ public class SweeperHardware {
 	
 	public void setBattery(int battery) {
 		this.battery = battery;
-	}
-
-	public Coordinates getCoord() {
-		return coord;
 	}
 	
 	public int getDust() {
@@ -40,9 +44,13 @@ public class SweeperHardware {
 	public boolean incrimentDust(int delta) {
 		
 		this.dust += delta;
-		
 		return (dust >= DUSTCAP);
-		
+	}
+	
+	//Advises whether the current buffer settings will allow spending energy of the specified amount.
+	public boolean batteryCritical(int cost) {
+		if (battery + BUFFER < cost) return true;
+		else return false;
 	}
 }
 
