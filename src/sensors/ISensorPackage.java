@@ -25,4 +25,7 @@ public interface ISensorPackage {
 	//Detect charging Station(s) within 2 units
 	Coordinates [] stationInRange(Coordinates coord);
 	
+	//Inform the sensor's Map that the current tile has been cleaned for 1 unit of dirt
+	void cleanTile(Coordinates coord);
+	
 }
