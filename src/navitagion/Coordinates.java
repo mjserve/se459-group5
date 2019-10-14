@@ -6,9 +6,12 @@ public class Coordinates {
 	public int y;
 	
 	
-	//TODO: Implement .equals
 	boolean equals(Coordinates input) {
-		return false;
+		if (	input.x == this.x && 
+				input.y == this.y)
+			return true;
+		else
+			return false;
 	}
 	
 }

@@ -1,5 +1,7 @@
 package robotics;
 
+import java.util.List;
+
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;
@@ -12,7 +14,7 @@ public class RobotSimulation {
 	SweeperHardware hardware;
 	Coordinates coord;
 	Direction dir = Direction.North;
-	Coordinates [] stations = new Coordinates[10];//TODO: need a better way to keep track of power stations.
+	List <Coordinates> stations;
 	
 	
 	//Constructor
@@ -21,7 +23,9 @@ public class RobotSimulation {
 		this.log = log;
 		this.sensors = sensors;
 		this.coord = coord;
-		this.stations = stations;
+		for (int i = 0; i < stations.length; i++) {
+			this.stations.add(stations[i]);
+		}
 		
 		hardware = new SweeperHardware(150, 250);
 	}
@@ -44,7 +48,7 @@ public class RobotSimulation {
 				System.out.println(message.toString());
 				log.update(message.toString());
 				
-				//TODO: log dirt flag on map
+				//TODO: log dirt flag on personal map
 				
 				sensors.cleanTile(coord);
 				
@@ -64,12 +68,12 @@ public class RobotSimulation {
 				System.out.println(message.toString());
 				log.update(message.toString());
 				
-				//TODO: log dirt flag on map
+				//TODO: log dirt flag on personal map
 
 			}
 			
 			
-			//TODO: acquire location of new candidate tile. move one unit in current direction until implemented
+			//TODO: acquire location of new candidate tile. move one unit in current direction until implemented, rotate on collision
 			switch (dir) {
 			case North:
 				if (!sensors.collisionAbove(coord))	
