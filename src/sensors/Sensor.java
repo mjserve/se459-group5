@@ -104,7 +104,7 @@ public class Sensor implements ISensorPackage {
     }
 
     @Override
-    public int terrainType(Coordinates coord) {
+    public TileType terrainType(Coordinates coord) {
         return 0;
     }
 

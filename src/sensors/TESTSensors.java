@@ -1,46 +1,69 @@
 package sensors;
 
 import navitagion.Coordinates;
+import sensorSimulator.TileType;
 
 
-//Test implimentation for testing purposes only - Kevin
+//Test implementation for testing purposes only - Kevin
 public class TESTSensors implements ISensorPackage{
 	
 	boolean cleanTile = true;
+	int aboveCount = 10;
+	int leftCount = 10;
+	int belowCount = 10;
+	int rightCount = 10;
 
 	@Override
 	public boolean collisionLeft(Coordinates coord) {
-		return false;
+		if (leftCount-- < 0) {
+			leftCount = 10;
+			return true;
+		}
+		else return false;
 	}
 
 	@Override
 	public boolean collisionAbove(Coordinates coord) {
-		// TODO Auto-generated method stub
-		return false;
+		if (aboveCount-- < 0) {
+			aboveCount = 10;
+			return true;
+		}
+		else return false;
 	}
 
 	@Override
 	public boolean collisionRight(Coordinates coord) {
-		// TODO Auto-generated method stub
-		return false;
+		if (rightCount-- < 0) {
+			rightCount = 10;
+			return true;
+		}
+		else return false;
 	}
 
 	@Override
 	public boolean collisionBelow(Coordinates coord) {
-		// TODO Auto-generated method stub
-		return false;
+		if (belowCount-- < 0) {
+			belowCount = 10;
+			return true;
+		}
+		else return false;
 	}
 
 	@Override
 	public boolean dirtDetector(Coordinates coord) {
-		// TODO Auto-generated method stub
-		return false;
+		//Cycles for robot testing
+		if (cleanTile == true) {
+			cleanTile = false;
+		}
+		else cleanTile = true;
+		
+		return cleanTile;
 	}
 
 	@Override
-	public int terrainType(Coordinates coord) {
+	public TileType terrainType(Coordinates coord) {
 		// TODO Auto-generated method stub
-		return 0;
+		return TileType.HIGH;
 	}
 
 	@Override

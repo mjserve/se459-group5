@@ -21,7 +21,7 @@ public interface ISensorPackage {
 	boolean dirtDetector(Coordinates coord);
 	
 	//Detect current tile's terrain type as a movement cost
-	int terrainType(Coordinates coord);
+	TileType terrainType(Coordinates coord);
 	
 	//Detect charging Station(s) within 2 units
 	Coordinates [] stationInRange(Coordinates coord);
