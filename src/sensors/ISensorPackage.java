@@ -1,6 +1,7 @@
 package sensors;
 
 import navitagion.Coordinates;
+import sensorSimulator.TileType;
 
 public interface ISensorPackage {
 

@@ -1,6 +1,7 @@
 package sensorSimulator;
 
 import navitagion.Coordinates;
+import sensors.Sensor;
 
 import java.util.ArrayList;
 

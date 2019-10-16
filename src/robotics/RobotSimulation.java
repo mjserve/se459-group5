@@ -19,7 +19,6 @@ public class RobotSimulation {
 	Direction dir = Direction.North;
 	List <Coordinates> stations;
 	
-	
 	//Constructor
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates coord, Coordinates[] stations) {
 		super();
@@ -33,7 +32,6 @@ public class RobotSimulation {
 		
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
 	}
-
 
 
 	public void run() {
