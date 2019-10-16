@@ -2,17 +2,17 @@ package robotics;
 
 import org.junit.Test;
 import logging.IActivityLog;
-import logging.TESTActivityLog;
 import navitagion.Coordinates;
+import robotics.Mocks.MockActivityLog;
+import robotics.Mocks.MockSensors;
 import sensors.ISensorPackage;
-import sensors.TESTSensors;
 
 public class TESTRobotSim {
 
 	@Test
 	public void completeRun(){
-		IActivityLog log = new TESTActivityLog();
-		ISensorPackage sensors = new TESTSensors();
+		IActivityLog log = new MockActivityLog();
+		ISensorPackage sensors = new MockSensors();
 		Coordinates start = new Coordinates(0, 0);
 		
 		RobotSimulation robot = new RobotSimulation(log, sensors, start);
@@ -22,8 +22,8 @@ public class TESTRobotSim {
 	}
 	
 	public static void main(String[] args) {
-		IActivityLog log = new TESTActivityLog();
-		ISensorPackage sensors = new TESTSensors();
+		IActivityLog log = new MockActivityLog();
+		ISensorPackage sensors = new MockSensors();
 		Coordinates start = new Coordinates(0, 0);
 		
 		RobotSimulation robot = new RobotSimulation(log, sensors, start);

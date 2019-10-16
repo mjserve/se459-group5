@@ -1,11 +1,12 @@
-package sensors;
+package robotics.Mocks;
 
 import navitagion.Coordinates;
 import sensorSimulator.TileType;
+import sensors.ISensorPackage;
 
 
 //Test implementation for testing purposes only - Kevin
-public class TESTSensors implements ISensorPackage{
+public class MockSensors implements ISensorPackage{
 	
 	boolean cleanTile = true;
 	int aboveCount = 10;
