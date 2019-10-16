@@ -4,6 +4,7 @@ import navitagion.Coordinates;
 import sensorSimulator.SensorSim;
 import sensorSimulator.TileType;
 import sensorSimulator.OutOfFloorMapBoundsException;
+import sensors.Sensor;
 
 public class Main {
 
@@ -11,11 +12,16 @@ public class Main {
 
         //Sample call of how using SensorSim will be used to implement ISensorPackage Interface
 
-        /*
+
+
         TileType typeHolder;
 
         SensorSim.getInstance().loadFloorPlan();
+        Sensor sensor = new Sensor();
+        System.out.print(sensor.collisionLeft(new Coordinates(1, 1)));
 
+
+        /*
         try{
             typeHolder = SensorSim.getInstance().retrieveTileType(new Coordinates(3, 1));
             System.out.println(typeHolder);
