@@ -9,6 +9,9 @@ import sensors.ISensorPackage;
 
 public class RobotSimulation {
 
+	final static int DUSTCAP = 150;
+	final static int POWERCAP = 250;
+	
 	IActivityLog log;
 	ISensorPackage sensors;
 	SweeperHardware hardware;
@@ -23,11 +26,12 @@ public class RobotSimulation {
 		this.log = log;
 		this.sensors = sensors;
 		this.coord = coord;
+		
 		for (int i = 0; i < stations.length; i++) {
 			this.stations.add(stations[i]);
 		}
 		
-		hardware = new SweeperHardware(150, 250);
+		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
 	}
 
 
@@ -49,6 +53,7 @@ public class RobotSimulation {
 				log.update(message.toString());
 				
 				//TODO: log dirt flag on personal map
+				
 				
 				sensors.cleanTile(coord);
 				
@@ -97,7 +102,7 @@ public class RobotSimulation {
 			}
 			
 			hardware.incrementBattery(-3);
-			message = new StringBuilder("Robot moved to Location (").append(coord.x).append(", ").append(coord.y).append(") - 3 power spent");
+			message = new StringBuilder("Robot moved to Location (" + coord.x +  ", " + coord.y + ") - 3 power spent");
 			System.out.println(message.toString());
 			log.update(message.toString());
 			

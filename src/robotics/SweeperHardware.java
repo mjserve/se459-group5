@@ -52,6 +52,13 @@ public class SweeperHardware {
 		if (battery + BUFFER < cost) return true;
 		else return false;
 	}
+	
+	public boolean dustBinFull() {
+		if (dust < DUSTCAP)
+			return false;
+		else 
+			return true;
+	}
 }
 
 
