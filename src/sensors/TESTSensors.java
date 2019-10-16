@@ -9,14 +9,14 @@ public class TESTSensors implements ISensorPackage{
 	
 	boolean cleanTile = true;
 	int aboveCount = 10;
-	int leftCount = 10;
+	int leftCount = 20;
 	int belowCount = 10;
-	int rightCount = 10;
+	int rightCount = 5;
 
 	@Override
 	public boolean collisionLeft(Coordinates coord) {
 		if (leftCount-- < 0) {
-			leftCount = 10;
+			leftCount = 20;
 			return true;
 		}
 		else return false;
@@ -34,7 +34,7 @@ public class TESTSensors implements ISensorPackage{
 	@Override
 	public boolean collisionRight(Coordinates coord) {
 		if (rightCount-- < 0) {
-			rightCount = 10;
+			rightCount = 5;
 			return true;
 		}
 		else return false;

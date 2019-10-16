@@ -1,7 +1,7 @@
 package robotics;
 
+import java.util.LinkedList;
 import java.util.List;
-
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;
@@ -24,11 +24,26 @@ public class RobotSimulation {
 		super();
 		this.log = log;
 		this.sensors = sensors;
-		this.coord = start;
+		this.coord = start.clone();
+		
+		this.stations = new LinkedList <Coordinates> ();
 		
 		for (int i = 0; i < stations.length; i++) {
 			this.stations.add(stations[i]);
 		}
+		
+		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
+	}
+	
+	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start) {
+		super();
+		this.log = log;
+		this.sensors = sensors;
+		this.coord = start.clone();
+		
+		this.stations = new LinkedList <Coordinates> ();
+		
+		this.stations.add(start);
 		
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
 	}

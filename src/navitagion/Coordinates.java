@@ -24,4 +24,8 @@ public class Coordinates {
 		return x * 97 + y;
 	}
 	
+	public Coordinates clone() {
+		return new Coordinates(this.x, this.y);
+	}
+	
 }
