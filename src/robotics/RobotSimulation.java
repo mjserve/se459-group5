@@ -21,11 +21,11 @@ public class RobotSimulation {
 	
 	
 	//Constructor
-	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates coord, Coordinates[] stations) {
+	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
 		super();
 		this.log = log;
 		this.sensors = sensors;
-		this.coord = coord;
+		this.coord = start;
 		
 		for (int i = 0; i < stations.length; i++) {
 			this.stations.add(stations[i]);
