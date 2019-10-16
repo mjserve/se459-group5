@@ -42,6 +42,10 @@ public class RobotSimulation {
 		while (true) {
 			
 			//TODO: detect current batter level & handle when critical
+			if (hardware.batteryCritical(3)) {
+				log.update("Battery levels critical (" + hardware.getBattery()+ ") - Shutting Down");
+				return;
+			}
 			
 			StringBuilder message;
 			

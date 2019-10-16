@@ -49,7 +49,7 @@ public class SweeperHardware {
 	
 	//Advises whether the current buffer settings will allow spending energy of the specified amount.
 	public boolean batteryCritical(int cost) {
-		if (battery + BUFFER < cost) return true;
+		if (cost + BUFFER < battery) return true;
 		else return false;
 	}
 	
