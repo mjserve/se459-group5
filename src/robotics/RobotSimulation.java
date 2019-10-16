@@ -49,18 +49,20 @@ public class RobotSimulation {
 	}
 
 
-	public void run() {
+	public int run() {
 		
 		
 		while (true) {
+			StringBuilder message;
 			
 			//TODO: detect current batter level & handle when critical
+
 			if (hardware.batteryCritical(3)) {
-				log.update("Battery levels critical (" + hardware.getBattery()+ ") - Shutting Down");
-				return;
+				message = new StringBuilder("Battery levels critical (" + hardware.getBattery()+ ") - Shutting Down");
+				System.out.println(message.toString());
+				log.update(message.toString());
+				return 1;
 			}
-			
-			StringBuilder message;
 			
 			//Note if current tile is dirty
 			if (sensors.dirtDetector(coord)) {
@@ -71,13 +73,14 @@ public class RobotSimulation {
 				
 				//TODO: log dirt flag on personal map
 				
-				
+				System.out.println("1 unit of dust cleaned");
+				log.update("1 unit of dust cleaned");
 				sensors.cleanTile(coord);
 				
 				//clean 1 unit of dirt & check capacity
 				if (hardware.incrimentDust(1)) {
 					log.update("Dirt capacity reached - Powering Down");
-					return;
+					return 2;
 				}
 				
 				hardware.incrementBattery(-1);
@@ -124,7 +127,6 @@ public class RobotSimulation {
 			log.update(message.toString());
 			
 		}
-		
 		
 	}
 	
