@@ -28,4 +28,9 @@ public class Coordinates {
 		return new Coordinates(this.x, this.y);
 	}
 	
+	@Override
+	public String toString() {
+		return new StringBuilder("(").append(this.x).append(", ").append(this.y).append(")").toString();		
+	}
+	
 }
