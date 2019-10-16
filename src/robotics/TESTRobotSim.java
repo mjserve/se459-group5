@@ -17,7 +17,7 @@ public class TESTRobotSim {
 		
 		RobotSimulation robot = new RobotSimulation(log, sensors, start);
 		
-		robot.run();
+		System.out.println("Robot runtime ended with condition (" + robot.run() + ")");
 		
 	}
 	
