@@ -11,12 +11,21 @@ public class Coordinates {
 		this.y = yPos;
 	}
 	
-	boolean equals(Coordinates input) {
-		if (	input.x == this.x && 
-				input.y == this.y)
-			return true;
-		else
+	@Override
+	public boolean equals(Object input) {
+		if(input == null) {
 			return false;
+		}
+		if (input == this) {
+            return true;
+        };
+        if (input.getClass() != this.getClass()) {
+            return false;
+        };
+        
+        Coordinates obj = (Coordinates) input;
+        return this.x == obj.x &&
+        		this.y == obj.y;
 	}
 	
 	@Override
