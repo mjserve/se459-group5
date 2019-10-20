@@ -6,7 +6,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 import org.junit.jupiter.api.Test;
 
-class TestingSweeperHardware {
+class TESTSweeperHardware {
 
 	@Test
 	void testIllegalHardwareValues() {

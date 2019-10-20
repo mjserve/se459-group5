@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import navitagion.Coordinates;
 
-class coordinatesTesting {
+class TESTcoordinates {
 
 	@Test
 	void testEquals() {
