@@ -1,6 +1,6 @@
 package robotics;
 
-//import org.junit.Test;
+import org.junit.Test;
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import robotics.Mocks.MockActivityLog;
@@ -9,7 +9,7 @@ import sensors.ISensorPackage;
 
 public class TESTRobotSim {
 
-	//@Test
+	@Test
 	public void completeRun(){
 		IActivityLog log = new MockActivityLog();
 		ISensorPackage sensors = new MockSensors();
