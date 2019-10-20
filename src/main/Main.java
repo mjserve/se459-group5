@@ -18,7 +18,7 @@ public class Main {
 
         SensorSim.getInstance().loadFloorPlan();
         Sensor sensor = new Sensor();
-        System.out.print(sensor.collisionBelow(new Coordinates(0, 0)));
+        System.out.print(sensor.collisionSouth(new Coordinates(0, 0)));
 
 
         /*

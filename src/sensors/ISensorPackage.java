@@ -6,16 +6,16 @@ import sensorSimulator.TileType;
 public interface ISensorPackage {
 
 	//Detect obstacle to the left of the given coordinates
-	boolean collisionLeft (Coordinates coord);
+	boolean collisionWest (Coordinates coord);
 	
 	//Detect obstacle above the given coordinates
-	boolean collisionAbove(Coordinates coord);
+	boolean collisionNorth(Coordinates coord);
 	
 	//Detect obstacle to the right of the given coordinates
-	boolean collisionRight(Coordinates coord);
+	boolean collisionEast(Coordinates coord);
 	
 	//Detect obstacle below the given coordinates
-	boolean collisionBelow(Coordinates coord);
+	boolean collisionSouth(Coordinates coord);
 	
 	//Detect if there is dirt in the given tile.
 	boolean dirtDetector(Coordinates coord);

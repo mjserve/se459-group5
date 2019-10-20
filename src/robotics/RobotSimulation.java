@@ -96,20 +96,20 @@ public class RobotSimulation {
 			//TODO: acquire location of new candidate tile. move one unit in current direction until implemented, rotate on collision
 			switch (dir) {
 			case North:
-				if (!sensors.collisionAbove(coord))	
+				if (!sensors.collisionNorth(coord))	
 					coord.y++;
 				else dir = Direction.East;
 				break;
 			case East:
-				if (!sensors.collisionRight(coord))	
+				if (!sensors.collisionEast(coord))	
 					coord.x++;
 				else dir = Direction.South;
 			case South:
-				if (!sensors.collisionBelow(coord))
+				if (!sensors.collisionSouth(coord))
 					coord.y--;
 				else dir = Direction.West;
 			case West:
-				if (!sensors.collisionLeft(coord))
+				if (!sensors.collisionWest(coord))
 					coord.x--;
 				else dir = Direction.North;
 			default:

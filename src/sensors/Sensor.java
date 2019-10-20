@@ -15,22 +15,22 @@ public class Sensor implements ISensorPackage {
 
 
     @Override
-    public boolean collisionLeft(Coordinates coord) {
+    public boolean collisionWest(Coordinates coord) {
         return SensorSim.getInstance().checkForBarrier(coord, Direction.West);
     }
 
     @Override
-    public boolean collisionAbove(Coordinates coord) {
+    public boolean collisionNorth(Coordinates coord) {
         return SensorSim.getInstance().checkForBarrier(coord, Direction.North);
     }
 
     @Override
-    public boolean collisionRight(Coordinates coord) {
+    public boolean collisionEast(Coordinates coord) {
         return SensorSim.getInstance().checkForBarrier(coord, Direction.East);
     }
 
     @Override
-    public boolean collisionBelow(Coordinates coord) {
+    public boolean collisionSouth(Coordinates coord) {
         return SensorSim.getInstance().checkForBarrier(coord, Direction.South);
     }
 

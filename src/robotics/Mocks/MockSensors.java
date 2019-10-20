@@ -15,7 +15,7 @@ public class MockSensors implements ISensorPackage{
 	int rightCount = 5;
 
 	@Override
-	public boolean collisionLeft(Coordinates coord) {
+	public boolean collisionWest(Coordinates coord) {
 		if (leftCount-- < 0) {
 			leftCount = 20;
 			return true;
@@ -24,7 +24,7 @@ public class MockSensors implements ISensorPackage{
 	}
 
 	@Override
-	public boolean collisionAbove(Coordinates coord) {
+	public boolean collisionNorth(Coordinates coord) {
 		if (aboveCount-- < 0) {
 			aboveCount = 10;
 			return true;
@@ -33,7 +33,7 @@ public class MockSensors implements ISensorPackage{
 	}
 
 	@Override
-	public boolean collisionRight(Coordinates coord) {
+	public boolean collisionEast(Coordinates coord) {
 		if (rightCount-- < 0) {
 			rightCount = 5;
 			return true;
@@ -42,7 +42,7 @@ public class MockSensors implements ISensorPackage{
 	}
 
 	@Override
-	public boolean collisionBelow(Coordinates coord) {
+	public boolean collisionSouth(Coordinates coord) {
 		if (belowCount-- < 0) {
 			belowCount = 10;
 			return true;
