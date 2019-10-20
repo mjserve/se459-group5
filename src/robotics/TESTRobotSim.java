@@ -1,6 +1,7 @@
 package robotics;
 
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import robotics.Mocks.MockActivityLog;
@@ -17,7 +18,7 @@ public class TESTRobotSim {
 		
 		RobotSimulation robot = new RobotSimulation(log, sensors, start);
 		
-		System.out.println("Robot runtime ended with condition (" + robot.run() + ")");
+		assertEquals(robot.run(), 1);
 		
 	}
 	

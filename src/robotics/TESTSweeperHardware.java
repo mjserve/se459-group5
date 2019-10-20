@@ -34,7 +34,7 @@ class TESTSweeperHardware {
 		//Testing if bin is full
 		assertThat(mockSweeper.incrimentDust(255), is(true));
 		
-		assertThat(mockSweeper.incrementBattery(40), is(140));
+		assertThat(mockSweeper.incrimentBattery(40), is(140));
 		
 		assertThat(mockSweeper.batteryCritical(141), is(true));
 		assertThat(mockSweeper.batteryCritical(1), is(false));

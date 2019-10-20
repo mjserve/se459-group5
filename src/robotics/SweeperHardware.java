@@ -44,7 +44,7 @@ public class SweeperHardware {
 	//Other Methods
 	
 	//Increment the battery level & return the new value
-	public int incrementBattery(int delta) {
+	public int incrimentBattery(int delta) {
 		return this.battery += delta;
 	}
 	
