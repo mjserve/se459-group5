@@ -33,6 +33,10 @@ public class SweeperHardware {
 		return dust;
 	}
 	
+	public void setDust(int newDust) {
+		this.dust = newDust;
+	}
+	
 	//Other Methods
 	
 	//Increment the battery level & return the new value
