@@ -66,7 +66,7 @@ public class RobotSimulation {
 			//Note if current tile is dirty
 			if (sensors.dirtDetector(coord)) {
 				//Log result
-				message = new StringBuilder("Dirt at Location (").append(coord.x).append(", ").append(coord.y).append(") - POSITIVE");
+				message = new StringBuilder("Dirt at Location ").append(coord.toString()).append(" - POSITIVE");
 				log.update(message.toString());
 				
 				//TODO: log dirt flag on personal map
@@ -85,7 +85,7 @@ public class RobotSimulation {
 			} 
 			else {
 				//Log result
-				message = new StringBuilder("Dirt at Location (").append(coord.x).append(", ").append(coord.y).append(") - NEGATIVE");
+				message = new StringBuilder("Dirt at Location ").append(coord.toString()).append(" - NEGATIVE");
 				log.update(message.toString());
 				
 				//TODO: log dirt flag on personal map
@@ -117,7 +117,7 @@ public class RobotSimulation {
 			}
 			
 			hardware.incrimentBattery(-3);
-			message = new StringBuilder("Robot moved to Location (" + coord.x +  ", " + coord.y + ") - 3 power spent");
+			message = new StringBuilder("Robot moved to Location ").append(coord.toString()).append(" - 3 power spent");
 			log.update(message.toString());
 			
 		}
