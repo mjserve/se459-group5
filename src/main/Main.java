@@ -16,9 +16,16 @@ public class Main {
 
         TileType typeHolder;
 
+        //Testing terrainType
         SensorSim.getInstance().loadFloorPlan();
         Sensor sensor = new Sensor();
-        System.out.print(sensor.collisionSouth(new Coordinates(0, 0)));
+        try{
+            typeHolder = sensor.terrainType(new Coordinates(0, 0));
+            System.out.println(typeHolder);
+        }catch(OutOfFloorMapBoundsException e){
+            System.out.println(e.getMessage());
+        }
+
 
 
         /*

@@ -9,7 +9,7 @@ import sensorSimulator.TileType;
 import static sensorSimulator.TileType.OBSTACLE;
 
 public class Sensor implements ISensorPackage {
-    int x, y;
+    private int x, y;
     private Coordinates temp = new Coordinates(x, y);
     private TileType currentTile;
 
@@ -40,8 +40,8 @@ public class Sensor implements ISensorPackage {
     }
 
     @Override
-    public TileType terrainType(Coordinates coord) {
-        return TileType.HIGH;
+    public TileType terrainType(Coordinates coord) throws OutOfFloorMapBoundsException{
+        return SensorSim.getInstance().retrieveTileType(coord);
     }
 
     @Override

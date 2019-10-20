@@ -1,7 +1,8 @@
 package robotics;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import robotics.Mocks.MockActivityLog;
