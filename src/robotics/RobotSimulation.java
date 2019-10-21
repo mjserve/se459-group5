@@ -60,7 +60,6 @@ public class RobotSimulation {
 
 			if (hardware.batteryCritical(3)) {
 				message = new StringBuilder("Battery levels critical (" + hardware.getBattery()+ ") - Shutting Down");
-				System.out.println(message.toString());
 				log.update(message.toString());
 				return 1;
 			}
@@ -69,12 +68,10 @@ public class RobotSimulation {
 			if (sensors.dirtDetector(coord)) {
 				//Log result
 				message = new StringBuilder("Dirt at Location (").append(coord.x).append(", ").append(coord.y).append(") - POSITIVE");
-				System.out.println(message.toString());
 				log.update(message.toString());
 				
 				//TODO: log dirt flag on personal map
 				
-				System.out.println("1 unit of dust cleaned");
 				log.update("1 unit of dust cleaned");
 				sensors.cleanTile(coord);
 				
@@ -91,7 +88,6 @@ public class RobotSimulation {
 			else {
 				//Log result
 				message = new StringBuilder("Dirt at Location (").append(coord.x).append(", ").append(coord.y).append(") - NEGATIVE");
-				System.out.println(message.toString());
 				log.update(message.toString());
 				
 				//TODO: log dirt flag on personal map
@@ -127,7 +123,6 @@ public class RobotSimulation {
 			
 			hardware.incrementBattery(-3);
 			message = new StringBuilder("Robot moved to Location (" + coord.x +  ", " + coord.y + ") - 3 power spent");
-			System.out.println(message.toString());
 			log.update(message.toString());
 			
 		}
