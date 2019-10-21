@@ -1,10 +1,9 @@
 package sensorSimulator;
 
+import java.util.ArrayList;
+
 import navitagion.Coordinates;
 import navitagion.Direction;
-import sensors.Sensor;
-
-import java.util.ArrayList;
 
 
 public class SensorSim {

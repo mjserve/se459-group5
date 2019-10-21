@@ -2,11 +2,8 @@ package sensors;
 
 import navitagion.Coordinates;
 import navitagion.Direction;
-import sensorSimulator.OutOfFloorMapBoundsException;
 import sensorSimulator.SensorSim;
 import sensorSimulator.TileType;
-
-import static sensorSimulator.TileType.OBSTACLE;
 
 public class Sensor implements ISensorPackage {
     int x, y;

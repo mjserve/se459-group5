@@ -2,6 +2,7 @@ package robotics;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;

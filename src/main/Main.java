@@ -3,7 +3,6 @@ package main;
 import navitagion.Coordinates;
 import sensorSimulator.SensorSim;
 import sensorSimulator.TileType;
-import sensorSimulator.OutOfFloorMapBoundsException;
 import sensors.Sensor;
 
 public class Main {
