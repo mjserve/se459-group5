@@ -110,14 +110,17 @@ public class RobotSimulation {
 				if (!sensors.collisionRight(coord))	
 					coord.x++;
 				else dir = Direction.South;
+				break;
 			case South:
 				if (!sensors.collisionBelow(coord))
 					coord.y--;
 				else dir = Direction.West;
+				break;
 			case West:
 				if (!sensors.collisionLeft(coord))
 					coord.x--;
 				else dir = Direction.North;
+				break;
 			default:
 				break;
 			}
