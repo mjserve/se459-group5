@@ -100,22 +100,34 @@ public class RobotSimulation {
 			case North:
 				if (!sensors.collisionAbove(coord))	
 					coord.y++;
-				else dir = Direction.East;
+				else {
+					dir = Direction.East;
+					log.update("Collision Detected... Changing Direction");
+				}
 				break;
 			case East:
 				if (!sensors.collisionRight(coord))	
 					coord.x++;
-				else dir = Direction.South;
+				else {
+					dir = Direction.South;
+					log.update("Collision Detected... Changing Direction");
+				}
 				break;
 			case South:
 				if (!sensors.collisionBelow(coord))
 					coord.y--;
-				else dir = Direction.West;
+				else {
+					dir = Direction.West;
+					log.update("Collision Detected... Changing Direction");
+				}
 				break;
 			case West:
 				if (!sensors.collisionLeft(coord))
 					coord.x--;
-				else dir = Direction.North;
+				else {
+					dir = Direction.North;
+					log.update("Collision Detected... Changing Direction");
+				}
 				break;
 			default:
 				break;
