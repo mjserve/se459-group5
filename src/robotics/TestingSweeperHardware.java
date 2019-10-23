@@ -1,8 +1,10 @@
 package robotics;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
 
 class TestingSweeperHardware {
 
@@ -26,20 +28,19 @@ class TestingSweeperHardware {
 	void testIncrementation() {
 		SweeperHardware mockSweeper = new SweeperHardware(250, 150);
 		
-		assertThat(mockSweeper.getBattery(), is(150));
+		assertEquals(mockSweeper.getBattery(), 150);
 		mockSweeper.setBattery(100);
-		assertThat(mockSweeper.getBattery(), is(100));
+		assertEquals(mockSweeper.getBattery(), 100);
 		//Testing if bin is full
-		assertThat(mockSweeper.incrimentDust(255), is(true));
+		assertTrue(mockSweeper.incrimentDust(255));
 		
-		assertThat(mockSweeper.incrementBattery(40), is(140));
-		
-		assertThat(mockSweeper.batteryCritical(141), is(true));
-		assertThat(mockSweeper.batteryCritical(1), is(false));
+		assertEquals(mockSweeper.incrementBattery(40), 140);
+		assertTrue(mockSweeper.batteryCritical(141));
+		assertFalse(mockSweeper.batteryCritical(1));
 		mockSweeper.setDust(100);
-		assertThat(mockSweeper.dustBinFull(), is(false));
+		assertFalse(mockSweeper.dustBinFull());
 		mockSweeper.setDust(251);
-		assertThat(mockSweeper.dustBinFull(), is(true));
+		assertTrue(mockSweeper.dustBinFull());
 	}
 
 }
