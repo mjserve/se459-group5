@@ -33,8 +33,8 @@ class TESTcoordinates {
 		assertTrue(coord1.equals(coord4));
 		assertFalse(coord1.equals(5));
 		
-		assertTrue(coord1.equals(coord5));
-		assertTrue(coord1.equals(coord6));
+		assertFalse(coord1.equals(coord5));
+		assertTrue(coord1.equals(coord3));
 		
 		assertTrue(coord1.equals(coord1.clone()));
 		
