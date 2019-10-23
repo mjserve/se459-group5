@@ -2,11 +2,9 @@ package tests;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
-
+import org.junit.Test;
 import navitagion.Coordinates;
 
 class coordinatesTesting {
@@ -26,7 +24,7 @@ class coordinatesTesting {
 		assertThat(coord1,  is(not(coord2)));
 		
 		//Testing Equality
-		assertEquals(coord1, coord3, "Values should  match");
+		assertEquals( "Values should  match", coord1, coord3);
 		
 		assertThat(coord1.equals(null), is(false));
 		assertThat(coord1.equals(coord1), is(true));
