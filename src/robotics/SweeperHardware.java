@@ -11,7 +11,7 @@ public class SweeperHardware {
 	private int dust;
 	
 	//Constructor
-	SweeperHardware(int dustCap, int batteryCap){
+	public SweeperHardware(int dustCap, int batteryCap){
 		
 		//Sanitizing Inputs
 		if (dustCap <= 0 ) throw new IllegalArgumentException("Dust Capacity cannot be negative or zero");
