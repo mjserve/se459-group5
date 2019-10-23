@@ -1,10 +1,11 @@
-package robotics;
+package tests;
 
-import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Test;
 import logging.IActivityLog;
 import navitagion.Coordinates;
+import robotics.RobotSimulation;
 import robotics.Mocks.MockActivityLog;
 import robotics.Mocks.MockSensors;
 import sensors.ISensorPackage;

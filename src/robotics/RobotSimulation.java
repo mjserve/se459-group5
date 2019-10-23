@@ -66,7 +66,7 @@ public class RobotSimulation {
 			//Note if current tile is dirty
 			if (sensors.dirtDetector(coord)) {
 				//Log result
-				message = new StringBuilder("Dirt at Location ").append(coord.toString()).append(" - POSITIVE");
+				message = new StringBuilder("Dirt at Location (").append(coord.x).append(", ").append(coord.y).append(") - POSITIVE");
 				log.update(message.toString());
 				
 				//TODO: log dirt flag on personal map
@@ -85,7 +85,7 @@ public class RobotSimulation {
 			} 
 			else {
 				//Log result
-				message = new StringBuilder("Dirt at Location ").append(coord.toString()).append(" - NEGATIVE");
+				message = new StringBuilder("Dirt at Location (").append(coord.x).append(", ").append(coord.y).append(") - NEGATIVE");
 				log.update(message.toString());
 				
 				//TODO: log dirt flag on personal map
@@ -98,26 +98,41 @@ public class RobotSimulation {
 			case North:
 				if (!sensors.collisionNorth(coord))	
 					coord.y++;
-				else dir = Direction.East;
+				else {
+					dir = Direction.East;
+					log.update("Collision Detected... Changing Direction");
+				}
 				break;
 			case East:
 				if (!sensors.collisionEast(coord))	
 					coord.x++;
-				else dir = Direction.South;
+				else {
+					dir = Direction.South;
+					log.update("Collision Detected... Changing Direction");
+				}
+				break;
 			case South:
 				if (!sensors.collisionSouth(coord))
 					coord.y--;
-				else dir = Direction.West;
+				else {
+					dir = Direction.West;
+					log.update("Collision Detected... Changing Direction");
+				}
+				break;
 			case West:
 				if (!sensors.collisionWest(coord))
 					coord.x--;
-				else dir = Direction.North;
+				else {
+					dir = Direction.North;
+					log.update("Collision Detected... Changing Direction");
+				}
+				break;
 			default:
 				break;
 			}
 			
 			hardware.incrimentBattery(-3);
-			message = new StringBuilder("Robot moved to Location ").append(coord.toString()).append(" - 3 power spent");
+			message = new StringBuilder("Robot moved to Location (" + coord.x +  ", " + coord.y + ") - 3 power spent");
 			log.update(message.toString());
 			
 		}

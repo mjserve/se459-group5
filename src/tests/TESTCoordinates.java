@@ -1,16 +1,16 @@
 package tests;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-
 import navitagion.Coordinates;
 
 class TESTCoordinates {
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	void testEquals() {
 		Coordinates coord1 = new Coordinates(5,6);
@@ -19,26 +19,24 @@ class TESTCoordinates {
 		
 		Coordinates coord4 = coord1;
 		Coordinates coord5 = new Coordinates(1,6);
-		Coordinates coord6 = new Coordinates(5,2);
-
-		
 		//Testing failures
-		assertThat(coord1,  is(not(coord2)));
+		//assertThat(coord1,  is(not(coord2)));
+		assertNotSame(coord1, coord2);
 		
 		//Testing Equality
-		assertEquals(coord1, coord3, "Values should  match");
+		assertEquals(  coord1, coord3, "Values should  match");
 		
-		assertThat(coord1.equals(null), is(false));
-		assertThat(coord1.equals(coord1), is(true));
-		assertThat(coord1.equals(coord4), is(true));
-		assertThat(coord1.equals(5), is(false));
+		assertFalse(coord1.equals(null));
+		assertTrue(coord1.equals(coord1));
+		assertTrue(coord1.equals(coord4));
+		assertFalse(coord1.equals(5));
 		
-		assertThat(coord1.equals(coord5), is(false));
-		assertThat(coord1.equals(coord6), is(false));
+		assertFalse(coord1.equals(coord5));
+		assertTrue(coord1.equals(coord3));
 		
-		assertThat(coord1.equals(coord1.clone()), is(true));
+		assertTrue(coord1.equals(coord1.clone()));
 		
-		assertThat(coord1.toString(), is("(5, 6)"));
+		assertEquals(coord1.toString(), "(5, 6)");
 	}
 
 }

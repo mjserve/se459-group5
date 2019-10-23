@@ -1,10 +1,9 @@
 package sensorSimulator;
 
+import java.util.ArrayList;
+
 import navitagion.Coordinates;
 import navitagion.Direction;
-import sensors.Sensor;
-
-import java.util.ArrayList;
 
 
 public class SensorSim {
@@ -93,7 +92,7 @@ public class SensorSim {
     private void populateArray(ArrayList<Tile> allTiles)
     {
         //Row 1
-        Tile t1 = new Tile(0, TileType.BARE, 0, 0, TileSide.PASSABLE, TileSide.WALL, TileSide.PASSABLE, TileSide.WALL);
+        Tile t1 = new Tile(1, TileType.BARE, 0, 0, TileSide.PASSABLE, TileSide.WALL, TileSide.PASSABLE, TileSide.WALL);
         allTiles.add(t1);
         Tile t2 = new Tile(0, TileType.BARE, 1, 0, TileSide.PASSABLE, TileSide.WALL, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t2);
@@ -115,11 +114,11 @@ public class SensorSim {
         allTiles.add(t10);
 
         //Row 2
-        Tile t11 = new Tile(0, TileType.BARE, 0, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
+        Tile t11 = new Tile(3, TileType.BARE, 0, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
         allTiles.add(t11);
         Tile t12 = new Tile(0, TileType.BARE, 1, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t12);
-        Tile t13 = new Tile(0, TileType.BARE, 2, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
+        Tile t13 = new Tile(4, TileType.BARE, 2, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t13);
         Tile t14 = new Tile(0, TileType.BARE, 3, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t14);
@@ -129,7 +128,7 @@ public class SensorSim {
         allTiles.add(t16);
         Tile t17 = new Tile(0, TileType.BARE, 6, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t17);
-        Tile t18 = new Tile(0, TileType.BARE, 7, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
+        Tile t18 = new Tile(5, TileType.BARE, 7, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t18);
         Tile t19 = new Tile(0, TileType.BARE, 8, 1, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t19);
@@ -137,7 +136,7 @@ public class SensorSim {
         allTiles.add(t20);
 
         //Row 3
-        Tile t21 = new Tile(0, TileType.BARE, 0, 2, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
+        Tile t21 = new Tile(1, TileType.BARE, 0, 2, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
         allTiles.add(t21);
         Tile t22 = new Tile(0, TileType.BARE, 1, 2, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t22);
@@ -181,7 +180,7 @@ public class SensorSim {
         allTiles.add(t40);
 
         //Row 5
-        Tile t41 = new Tile(0, TileType.BARE, 0, 4, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
+        Tile t41 = new Tile(1, TileType.BARE, 0, 4, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
         allTiles.add(t41);
         Tile t42 = new Tile(0, TileType.BARE, 1, 4, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t42);
@@ -225,7 +224,7 @@ public class SensorSim {
         allTiles.add(t60);
 
         //Row 7
-        Tile t61 = new Tile(0, TileType.LOW, 0, 6, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
+        Tile t61 = new Tile(5, TileType.LOW, 0, 6, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
         allTiles.add(t61);
         Tile t62 = new Tile(0, TileType.LOW, 1, 6, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t62);
@@ -247,7 +246,7 @@ public class SensorSim {
         allTiles.add(t70);
 
         //Row 8
-        Tile t71 = new Tile(0, TileType.LOW, 0, 7, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
+        Tile t71 = new Tile(2, TileType.LOW, 0, 7, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
         allTiles.add(t71);
         Tile t72 = new Tile(0, TileType.LOW, 1, 7, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t72);
@@ -269,7 +268,7 @@ public class SensorSim {
         allTiles.add(t80);
 
         //Row 9
-        Tile t81 = new Tile(0, TileType.LOW, 0, 8, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
+        Tile t81 = new Tile(4, TileType.LOW, 0, 8, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
         allTiles.add(t81);
         Tile t82 = new Tile(0, TileType.LOW, 1, 8, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t82);
@@ -291,7 +290,7 @@ public class SensorSim {
         allTiles.add(t90);
 
         //Row 10
-        Tile t91 = new Tile(0, TileType.LOW, 0, 9, TileSide.WALL, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
+        Tile t91 = new Tile(4, TileType.LOW, 0, 9, TileSide.WALL, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.WALL);
         allTiles.add(t91);
         Tile t92 = new Tile(0, TileType.LOW, 1, 9, TileSide.WALL, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
         allTiles.add(t92);
