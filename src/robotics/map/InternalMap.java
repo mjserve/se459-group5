@@ -41,15 +41,44 @@ public class InternalMap {
 
 	}
 	
-	public void updateCollision(Direction direc, Coordinates loc) throws IllegalArgumentException{
+	public void addTile(Coordinates target, ISensorPackage query) throws IllegalArgumentException, OutOfFloorMapBoundsException{
+		if (map.containsKey(target)) throw new IllegalArgumentException("Tile already in map");
+		
+		Tile tile;
+		
+		//start tile
+		if (query.dirtDetector(target))
+			tile = new Tile(1,query.terrainType(target), target.x, target.y);
+		else 
+			tile = new Tile(0,query.terrainType(target), target.x, target.y);
+		
+		map.put(target, tile);
+		
+		populateAround(target);
+	}
+	
+	public void updateCollision(Direction dir, Coordinates loc) throws OutOfFloorMapBoundsException{
 		
 	}
 	
-	public void updateTerrain (Coordinates loc, TileType terrain) throws IllegalArgumentException{
+	public void updateTerrain (Coordinates loc, TileType terrain) throws OutOfFloorMapBoundsException{
+		
+	}
+	
+	public Tile getTile(Coordinates loc) throws OutOfFloorMapBoundsException{
+		
+		if(!map.containsKey(loc)) throw new OutOfFloorMapBoundsException("Coordinates not included in map");
+		
+		return map.get(loc);
 		
 	}
 	
 	public double moveCost(Coordinates start, Coordinates end) throws IllegalArgumentException{
+		//Sanitizing
+		if (start.equals(end)) 
+			throw new IllegalArgumentException("Cannot move between the same start and end tile");
+		if(Math.abs(start.x - end.x) != 1 || Math.abs(start.y - end.y) != 1) 
+			throw new IllegalArgumentException("Tiles are too far apart");
 		return 0;
 	}
 	
