@@ -2,6 +2,7 @@ package activityLog;
 
 class LogHelper {
 
+
   public String movmentUpdate(String movmentLog, String movment) {
     movmentLog = movmentLog + " " + movment;
     return movmentLog;
