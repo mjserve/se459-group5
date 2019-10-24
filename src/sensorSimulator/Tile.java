@@ -80,7 +80,27 @@ public class Tile{
         return westSide;
     }
 
-    public boolean hasObstacle(Direction d)
+    public void setType(TileType type) {
+		this.type = type;
+	}
+
+	public void setNorthSide(TileSide northSide) {
+		this.northSide = northSide;
+	}
+
+	public void setSouthSide(TileSide southSide) {
+		this.southSide = southSide;
+	}
+
+	public void setEastSide(TileSide eastSide) {
+		this.eastSide = eastSide;
+	}
+
+	public void setWestSide(TileSide westSide) {
+		this.westSide = westSide;
+	}
+
+	public boolean hasObstacle(Direction d)
     {
         if (d == Direction.North)
         {

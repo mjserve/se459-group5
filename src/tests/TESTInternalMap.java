@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 import navitagion.Coordinates;
+import navitagion.Direction;
 import robotics.Mocks.MockSensors;
 import robotics.map.InternalMap;
 import sensorSimulator.OutOfFloorMapBoundsException;
+import sensorSimulator.TileSide;
 import sensorSimulator.TileType;
 import sensors.ISensorPackage;
 
@@ -63,6 +65,40 @@ public class TESTInternalMap {
 			assertTrue(map.tileExists(target.westOf()));
 			assertEquals(map.getTile(target.westOf()).getTypeTile(),TileType.HIGH);
 			
+			
+		} catch (Exception e) {
+			fail(e.toString());
+		}
+	}
+	
+	@Test
+	void updateTerrain() {
+		Coordinates target = new Coordinates(0,0);
+		ISensorPackage sensors = new MockSensors();
+		try {
+			InternalMap map = new InternalMap(target, sensors);
+			
+			assertEquals(map.getTile(target).getTypeTile(), TileType.HIGH);
+			
+			map.updateTerrain(target, TileType.BARE);
+			assertEquals(map.getTile(target).getTypeTile(), TileType.BARE);
+			
+		} catch (Exception e) {
+			fail(e.toString());
+		}
+	}
+	
+	@Test
+	void updateCollision() {
+		Coordinates target = new Coordinates(0,0);
+		ISensorPackage sensors = new MockSensors();
+		try {
+			InternalMap map = new InternalMap(target, sensors);
+			
+			assertEquals(map.getTile(target).getEasSide(),TileSide.PASSABLE);
+			
+			map.updateCollision(Direction.East, target);
+			assertEquals(map.getTile(target).getEasSide(), TileSide.WALL);
 			
 		} catch (Exception e) {
 			fail(e.toString());

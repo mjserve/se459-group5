@@ -5,6 +5,7 @@ import navitagion.Coordinates;
 import navitagion.Direction;
 import sensorSimulator.OutOfFloorMapBoundsException;
 import sensorSimulator.Tile;
+import sensorSimulator.TileSide;
 import sensorSimulator.TileType;
 import sensors.ISensorPackage;
 
@@ -18,31 +19,38 @@ public class InternalMap {
 		
 		//start tile
 		if (query.dirtDetector(start)) {
-			tile = new Tile(1,query.terrainType(start), start.x, start.y);
+			tile = new Tile(1,query.terrainType(start), start.x, start.y, 
+					TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
 		}
 		else {
-			tile = new Tile(0,query.terrainType(start), start.x, start.y);
+			tile = new Tile(0,query.terrainType(start), start.x, start.y, 
+					TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE);
 		}
 		
 		map.put(start, tile);
 		
 		//Surrounding tiles
 		Coordinates next = start.northOf();
-		map.put(next, new Tile(1, TileType.UNKNOWN, next.x, next.y));
+		map.put(next, new Tile(1, TileType.UNKNOWN, next.x, next.y, 
+				TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE));
 		
 		next = start.eastOf();
-		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y, 
+				TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE));
 		
 		next = start.southOf();
-		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y, 
+				TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE));
 		
 		next = start.westOf();
-		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y, 
+				TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE));
 
 	}
 	
 	public void addTile(Coordinates target, ISensorPackage query) throws IllegalArgumentException, OutOfFloorMapBoundsException{
-		if (map.containsKey(target) && map.get(target).getTypeTile() != TileType.UNKNOWN) throw new IllegalArgumentException("Tile already in map");
+		if (map.containsKey(target) && map.get(target).getTypeTile() != TileType.UNKNOWN) 
+			throw new IllegalArgumentException("Tile already in map");
 		
 		Tile tile;
 		
@@ -59,10 +67,31 @@ public class InternalMap {
 	
 	public void updateCollision(Direction dir, Coordinates loc) throws OutOfFloorMapBoundsException{
 		
+		if(!map.containsKey(loc))
+			throw new OutOfFloorMapBoundsException("Tile not contained in existing map");
+		
+		switch(dir) {
+		case North:
+			map.get(loc).setNorthSide(TileSide.WALL);
+			break;
+		case East:
+			map.get(loc).setEastSide(TileSide.WALL);
+			break;
+		case South:
+			map.get(loc).setSouthSide(TileSide.WALL);
+			break;
+		case West:
+			map.get(loc).setWestSide(TileSide.WALL);
+			break;
+		}
 	}
 	
 	public void updateTerrain (Coordinates loc, TileType terrain) throws OutOfFloorMapBoundsException{
 		
+		if(!map.containsKey(loc))
+			throw new OutOfFloorMapBoundsException("Tile not contained in existing map");
+		
+		map.get(loc).setType(terrain);;
 	}
 	
 	public Tile getTile(Coordinates loc) throws OutOfFloorMapBoundsException{
@@ -89,22 +118,26 @@ public class InternalMap {
 	private void populateAround(Coordinates start) {
 		Coordinates next = start.northOf();
 		if(!map.containsKey(next)) {
-			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y
+					, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE));
 		}
 		
 		next = start.eastOf();
 		if(!map.containsKey(next)) {
-			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y
+					, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE));
 		}
 		
 		next = start.southOf();
 		if(!map.containsKey(next)) {
-			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y
+					, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE));
 		}
 		
 		next = start.westOf();
 		if(!map.containsKey(next)) {
-			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y
+					, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE, TileSide.PASSABLE));
 		}
 	}
 }
