@@ -61,11 +61,11 @@ public class TESTInternalMap {
 			assertTrue(map.tileExists(target.eastOf()));
 			assertTrue(map.tileExists(target.southOf()));
 			assertTrue(map.tileExists(target.westOf()));
-			assertEquals(map.getTile(target.eastOf()).getTypeTile(),TileType.HIGH);
+			assertEquals(map.getTile(target.westOf()).getTypeTile(),TileType.HIGH);
 			
 			
 		} catch (Exception e) {
-			fail("Exception on creation using Coordinates (0,0)");
+			fail(e.toString());
 		}
 	}
 }

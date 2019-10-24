@@ -42,7 +42,7 @@ public class InternalMap {
 	}
 	
 	public void addTile(Coordinates target, ISensorPackage query) throws IllegalArgumentException, OutOfFloorMapBoundsException{
-		if (map.containsKey(target)) throw new IllegalArgumentException("Tile already in map");
+		if (map.containsKey(target) && map.get(target).getTypeTile() != TileType.UNKNOWN) throw new IllegalArgumentException("Tile already in map");
 		
 		Tile tile;
 		
