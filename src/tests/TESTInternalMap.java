@@ -14,7 +14,7 @@ import sensors.ISensorPackage;
 public class TESTInternalMap {
 
 	@Test
-	void TESTMapConstruction (){
+	void MapConstruction (){
 
 		Coordinates target = new Coordinates(0,0);
 		ISensorPackage sensors = new MockSensors();
@@ -34,7 +34,7 @@ public class TESTInternalMap {
 	}
 	
 	@Test
-	void TESTPopulateTile () {
+	void PopulateTile () {
 		Coordinates target = new Coordinates(0,0);
 		ISensorPackage sensors = new MockSensors();
 		try {
