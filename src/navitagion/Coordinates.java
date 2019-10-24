@@ -28,6 +28,23 @@ public class Coordinates {
         		this.y == obj.y;
 	}
 	
+	public Coordinates northOf() {
+		return new Coordinates (x, y+1);
+		
+	}
+	
+	public Coordinates eastOf() {
+		return new Coordinates (x+1,y);
+	}
+	
+	public Coordinates southOf() {
+		return new Coordinates (x,y-1);
+	}
+	
+	public Coordinates westOf() {
+		return new Coordinates (x-1,y);
+	}
+	
 	@Override
 	public int hashCode() {
 		return x * 97 + y;

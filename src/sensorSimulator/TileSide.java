@@ -2,6 +2,7 @@ package sensorSimulator;
 
 public enum TileSide {
     WALL,
-    DOOR,
+    DOOR_OPEN,
+    DOOR_CLOSED,
     PASSABLE
 }

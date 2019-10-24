@@ -38,5 +38,15 @@ class TESTCoordinates {
 		
 		assertEquals(coord1.toString(), "(5, 6)");
 	}
+	
+	@Test
+	void testTranslation() {
+		Coordinates origin = new Coordinates(0,0);
+		
+		assertEquals(origin.eastOf(), new Coordinates(1,0));
+		assertEquals(origin.southOf(), new Coordinates(0,-1));
+		assertEquals(origin.westOf(), new Coordinates(-1,0));
+		assertEquals(origin.northOf(), new Coordinates(0,1));
+	}
 
 }

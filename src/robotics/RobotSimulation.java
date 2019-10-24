@@ -100,7 +100,7 @@ public class RobotSimulation {
 					coord.y++;
 				else {
 					dir = Direction.East;
-					log.update("Collision Detected... Changing Direction");
+					log.update("Collision Detected... Changing Direction (East)");
 				}
 				break;
 			case East:
@@ -108,7 +108,7 @@ public class RobotSimulation {
 					coord.x++;
 				else {
 					dir = Direction.South;
-					log.update("Collision Detected... Changing Direction");
+					log.update("Collision Detected... Changing Direction (South)");
 				}
 				break;
 			case South:
@@ -116,7 +116,7 @@ public class RobotSimulation {
 					coord.y--;
 				else {
 					dir = Direction.West;
-					log.update("Collision Detected... Changing Direction");
+					log.update("Collision Detected... Changing Direction (West)");
 				}
 				break;
 			case West:
@@ -124,7 +124,7 @@ public class RobotSimulation {
 					coord.x--;
 				else {
 					dir = Direction.North;
-					log.update("Collision Detected... Changing Direction");
+					log.update("Collision Detected... Changing Direction (North)");
 				}
 				break;
 			default:

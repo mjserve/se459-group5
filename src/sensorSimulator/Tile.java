@@ -80,32 +80,52 @@ public class Tile{
         return westSide;
     }
 
-    public boolean hasObstacle(Direction d)
+    public void setType(TileType type) {
+		this.type = type;
+	}
+
+	public void setNorthSide(TileSide northSide) {
+		this.northSide = northSide;
+	}
+
+	public void setSouthSide(TileSide southSide) {
+		this.southSide = southSide;
+	}
+
+	public void setEastSide(TileSide eastSide) {
+		this.eastSide = eastSide;
+	}
+
+	public void setWestSide(TileSide westSide) {
+		this.westSide = westSide;
+	}
+
+	public boolean hasObstacle(Direction d)
     {
         if (d == Direction.North)
         {
-            if (northSide == TileSide.WALL || northSide == TileSide.DOOR)
+            if (northSide == TileSide.WALL || northSide == TileSide.DOOR_CLOSED)
             {
                 return true;
             }
         }
         if (d == Direction.South)
         {
-            if (southSide == TileSide.WALL || southSide == TileSide.DOOR)
+            if (southSide == TileSide.WALL || southSide == TileSide.DOOR_CLOSED)
             {
                 return true;
             }
         }
         if (d == Direction.East)
         {
-            if (eastSide == TileSide.WALL || eastSide == TileSide.DOOR)
+            if (eastSide == TileSide.WALL || eastSide == TileSide.DOOR_CLOSED)
             {
                 return true;
             }
         }
         if (d == Direction.West)
         {
-            if (westSide == TileSide.WALL || westSide == TileSide.DOOR)
+            if (westSide == TileSide.WALL || westSide == TileSide.DOOR_CLOSED)
             {
                 return true;
             }
