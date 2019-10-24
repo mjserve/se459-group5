@@ -106,9 +106,13 @@ public class InternalMap {
 		//Sanitizing
 		if (start.equals(end)) 
 			throw new IllegalArgumentException("Cannot move between the same start and end tile");
-		if(Math.abs(start.x - end.x) != 1 || Math.abs(start.y - end.y) != 1) 
+		if(Math.abs(start.x - end.x) > 1 || Math.abs(start.y - end.y) > 1) 
 			throw new IllegalArgumentException("Tiles are too far apart");
-		return 0;
+		if(Math.abs(start.x - end.x) != 1 && Math.abs(start.y - end.y) != 1) 
+			throw new IllegalArgumentException("Tiles are diagonal to eachother");
+		
+		
+		return ((double)map.get(start).getTypeTile().getCost() + map.get(end).getTypeTile().getCost())/2;
 	}
 	
 	public boolean tileExists(Coordinates target) {

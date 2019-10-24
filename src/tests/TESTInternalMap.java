@@ -104,4 +104,47 @@ public class TESTInternalMap {
 			fail(e.toString());
 		}
 	}
+	
+	@Test
+	void movementCost() {
+		
+		Coordinates target = new Coordinates(0,0);
+		Coordinates adjacent = new Coordinates(0,1);
+		ISensorPackage sensors = new MockSensors();
+		try {
+			InternalMap map = new InternalMap(target, sensors);
+			map.addTile(adjacent, sensors);
+			
+			assertTrue(map.tileExists(target));
+			assertTrue(map.tileExists(adjacent));
+			
+			assertEquals(map.moveCost(target, adjacent), 3);
+			
+			map.updateTerrain(adjacent, TileType.LOW);
+			assertEquals(map.moveCost(target, adjacent), 2.5);
+			
+			
+		} catch (Exception e) {
+			fail(e.toString());
+		}
+		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
