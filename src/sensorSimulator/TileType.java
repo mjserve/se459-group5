@@ -4,6 +4,7 @@ public enum TileType {
     OBSTACLE,
     HIGH,
     LOW,
-    BARE
+    BARE,
+    UNKNOWN
 
 }
