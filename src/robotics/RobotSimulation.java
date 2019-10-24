@@ -5,6 +5,7 @@ import java.util.List;
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;
+import robotics.map.InternalPath;
 import sensors.ISensorPackage;
 
 public class RobotSimulation {
@@ -136,6 +137,10 @@ public class RobotSimulation {
 			log.update(message.toString());
 			
 		}
+		
+	}
+	
+	private void moveOnPath(InternalPath path) {
 		
 	}
 	
