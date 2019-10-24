@@ -53,6 +53,10 @@ public class InternalMap {
 		return 0;
 	}
 	
+	public boolean tileExists(Coordinates target) {
+		return map.containsKey(target);
+	}
+	
 	private void populateAround(Coordinates start) {
 		Coordinates next = start.northOf();
 		if(!map.containsKey(next)) {
