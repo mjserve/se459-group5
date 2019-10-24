@@ -27,25 +27,18 @@ public class InternalMap {
 		map.put(start, tile);
 		
 		//Surrounding tiles
-		if(!query.collisionNorth(start)) {
-			Coordinates north = start.northOf();
-			map.put(north, new Tile(1, TileType.UNKNOWN, north.x, north.y));
-		}
+		Coordinates next = start.northOf();
+		map.put(next, new Tile(1, TileType.UNKNOWN, next.x, next.y));
 		
-		if(!query.collisionEast(start)) {
-			Coordinates east = start.eastOf();
-			map.put(east,  new Tile(1, TileType.UNKNOWN, east.x, east.y));
-		}
+		next = start.eastOf();
+		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
 		
-		if(!query.collisionSouth(start)) {
-			Coordinates south = start.southOf();
-			map.put(south,  new Tile(1, TileType.UNKNOWN, south.x, south.y));
-		}
+		next = start.southOf();
+		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
 		
-		if(!query.collisionWest(start)) {
-			Coordinates west = start.westOf();
-			map.put(west,  new Tile(1, TileType.UNKNOWN, west.x, west.y));
-		}
+		next = start.westOf();
+		map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+
 	}
 	
 	public void updateCollision(Direction direc, Coordinates loc) throws IllegalArgumentException{
@@ -61,6 +54,34 @@ public class InternalMap {
 	}
 	
 	private void populateAround(Coordinates start) {
+		Coordinates next = start.northOf();
+		if(!map.containsKey(next)) {
+			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+		}
 		
+		next = start.eastOf();
+		if(!map.containsKey(next)) {
+			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+		}
+		
+		next = start.southOf();
+		if(!map.containsKey(next)) {
+			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+		}
+		
+		next = start.westOf();
+		if(!map.containsKey(next)) {
+			map.put(next,  new Tile(1, TileType.UNKNOWN, next.x, next.y));
+		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
