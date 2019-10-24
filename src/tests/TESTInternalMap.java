@@ -1,8 +1,11 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.jupiter.api.Test;
 import navitagion.Coordinates;
 import navitagion.Direction;
@@ -36,7 +39,7 @@ public class TESTInternalMap {
 	}
 	
 	@Test
-	void PopulateTile () {
+	public void PopulateTile () {
 		Coordinates target = new Coordinates(0,0);
 		ISensorPackage sensors = new MockSensors();
 		try {
@@ -72,7 +75,7 @@ public class TESTInternalMap {
 	}
 	
 	@Test
-	void updateTerrain() {
+	public void updateTerrain() {
 		Coordinates target = new Coordinates(0,0);
 		ISensorPackage sensors = new MockSensors();
 		try {
@@ -89,7 +92,7 @@ public class TESTInternalMap {
 	}
 	
 	@Test
-	void updateCollision() {
+	public void updateCollision() {
 		Coordinates target = new Coordinates(0,0);
 		ISensorPackage sensors = new MockSensors();
 		try {
@@ -106,7 +109,7 @@ public class TESTInternalMap {
 	}
 	
 	@Test
-	void movementCost() {
+	public void movementCost() {
 		
 		Coordinates target = new Coordinates(0,0);
 		Coordinates adjacent = new Coordinates(0,1);

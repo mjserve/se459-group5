@@ -1,18 +1,19 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 import navitagion.Coordinates;
 
-class TESTCoordinates {
+public class TESTCoordinates {
 
 	@SuppressWarnings("unlikely-arg-type")
 	@Test
-	void testEquals() {
+	public void testEquals() {
 		Coordinates coord1 = new Coordinates(5,6);
 		Coordinates coord2 = new Coordinates(6,5);
 		Coordinates coord3 = new Coordinates(5,6);
@@ -24,7 +25,7 @@ class TESTCoordinates {
 		assertNotSame(coord1, coord2);
 		
 		//Testing Equality
-		assertEquals(  coord1, coord3, "Values should  match");
+		assertEquals("Values should  match", coord1, coord3);
 		
 		assertFalse(coord1.equals(null));
 		assertTrue(coord1.equals(coord1));
@@ -40,7 +41,7 @@ class TESTCoordinates {
 	}
 	
 	@Test
-	void testTranslation() {
+	public void testTranslation() {
 		Coordinates origin = new Coordinates(0,0);
 		
 		assertEquals(origin.eastOf(), new Coordinates(1,0));
