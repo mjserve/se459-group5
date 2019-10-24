@@ -1,17 +1,19 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.jupiter.api.Test;
 
 import robotics.SweeperHardware;
 
-class TESTSweeperHardware {
+public class TESTSweeperHardware {
 
 	@Test
-	void testIllegalHardwareValues() {
+	public void testIllegalHardwareValues() {
 		try{
 			new SweeperHardware(-5, 5);
 			fail("Exception was expected for negative dust cap");
@@ -27,7 +29,7 @@ class TESTSweeperHardware {
 	}
 	
 	@Test
-	void testIncrementation() {
+	public void testIncrementation() {
 		SweeperHardware mockSweeper = new SweeperHardware(250, 150);
 		
 		assertEquals(mockSweeper.getBattery(), 150);
