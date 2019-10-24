@@ -15,6 +15,8 @@ public class InternalMap {
 	public InternalMap(Coordinates start, ISensorPackage query) throws OutOfFloorMapBoundsException{
 		map = new HashMap <Coordinates, Tile>();
 		Tile tile;
+		
+		//start tile
 		if (query.dirtDetector(start)) {
 			tile = new Tile(1,query.terrainType(start), start.x, start.y);
 		}
@@ -23,6 +25,27 @@ public class InternalMap {
 		}
 		
 		map.put(start, tile);
+		
+		//Surrounding tiles
+		if(!query.collisionNorth(start)) {
+			Coordinates north = start.northOf();
+			map.put(north, new Tile(1, TileType.UNKNOWN, north.x, north.y));
+		}
+		
+		if(!query.collisionEast(start)) {
+			Coordinates east = start.eastOf();
+			map.put(east,  new Tile(1, TileType.UNKNOWN, east.x, east.y));
+		}
+		
+		if(!query.collisionSouth(start)) {
+			Coordinates south = start.southOf();
+			map.put(south,  new Tile(1, TileType.UNKNOWN, south.x, south.y));
+		}
+		
+		if(!query.collisionWest(start)) {
+			Coordinates west = start.westOf();
+			map.put(west,  new Tile(1, TileType.UNKNOWN, west.x, west.y));
+		}
 	}
 	
 	public void updateCollision(Direction direc, Coordinates loc) throws IllegalArgumentException{
@@ -35,5 +58,9 @@ public class InternalMap {
 	
 	public double moveCost(Coordinates start, Coordinates end) throws IllegalArgumentException{
 		return 0;
+	}
+	
+	private void populateAround(Coordinates start) {
+		
 	}
 }
