@@ -13,7 +13,6 @@ public class ActivityLog {
    Cleaning status: Clean| Sensor : A5,A3,B4  Moved to A5| Power Remaining: 70%| currently not_recharging
    Cleaning status: Dirty| Sensor : A6,A4,B5 Stayed at A5| Power Remaining: 69%| currently not_recharging
 
-
    */
   private String movment;
   private String sensor;
