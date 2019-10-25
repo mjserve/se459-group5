@@ -157,6 +157,10 @@ public class RobotSimulation {
 		//Move on path feeling for walls & dirt
 		ListIterator<Direction> instructions = path.history().listIterator();
 		
+		if(sensors.dirtDetector(coord)) {
+			//TODO: switch to cleaning mode until tile is clean then re assess power situation.
+		}
+		
 		while (instructions.hasNext()) {
 			Direction next = instructions.next();
 			
