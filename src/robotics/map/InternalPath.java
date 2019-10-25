@@ -25,6 +25,10 @@ public class InternalPath {
 		return this.path.peek();
 	}
 	
+	public boolean isEmpty() {
+		return path.isEmpty();
+	}
+	
 	public List<Direction> history() {
 		ArrayList<Direction> rev = new ArrayList<Direction>();
 		

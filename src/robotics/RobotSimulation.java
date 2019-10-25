@@ -140,7 +140,11 @@ public class RobotSimulation {
 		
 	}
 	
-	private void moveOnPath(InternalPath path) {
+	private void moveOnPath(InternalPath path) throws Exception{
+		
+		if (path.isEmpty()) throw new Exception("Provided Interal Path object contains no instructions");
+		
+		
 		
 	}
 	
