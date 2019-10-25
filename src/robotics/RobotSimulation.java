@@ -142,11 +142,18 @@ public class RobotSimulation {
 	
 	private void moveOnPath(InternalPath path) throws Exception{
 		
-		if (path.isEmpty()) throw new Exception("Provided Interal Path object contains no instructions");
+		//Validate Path
+		if (path.isEmpty() ||
+			path.peek().equals(coord)) 
+			throw new Exception("Provided Interal Path object contains no instructions");
 		
 		while (!path.isEmpty()) {
 			
-			Coordinates next = path.pop();
+			Coordinates next = path.peek();
+			
+			if(this.coord.adjacentTo(next)) {
+				
+			}
 			
 		}
 		

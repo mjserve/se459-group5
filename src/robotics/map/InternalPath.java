@@ -21,7 +21,7 @@ public class InternalPath {
 		return this.path.pop();
 	}
 	
-	public Coordinates peek(Coordinates k) {
+	public Coordinates peek() {
 		return this.path.peek();
 	}
 	
@@ -41,7 +41,7 @@ public class InternalPath {
 			if(current.x == prev.x) {
 				dir = current.y < prev.y ? Direction.North:Direction.South;
 			} 
-			//Easth or west
+			//East or west
 			else if (current.y == prev.y){
 				dir = current.x < prev.x ? Direction.East: Direction.West;
 			}
