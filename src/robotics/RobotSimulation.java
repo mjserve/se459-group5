@@ -2,9 +2,11 @@ package robotics;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;
+import robotics.map.InternalMap;
 import robotics.map.InternalPath;
 import sensors.ISensorPackage;
 
@@ -19,6 +21,7 @@ public class RobotSimulation {
 	Coordinates coord;
 	Direction dir = Direction.North;
 	List <Coordinates> stations;
+	InternalMap map;
 	
 	//Constructor
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
@@ -140,7 +143,8 @@ public class RobotSimulation {
 		
 	}
 	
-	private void moveOnPath(InternalPath path) throws Exception{
+	//move along a provided path returns true if pathing is successful returns false if issue is encountered
+	private boolean moveOnPath(InternalPath path) throws Exception{
 		
 		//Validate Path
 		if (path.isEmpty()) 
@@ -151,7 +155,48 @@ public class RobotSimulation {
 			throw new Exception("Path does not connect to current tile");
 		
 		//Move on path feeling for walls & dirt
-		List<Direction> instructions = path.history();
+		ListIterator<Direction> instructions = path.history().listIterator();
+		
+		while (instructions.hasNext()) {
+			Direction next = instructions.next();
+			
+			switch (next) {
+			case North:
+				if (sensors.collisionNorth(coord)) {
+					map.updateCollision(Direction.North, coord);
+					return false;
+				}
+				coord.y++;
+				break;
+			case East:
+				if (sensors.collisionEast(coord)) {
+					map.updateCollision(Direction.East, coord);
+					return false;
+				}
+				coord.x++;
+				break;
+			case South:
+				if (sensors.collisionSouth(coord)) {
+					map.updateCollision(Direction.South, coord);
+					return false;
+				}
+				coord.y--;
+				break;
+			case West:
+				if (sensors.collisionWest(coord)) {
+					map.updateCollision(Direction.West, coord);
+					return false;
+				}
+				coord.x--;
+				break;
+			default:
+				throw new IllegalArgumentException("Illegal argument given in instructions");		
+			}
+			
+		}
+		
+		//Successful execution
+		return true;
 	}
 	
 }
