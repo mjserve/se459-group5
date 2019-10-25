@@ -144,6 +144,11 @@ public class RobotSimulation {
 		
 		if (path.isEmpty()) throw new Exception("Provided Interal Path object contains no instructions");
 		
+		while (!path.isEmpty()) {
+			
+			Coordinates next = path.pop();
+			
+		}
 		
 		
 	}

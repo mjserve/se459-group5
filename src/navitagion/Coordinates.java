@@ -59,4 +59,16 @@ public class Coordinates {
 		return new StringBuilder("(").append(this.x).append(", ").append(this.y).append(")").toString();		
 	}
 	
+	public boolean adjacentTo(Coordinates target) {
+		
+		//Sanitizing
+		if (this.equals(target)) 
+			return false;
+		if(Math.abs(this.x - target.x) > 1 || Math.abs(this.y - target.y) > 1) 
+			return false;
+		if(Math.abs(this.x - target.x) != 1 && Math.abs(this.y - target.y) != 1) 
+			return false;
+		
+		return true;
+	}
 }

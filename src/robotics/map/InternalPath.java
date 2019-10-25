@@ -17,7 +17,7 @@ public class InternalPath {
 		this.path.push(k);
 	}
 	
-	public Coordinates pop(Coordinates k) {
+	public Coordinates pop() {
 		return this.path.pop();
 	}
 	
