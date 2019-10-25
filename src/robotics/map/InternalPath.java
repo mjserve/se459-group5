@@ -25,6 +25,10 @@ public class InternalPath {
 		return this.path.peek();
 	}
 	
+	public Stack<Coordinates> getPath(){
+		return path;
+	}
+	
 	public List<Direction> history() {
 		ArrayList<Direction> rev = new ArrayList<Direction>();
 		

@@ -28,6 +28,16 @@ public class Coordinates {
         		this.y == obj.y;
 	}
 	
+	public boolean isAdjacent(Coordinates next) {
+		if(next.equals(this.northOf()) ||
+			next.equals(this.eastOf()) ||
+			next.equals(this.westOf()) ||
+			next.equals(this.southOf()) ){
+				return true;
+			}
+			return false;
+	}
+	
 	public Coordinates northOf() {
 		return new Coordinates (x, y+1);
 		
@@ -43,6 +53,17 @@ public class Coordinates {
 	
 	public Coordinates westOf() {
 		return new Coordinates (x-1,y);
+	}
+	
+	public Direction getSide(Coordinates next) {
+		if(this.x == next.x) {
+			return this.y>next.y? Direction.South: Direction.North;
+		}
+		else if(this.y == next.y) {
+			return this.x>next.x? Direction.West: Direction.East;
+		}
+		return null;
+		
 	}
 	
 	@Override

@@ -1,8 +1,6 @@
 package tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -11,13 +9,13 @@ import navitagion.Coordinates;
 import navitagion.Direction;
 import robotics.Mocks.MockSensors;
 import robotics.map.InternalMap;
-import sensorSimulator.OutOfFloorMapBoundsException;
 import sensorSimulator.TileSide;
 import sensorSimulator.TileType;
 import sensors.ISensorPackage;
 
 public class TESTInternalMap {
 
+	/*
 	@Test
 	void MapConstruction (){
 
@@ -132,7 +130,7 @@ public class TESTInternalMap {
 		}
 		
 	}
-	
+	*/
 }
 
 
