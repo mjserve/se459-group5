@@ -143,6 +143,27 @@ public class RobotSimulation {
 		
 	}
 	
+	//Clean at the current tile until battery reserve or dust capacity is critical. return code indicates how to proceed when returning
+	// 0 = Cleaning successful, 1 = low power , 2 = dust capacity reached
+	private int cleaningLoop(int allowance) {
+		
+		while (sensors.dirtDetector(coord)) {
+			if (allowance <= 0) return 1;
+			else {
+				//clean 1 unit of dirt & check capacity
+				if (hardware.incrimentDust(1)) {
+					log.update("Dirt capacity reached - Powering Down");
+					return 2;
+				}
+				
+				log.update("1 unit of dust cleaned");
+				sensors.cleanTile(coord);
+			}
+		}
+		
+		return 0;
+	}
+	
 	//move along a provided path returns true if pathing is successful returns false if issue is encountered
 	private boolean moveOnPath(InternalPath path) throws Exception{
 		
