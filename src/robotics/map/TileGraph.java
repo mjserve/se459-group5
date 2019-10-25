@@ -2,6 +2,7 @@ package robotics.map;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -164,6 +165,18 @@ public class TileGraph {
 		return Graph.get(center).getAllNeighbors();
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder textGraph = new StringBuilder("");
+		//Iterator<Map.Entry<Coordinates, TileVertex>> itr = Graph.entrySet().iterator();
+		Graph.forEach((coord, vert)-> {
+			List<TileVertex> neighbs = vert.getAllNeighbors();
+			StringBuilder connections = new StringBuilder("");
+			neighbs.forEach((vertex)-> {connections.append(" -> " +vertex.getCoordinates().toString());});
+			textGraph.append(coord.toString()  + connections.toString() + "\n");
+		});
+		return textGraph.toString();
+	}
 	
 
 }
