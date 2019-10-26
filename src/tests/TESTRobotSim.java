@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import robotics.RobotSimulation;
-import robotics.Mocks.MockActivityLog;
-import robotics.Mocks.MockSensors;
 import sensors.ISensorPackage;
 
 public class TESTRobotSim {

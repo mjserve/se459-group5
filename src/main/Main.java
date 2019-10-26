@@ -3,10 +3,10 @@ package main;
 import logging.IActivityLog;
 import sensors.ISensorPackage;
 import sensors.Sensor;
-import robotics.RobotSimulation;
-import robotics.Mocks.MockActivityLog;
+import tests.MockActivityLog;
 import sensorSimulator.SensorSim;
 import navitagion.Coordinates;
+import robotics.RobotSimulation;
 
 public class Main {
 

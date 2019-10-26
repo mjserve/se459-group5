@@ -1,4 +1,4 @@
-package robotics.Mocks;
+package tests;
 
 import navitagion.Coordinates;
 import sensorSimulator.TileType;

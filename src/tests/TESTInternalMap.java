@@ -7,7 +7,6 @@ import static org.junit.Assert.fail;
 import org.junit.jupiter.api.Test;
 import navitagion.Coordinates;
 import navitagion.Direction;
-import robotics.Mocks.MockSensors;
 import robotics.map.InternalMap;
 import sensorSimulator.TileSide;
 import sensorSimulator.TileType;
