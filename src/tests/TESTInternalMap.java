@@ -121,10 +121,10 @@ public class TESTInternalMap {
 			assertTrue(map.tileExists(target));
 			assertTrue(map.tileExists(adjacent));
 			
-			assertEquals(map.moveCost(target, adjacent), 3);
+			assertTrue(map.moveCost(target, adjacent) == 3);
 			
 			map.updateTerrain(adjacent, TileType.LOW);
-			assertEquals(map.moveCost(target, adjacent), 2.5);
+			assertTrue(map.moveCost(target, adjacent) == 2.5);
 			
 			
 		} catch (Exception e) {
