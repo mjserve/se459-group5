@@ -34,7 +34,6 @@ public class SensorSim {
         ArrayList<Tile> tileList11 = new ArrayList<Tile>();
         JSONParser parser = new JSONParser();
 
-       // JSONObject oo = new JSONObject("testJson.json");
         try
         {
             Object obj = parser.parse(new FileReader(fileName));
@@ -51,6 +50,7 @@ public class SensorSim {
             TileSide eastSide;
             TileSide westSide;
 
+            //Create arguments to create each Tile object
             for (int i=0; i < jArr.size(); i++)
             {
                 JSONObject tmpObj = (JSONObject) jArr.get(i);
@@ -75,6 +75,7 @@ public class SensorSim {
                 Tile tmp = new Tile(dirt_val, tType, xPos, yPos, northSide, southSide, eastSide, westSide);
                 tileList11.add(tmp);
 
+                //Get max x and y positions to initialize Tile[][]
                 if (xPos > max_x)
                 {
                     max_x = xPos;
@@ -88,6 +89,7 @@ public class SensorSim {
 
             loadedMap = new Tile[max_x + 1][max_y + 1];
 
+            //Populate the loadedMap
             for (int j=0; j < tileList11.size(); j++)
             {
                 loadedMap[tileList11.get(j).getXCoordinate()][tileList11.get(j).getYCoordinate()] = tileList11.get(j);
@@ -99,7 +101,7 @@ public class SensorSim {
         }
     }
 
-    //incorporate json file here
+    //Old floor plan loading method -> delete?
     public void loadFloorPlan()
     {
         //default row size
@@ -122,14 +124,6 @@ public class SensorSim {
         }
     }
 
-    //Robot can ask if tile is valid at (x, y)
-    //Returns true if position returned is not an obstacle or out of bounds of map
-    /*
-    public boolean checkIsMovable(int x, int y)
-    {
-        return loadedMap.validatePos(x, y);
-    }
-    */
 
     public boolean checkForBarrier(Coordinates coords, Direction d)
     {
@@ -205,6 +199,7 @@ public class SensorSim {
 
     //Creates a 10x10 default map
     //All borders are of TileType OBSTACLE --> i'll post a picture of the default map on Slack
+    //Used for default floor plan loading -> delete?
     private void populateArray(ArrayList<Tile> allTiles)
     {
         //Row 1
