@@ -142,6 +142,8 @@ public class RobotSimulation {
 	
 	private void moveOnPath(InternalPath path) {
 		
+		
+		
 	}
 	
 }
