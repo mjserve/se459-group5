@@ -39,6 +39,33 @@ public class Tile{
         eastSide = eS;
         westSide = wS;
     }
+    
+    //Temporary constructor for creating quick tiles
+    public Tile(int dirt, TileType tType, int xPos, int yPos, String walls) {
+        this.type = tType;
+        this.dirtVal = dirt;
+
+        this.coords = new Coordinates(xPos, yPos);
+        String sWalls = walls.toUpperCase();
+        
+        northSide = TileSide.PASSABLE;
+        southSide = TileSide.PASSABLE;
+        eastSide = TileSide.PASSABLE;
+        westSide = TileSide.PASSABLE;
+        if(sWalls.contains("N")) {
+        	northSide = TileSide.WALL;
+        }
+        if(sWalls.contains("S")) {
+        	southSide = TileSide.WALL;
+        }
+        if(sWalls.contains("E")) {
+        	eastSide = TileSide.WALL;
+        }
+        if(sWalls.contains("W")) {
+        	westSide = TileSide.WALL;
+        }
+        
+    }
 
     public int getXCoordinate()
     {

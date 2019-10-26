@@ -25,15 +25,14 @@ public class SensorSim {
     //incorporate json file here
     public void loadFloorPlan()
     {
-        //default row size
-        //default column size
-        int row = 10;
-        int column = 10;
+        //NOTE: CHANGED ROW AND COLUMN
+        int row = 6;
+        int column = 2;
 
         //Get all tiles of map in ArrayList
         //Refactor for json input files later on
         ArrayList<Tile> listOfTiles = new ArrayList<Tile>();
-        populateArray(listOfTiles);
+        populateAltArray(listOfTiles);
 
         loadedMap = new Tile[row][column];
 
@@ -314,4 +313,32 @@ public class SensorSim {
 
 
     }
+
+	public void populateAltArray(ArrayList<Tile> allTiles) {
+		Tile a1 = new Tile(0, TileType.HIGH, 0,1, "NW");
+		allTiles.add(a1);
+		Tile a2 = new Tile(0, TileType.HIGH, 1, 1, "N");
+		allTiles.add(a2);
+		Tile a3 = new Tile(0, TileType.HIGH, 2, 1, "NE");
+		allTiles.add(a3);
+		Tile a4 = new Tile(0, TileType.HIGH, 0, 0, "SW");
+		allTiles.add(a4);
+		Tile a5 = new Tile(0, TileType.HIGH, 1, 0, "S");
+		allTiles.add(a5);
+		Tile a6 = new Tile(0, TileType.HIGH, 2, 0, "S");
+		allTiles.add(a6);
+		
+		Tile b1 = new Tile(0, TileType.LOW, 3, 0, "S");
+		allTiles.add(b1);
+		Tile b2 = new Tile(0, TileType.LOW, 4, 0, "S");
+		allTiles.add(b2);
+		Tile b3 = new Tile(0, TileType.LOW, 5, 0, "SE");
+		allTiles.add(b3);
+		Tile b4 = new Tile(0, TileType.LOW, 3, 1, "NW");
+		allTiles.add(b4);
+		Tile b5 = new Tile(0, TileType.LOW, 4, 1, "N");
+		allTiles.add(b5);
+		Tile b6 = new Tile(0, TileType.LOW, 5, 1, "NE");
+		allTiles.add(b6);
+	}
 }

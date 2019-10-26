@@ -20,13 +20,11 @@ public class TileGraph {
 	 * Create Vertices.
 	 * Populate surrounding area.
 	 * 
-	 * 
 	 * From a starting position [a]:
 	 * 1. populateSurrounding
 	 * 2. move to the new tile [b]
 	 * 3. populate surrounding on that tile
-	 * 4. addNewEdge(a,b)
-	 * 
+	 * 4. Edges should be build automatically
 	 * 
 	 */
 	
@@ -49,63 +47,69 @@ public class TileGraph {
 	
 	//TODO: Work on reducing code reuse.
 	public void populateSurroundings(Coordinates pointer) throws OutOfFloorMapBoundsException {
-		//Grab the tile vertex in question
-		TileVertex center = Graph.get(pointer);
-		//Update the tile type sensor.
-		center.setTileType(sensor.terrainType(pointer));
-		//Since we're populating, we remove the pointer from unknownCoordinates.
-		unknownCoordinates.remove(pointer);
-		
-		
-		//IF no collision on northern side...
-		if(!sensor.collisionNorth(pointer)) {
-			//Check if anything on the NORTH side is in the map already
-			TileVertex tempNorth = Graph.get(pointer.northOf());
-			if(tempNorth != null) {
-				updateEdge(pointer, pointer.northOf());
-			}
-			//ELSE, initialize a new node.
-			else {
-				//Create a new unvisited edge
-				center.newTileEdge(Direction.North);
-				//Add the coordinate to list of available to reach, but unknown
-				unknownCoordinates.add(pointer.northOf());
-				Graph.put(pointer.northOf(), new TileVertex(pointer.northOf()));
-			}
-		};
-		if(!sensor.collisionEast(pointer)) {
-			TileVertex tempEast = Graph.get(pointer.eastOf());
-			if(tempEast != null) {
-				updateEdge(pointer, pointer.eastOf());
-			}
-			else {
-				center.newTileEdge(Direction.East);
-				unknownCoordinates.add(pointer.eastOf());
-				Graph.put(pointer.eastOf(), new TileVertex(pointer.eastOf()));
-			}
-		};
-		if(!sensor.collisionWest(pointer)) {
-			TileVertex tempWest = Graph.get(pointer.westOf());
-			if(tempWest != null) {
-				updateEdge(pointer, pointer.westOf());
-			}
-			else {
-				center.newTileEdge(Direction.West);
-				unknownCoordinates.add(pointer.westOf());
-				Graph.put(pointer.westOf(), new TileVertex(pointer.westOf()));
-			}
-		};
-		if(!sensor.collisionSouth(pointer)) {
-			TileVertex tempSouth = Graph.get(pointer.southOf());
-			if(tempSouth != null) {
-				updateEdge(pointer, pointer.southOf());
-			}
-			else {
-				center.newTileEdge(Direction.South);
-				unknownCoordinates.add(pointer.southOf());
-				Graph.put(pointer.southOf(), new TileVertex(pointer.southOf()));
-			}
-		};	
+		//Needs to repeat twice, to double check the edges.
+		int i = 0;
+			while(i < 2) {
+			
+			//Grab the tile vertex in question
+			TileVertex center = Graph.get(pointer);
+			//Update the tile type sensor.
+			center.setTileType(sensor.terrainType(pointer));
+			//Since we're populating, we remove the pointer from unknownCoordinates.
+			unknownCoordinates.remove(pointer);
+			
+			
+			//IF no collision on northern side...
+			if(!sensor.collisionNorth(pointer)) {
+				//Check if anything on the NORTH side is in the map already
+				TileVertex tempNorth = Graph.get(pointer.northOf());
+				if(tempNorth != null) {
+					updateEdge(pointer, pointer.northOf());
+				}
+				//ELSE, initialize a new node.
+				else {
+					//Create a new unvisited edge
+					center.newTileEdge(Direction.North);
+					//Add the coordinate to list of available to reach, but unknown
+					unknownCoordinates.add(pointer.northOf());
+					Graph.put(pointer.northOf(), new TileVertex(pointer.northOf()));
+				}
+			};
+			if(!sensor.collisionEast(pointer)) {
+				TileVertex tempEast = Graph.get(pointer.eastOf());
+				if(tempEast != null) {
+					updateEdge(pointer, pointer.eastOf());
+				}
+				else {
+					center.newTileEdge(Direction.East);
+					unknownCoordinates.add(pointer.eastOf());
+					Graph.put(pointer.eastOf(), new TileVertex(pointer.eastOf()));
+				}
+			};
+			if(!sensor.collisionWest(pointer)) {
+				TileVertex tempWest = Graph.get(pointer.westOf());
+				if(tempWest != null) {
+					updateEdge(pointer, pointer.westOf());
+				}
+				else {
+					center.newTileEdge(Direction.West);
+					unknownCoordinates.add(pointer.westOf());
+					Graph.put(pointer.westOf(), new TileVertex(pointer.westOf()));
+				}
+			};
+			if(!sensor.collisionSouth(pointer)) {
+				TileVertex tempSouth = Graph.get(pointer.southOf());
+				if(tempSouth != null) {
+					updateEdge(pointer, pointer.southOf());
+				}
+				else {
+					center.newTileEdge(Direction.South);
+					unknownCoordinates.add(pointer.southOf());
+					Graph.put(pointer.southOf(), new TileVertex(pointer.southOf()));
+				}
+			};
+			i++;
+		}
 	}
 	
 	/*
@@ -116,7 +120,7 @@ public class TileGraph {
 		if(!existingCoord.isAdjacent(newCoord)) {
 			throw new IllegalArgumentException("Coordinates are not adjacent");
 			}
-		if(!unknownCoordinates.contains(newCoord)) {
+		if(!unknownCoordinates.contains(newCoord) && !Graph.containsKey(newCoord)) {
 			throw new IllegalArgumentException("No current path to specific coordinate");
 		}
 		
@@ -154,26 +158,32 @@ public class TileGraph {
 		//Calculating edge cost
 		double edgeCost = (existVert.getTileType().getCost() + newVert.getTileType().getCost())/2;
 		
-		existVert.setTileEdge(up, new TileEdge(edgeCost, newVert));
-		newVert.setTileEdge(down, new TileEdge(edgeCost,existVert));
-		
-		Graph.replace(existingCoord, existVert);
-		Graph.replace(newCoord, newVert);
+		existVert.setTileEdge(down, new TileEdge(edgeCost, newVert));
+		newVert.setTileEdge(up, new TileEdge(edgeCost,existVert));
+		Graph.put(existingCoord, existVert);
+		Graph.put(newCoord, newVert);
 	}
 	
 	public List<TileVertex> getNeighbors(Coordinates center){
 		return Graph.get(center).getAllNeighbors();
 	}
 	
+	public TileVertex getVertex(Coordinates k) {
+		return Graph.get(k);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder textGraph = new StringBuilder("");
-		//Iterator<Map.Entry<Coordinates, TileVertex>> itr = Graph.entrySet().iterator();
 		Graph.forEach((coord, vert)-> {
 			List<TileVertex> neighbs = vert.getAllNeighbors();
 			StringBuilder connections = new StringBuilder("");
-			neighbs.forEach((vertex)-> {connections.append(" -> " +vertex.getCoordinates().toString());});
-			textGraph.append(coord.toString()  + connections.toString() + "\n");
+			if(!neighbs.isEmpty() || neighbs != null ) {
+				//neighbs.forEach((vertex)-> {connections.append(" -> " +vertex.getCoordinates().toString());});
+				neighbs.forEach((vertex)-> {connections.append(" -> " +vertex.toString());});
+			}	
+			
+			textGraph.append("[" + coord.toString() + "]"  + connections.toString() + "\n");
 		});
 		return textGraph.toString();
 	}
