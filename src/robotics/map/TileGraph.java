@@ -13,16 +13,11 @@ import sensors.ISensorPackage;
 
 public class TileGraph {
 	/*
-	 * Goals: 
-	 * Create a adjacency list representation of tiles and vertices
-	 * Need to:
-	 * Create Edges.
-	 * Create Vertices.
-	 * Populate surrounding area.
-	 * 
-	 * From a starting position [a]:
-	 * 1. populateSurrounding
-	 * 2. move to the new tile [b]
+	 * USAGE:
+	 * How to populate the tile graph:
+	 *
+	 * 1. Everytime you move the robot one tile to a place that is UNKNOWN:
+	 * 			Call populateSurroundings
 	 * 3. populate surrounding on that tile
 	 * 4. Edges should be build automatically
 	 * 
@@ -45,7 +40,14 @@ public class TileGraph {
 		populateSurroundings(start);
 	}
 	
-	//TODO: Work on reducing code reuse.
+	/**
+	 * <b>Most important function that has to be consistently called while moving.</b>
+	 * 
+	 * Grows the graph by adding and updating all adjacent edges on a given pointer.
+	 * 
+	 * @param pointer
+	 * @throws OutOfFloorMapBoundsException
+	 */
 	public void populateSurroundings(Coordinates pointer) throws OutOfFloorMapBoundsException {
 		//Needs to repeat twice, to double check the edges.
 		int i = 0;
@@ -112,8 +114,10 @@ public class TileGraph {
 		}
 	}
 	
-	/*
-	 * addNewEdge updates the TileEdge values of both nodes, and updates costs for traversing them.
+	/**
+	 * Updates the TileEdge values of both nodes, and updates costs for traversing them.
+	 * @param existingCoord The current coordinate
+	 * @param newCoord		The coordinate you want to bind to
 	 */
 	public void updateEdge(Coordinates existingCoord, Coordinates newCoord) {
 		//Check if coordinates are next to each other.
@@ -163,11 +167,31 @@ public class TileGraph {
 		Graph.put(existingCoord, existVert);
 		Graph.put(newCoord, newVert);
 	}
-	
+	/**
+	 * 
+	 * @param center is the current coordinate
+	 * @return a list of all accessible adjacent vertices, known or unknown.
+	 */
 	public List<TileVertex> getNeighbors(Coordinates center){
 		return Graph.get(center).getAllNeighbors();
 	}
 	
+	/**
+	 * Used to get accessible, but currently unknown coordinates
+	 * @return List of Coordinates
+	 */
+	public List<Coordinates> getUnknownCoordinates(){
+		return this.unknownCoordinates;
+	}
+	
+	
+	public boolean hasUnknownCoordinates() {
+		return !unknownCoordinates.isEmpty();
+	}
+	
+	/**
+	 * Returns vertex at given coordinate
+	 */
 	public TileVertex getVertex(Coordinates k) {
 		return Graph.get(k);
 	}

@@ -2,6 +2,9 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import logging.IActivityLog;
@@ -33,13 +36,19 @@ class TESTTileGraph {
     	
     	TileGraph internalGraph = new TileGraph(robotStartCoord, sensors);
     	//Note, when we move, this is when we populate surroundings
-    	internalGraph.populateSurroundings(new Coordinates(1,1));
-    	internalGraph.populateSurroundings(new Coordinates(0,0));
+    	
+    	
+    	//THIS IS A CHEAT WAY TO FILL OUT THE GRAPH, DO NOT DO IN FINAL VERSION:
+    	Coordinates[] unvisited = internalGraph.getUnknownCoordinates().toArray(new Coordinates[0]);
+    	while(unvisited.length != 0) {
+    		for(int i = 0; i < unvisited.length; i++) {
+    			internalGraph.populateSurroundings(unvisited[i]);
+    		}
+    		unvisited = internalGraph.getUnknownCoordinates().toArray(new Coordinates[0]);
+    	}
+    	
     	System.out.print(internalGraph.toString());
     	
-    	TileVertex temp = internalGraph.getVertex(new Coordinates(1,0));
-    	//System.out.print("Neighbors" + internalGraph.getNeighbors(new Coordinates(1 ,0)));
-    	System.out.print(temp.getAllNeighbors());
 	}
 
 }
