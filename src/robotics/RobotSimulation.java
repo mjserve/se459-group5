@@ -2,9 +2,11 @@ package robotics;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;
+import robotics.map.InternalMap;
 import robotics.map.InternalPath;
 import sensors.ISensorPackage;
 
@@ -19,6 +21,7 @@ public class RobotSimulation {
 	Coordinates coord;
 	Direction dir = Direction.North;
 	List <Coordinates> stations;
+	InternalMap map;
 	
 	//Constructor
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
@@ -140,10 +143,85 @@ public class RobotSimulation {
 		
 	}
 	
-	private void moveOnPath(InternalPath path) {
+	//Clean at the current tile until battery reserve or dust capacity is critical. return code indicates how to proceed when returning
+	// 0 = Cleaning successful, 1 = low power , 2 = dust capacity reached
+	private int cleaningLoop(int allowance) {
+
+		while (sensors.dirtDetector(coord)) {
+			if (allowance <= 0) return 1;
+			else {
+				//clean 1 unit of dirt & check capacity
+				if (hardware.incrimentDust(1)) {
+					log.update("Dirt capacity reached - Powering Down");
+					return 2;
+				}
+				
+				log.update("1 unit of dust cleaned");
+				sensors.cleanTile(coord);
+			}
+		}
 		
+		return 0;
+	}
+	
+	//move along a provided path returns true if pathing is successful returns false if issue is encountered
+	private boolean moveOnPath(InternalPath path) throws Exception{
 		
+		//Validate Path
+		if (path.isEmpty()) 
+			throw new Exception("Provided Interal Path object contains no instructions");
+		if (path.peek().equals(coord))
+			throw new Exception("Path starts on the current tile");
+		if (!coord.adjacentTo(path.peek()))
+			throw new Exception("Path does not connect to current tile");
 		
+		//Move on path feeling for walls & dirt
+		ListIterator<Direction> instructions = path.history().listIterator();
+		
+		if(sensors.dirtDetector(coord)) {
+			//TODO: switch to cleaning mode until tile is clean then re assess power situation.
+		}
+		
+		while (instructions.hasNext()) {
+			Direction next = instructions.next();
+			
+			switch (next) {
+			case North:
+				if (sensors.collisionNorth(coord)) {
+					map.updateCollision(Direction.North, coord);
+					return false;
+				}
+				coord.y++;
+				break;
+			case East:
+				if (sensors.collisionEast(coord)) {
+					map.updateCollision(Direction.East, coord);
+					return false;
+				}
+				coord.x++;
+				break;
+			case South:
+				if (sensors.collisionSouth(coord)) {
+					map.updateCollision(Direction.South, coord);
+					return false;
+				}
+				coord.y--;
+				break;
+			case West:
+				if (sensors.collisionWest(coord)) {
+					map.updateCollision(Direction.West, coord);
+					return false;
+				}
+				coord.x--;
+				break;
+			default:
+				throw new IllegalArgumentException("Illegal argument given in instructions");		
+			}
+			
+		}
+		
+		//Successful execution
+		return true;
 	}
 	
 }
