@@ -11,13 +11,12 @@ import navitagion.Coordinates;
 public class Main {
 
     public static void main(String[] args){
-
         //Sample call of how using SensorSim will be used to implement ISensorPackage Interface
     	ISensorPackage sensors = new Sensor();
     	IActivityLog log = new MockActivityLog();
-    	
-    	SensorSim sensorSim = SensorSim.getInstance();
-    	sensorSim.loadFloorPlan();
+
+    	//Loads default map. Change map used here
+		SensorSim.getInstance().loadJSONFloorPlan("FloorMapA");
     	
     	RobotSimulation notRoomba = new RobotSimulation(log, sensors, new Coordinates(0,0));
     	
