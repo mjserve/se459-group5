@@ -83,13 +83,35 @@ public class TileVertex {
 		
 	}
 	
+
 	//Return a list of neighbors, following the edge
-	public List<TileVertex> getAllNeighbors() {
+	public List<Pair<Direction, TileVertex>> getAllNeighbors() {
+		List<Pair<Direction, TileVertex>> neighbors = new ArrayList<Pair<Direction, TileVertex>>();
+		if(N != null && N.getNextVertex() !=null) 
+			neighbors.add(new Pair<Direction, TileVertex>(Direction.North, N.getNextVertex()));
+		if(E != null && E.getNextVertex() !=null) 
+			//neighbors.add(E.getNextVertex());
+			neighbors.add(new Pair<Direction, TileVertex>(Direction.East, E.getNextVertex()));
+		if(S != null && S.getNextVertex() !=null) 
+			//neighbors.add(S.getNextVertex());
+			neighbors.add(new Pair<Direction, TileVertex>(Direction.South, S.getNextVertex()));
+		if(W != null && W.getNextVertex() !=null) 
+			//neighbors.add(W.getNextVertex());
+			neighbors.add(new Pair<Direction, TileVertex>(Direction.West, W.getNextVertex()));
+		return neighbors;		
+	}
+	
+	public List<TileVertex> getAllNeighborsVert() {
 		List<TileVertex> neighbors = new ArrayList<TileVertex>();
-		if(N != null && N.getNextVertex() !=null) neighbors.add(N.getNextVertex());
-		if(E != null && E.getNextVertex() !=null) neighbors.add(E.getNextVertex());
-		if(S != null && S.getNextVertex() !=null) neighbors.add(S.getNextVertex());
-		if(W != null && W.getNextVertex() !=null) neighbors.add(W.getNextVertex());
+		if(N != null && N.getNextVertex() !=null) 
+			neighbors.add(N.getNextVertex());
+		if(E != null && E.getNextVertex() !=null) 
+			neighbors.add(E.getNextVertex());
+		if(S != null && S.getNextVertex() !=null) 
+			neighbors.add(S.getNextVertex());
+		if(W != null && W.getNextVertex() !=null) 
+			neighbors.add(W.getNextVertex());
+			
 		return neighbors;		
 	}
 	

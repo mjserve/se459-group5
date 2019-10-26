@@ -25,11 +25,11 @@ class TESTTileGraph {
 	void floorBuildingTest() throws OutOfFloorMapBoundsException {
     	ISensorPackage sensors = new Sensor();
     	IActivityLog log = new MockActivityLog();
-    	
     	SensorSim sensorSim = SensorSim.getInstance();
-    	sensorSim.loadFloorPlan();
-    	assertTrue(sensorSim.checkForBarrier(new Coordinates(0,1), Direction.North));
+    	sensorSim.loadAltFloorPlan();
     	
+    	//Testing simple conditionals
+    	assertTrue(sensorSim.checkForBarrier(new Coordinates(0,1), Direction.North));
     	assertTrue(sensorSim.checkForBarrier(new Coordinates(2,1), Direction.North));
     	assertTrue(sensorSim.checkForBarrier(new Coordinates(2,1), Direction.East));
     	Coordinates robotStartCoord = new Coordinates(0,1);
@@ -47,7 +47,14 @@ class TESTTileGraph {
     		unvisited = internalGraph.getUnknownCoordinates().toArray(new Coordinates[0]);
     	}
     	
+    	//Testing for different tile version
+    	assertEquals(2.5, (internalGraph.getVertex(new Coordinates(2,0)).getTileEdge(Direction.East).getEdgeCost()));
+    	
     	System.out.print(internalGraph.toString());
+    	
+    	Coordinates start = new Coordinates(0,1);
+    	Coordinates end = new Coordinates(5,1);
+    	internalGraph.pathTo(start,end);
     	
 	}
 

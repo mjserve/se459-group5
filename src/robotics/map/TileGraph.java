@@ -1,10 +1,13 @@
 package robotics.map;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import navitagion.Coordinates;
 import navitagion.Direction;
@@ -160,10 +163,10 @@ public class TileGraph {
 			}
 		}
 		//Calculating edge cost
-		double edgeCost = (existVert.getTileType().getCost() + newVert.getTileType().getCost())/2;
+		double edgeCost = (existVert.getTileType().getCost() + newVert.getTileType().getCost())/2.0;
 		
-		existVert.setTileEdge(down, new TileEdge(edgeCost, newVert));
-		newVert.setTileEdge(up, new TileEdge(edgeCost,existVert));
+		existVert.setTileEdge(up, new TileEdge(edgeCost, newVert));
+		newVert.setTileEdge(down, new TileEdge(edgeCost,existVert));
 		Graph.put(existingCoord, existVert);
 		Graph.put(newCoord, newVert);
 	}
@@ -172,7 +175,7 @@ public class TileGraph {
 	 * @param center is the current coordinate
 	 * @return a list of all accessible adjacent vertices, known or unknown.
 	 */
-	public List<TileVertex> getNeighbors(Coordinates center){
+	public List<Pair<Direction,TileVertex>> getNeighbors(Coordinates center){
 		return Graph.get(center).getAllNeighbors();
 	}
 	
@@ -200,10 +203,9 @@ public class TileGraph {
 	public String toString() {
 		StringBuilder textGraph = new StringBuilder("");
 		Graph.forEach((coord, vert)-> {
-			List<TileVertex> neighbs = vert.getAllNeighbors();
+			List<TileVertex> neighbs = vert.getAllNeighborsVert();
 			StringBuilder connections = new StringBuilder("");
 			if(!neighbs.isEmpty() || neighbs != null ) {
-				//neighbs.forEach((vertex)-> {connections.append(" -> " +vertex.getCoordinates().toString());});
 				neighbs.forEach((vertex)-> {connections.append(" -> " +vertex.toString());});
 			}	
 			
@@ -211,6 +213,100 @@ public class TileGraph {
 		});
 		return textGraph.toString();
 	}
+
+	public InternalPath pathTo(Coordinates start, Coordinates end) {
+		
+		//TODO: Error Checking for invalid coordinates
+		if(!Graph.containsKey(start) || !Graph.containsKey(end)) {
+			throw new IllegalArgumentException("Invalid Coordinates");
+		}
+		
+		InternalPath curPath = new InternalPath();
+		//Holds Distances
+		Map<Coordinates, Double> dist = new HashMap<Coordinates, Double>();
+		//Holds Parents
+		Map<Coordinates, Coordinates> parents = new HashMap<Coordinates,Coordinates>();
+		//Holds already visited nodes
+		List<Coordinates> visited = new ArrayList<Coordinates>();
+		
+		//Holds queue of nodes to visit
+		Queue<Coordinates> queue = new PriorityQueue<Coordinates>(
+				new Comparator<Coordinates>() {
+					@Override
+					public int compare(Coordinates o1, Coordinates o2) {
+						return (int) (dist.get(o1) - dist.get(o2));
+					}
+				}
+				);
+
+		
+		//Initialize source, and all vertices
+		Graph.forEach((coord, vert)->{
+			dist.put(coord, Double.MAX_VALUE);
+		});
+		dist.put(start, (double) 0);
+		queue.add(start);
+		
+		
+		
+		while(!queue.isEmpty()) {
+			//Grabs minimum value.
+			Coordinates current = queue.poll();
+			if(current == null) break;
+			
+			//Mark node as visited
+			visited.add(current);
+			
+			//For each neighbor of queue that has not been visited
+			Iterator<Pair<Direction, TileVertex>> neighborsList  = this.getNeighbors(current).iterator();
+			while(neighborsList.hasNext()){
+				Pair<Direction, TileVertex> neighbor = neighborsList.next();
+				//Check if this has been processesed yet
+				if(!visited.contains(neighbor.getSecond().getCoordinates())){
+					//Calculate edge weights and update costs
+					
+					
+					//Get the direction of the neighbor
+					Direction dir = neighbor.getFirst();
+					TileVertex neighborVert = neighbor.getSecond();
+					//Update distance value by pulling edgcost from current to neighbor
+					double tempCost = dist.get(current) + Graph.get(current).getTileEdge(dir).getEdgeCost();
+					
+					if(tempCost < dist.get(neighborVert.getCoordinates())) {
+						dist.put(neighborVert.getCoordinates(), tempCost);
+						parents.put(neighborVert.getCoordinates(), current);
+						//If we find the path to the end:
+						if(neighborVert.getCoordinates().equals(end)) {
+							System.out.println("Found it bois");
+							Coordinates head = end;
+							curPath.push(head);
+							while(parents.get(head)!= null) {
+								System.out.println(head);
+								Coordinates item = parents.get(head);
+								curPath.push(item);
+								head = item;
+							}					
+						}
+					}
+					queue.add(neighborVert.getCoordinates());
+				};
+			}
+			
+		}
+		
+		
+		System.out.println(dist);
+		System.out.println(curPath);
+		/*
+		System.out.println(dist);
+		System.out.print(queue);
+		*/
+		
+		
+		return null;
+	}
+	
+
 	
 
 }

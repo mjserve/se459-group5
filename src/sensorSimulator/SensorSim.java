@@ -23,7 +23,7 @@ public class SensorSim {
     }
 
     //incorporate json file here
-    public void loadFloorPlan()
+    public void loadAltFloorPlan()
     {
         //NOTE: CHANGED ROW AND COLUMN
         int row = 6;
@@ -33,6 +33,27 @@ public class SensorSim {
         //Refactor for json input files later on
         ArrayList<Tile> listOfTiles = new ArrayList<Tile>();
         populateAltArray(listOfTiles);
+
+        loadedMap = new Tile[row][column];
+
+        int i = 0;
+        while (i < listOfTiles.size())
+        {
+            loadedMap[listOfTiles.get(i).getXCoordinate()][listOfTiles.get(i).getYCoordinate()] = listOfTiles.get(i);
+            i++;
+        }
+
+    }
+    
+    public void loadFloorPlan()
+    {
+        int row = 10;
+        int column = 10;
+
+        //Get all tiles of map in ArrayList
+        //Refactor for json input files later on
+        ArrayList<Tile> listOfTiles = new ArrayList<Tile>();
+        populateArray(listOfTiles);
 
         loadedMap = new Tile[row][column];
 
