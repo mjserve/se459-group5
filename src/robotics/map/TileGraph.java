@@ -277,11 +277,9 @@ public class TileGraph {
 						parents.put(neighborVert.getCoordinates(), current);
 						//If we find the path to the end:
 						if(neighborVert.getCoordinates().equals(end)) {
-							System.out.println("Found it bois");
 							Coordinates head = end;
 							curPath.push(head);
 							while(parents.get(head)!= null) {
-								System.out.println(head);
 								Coordinates item = parents.get(head);
 								curPath.push(item);
 								head = item;
@@ -293,17 +291,9 @@ public class TileGraph {
 			}
 			
 		}
-		
-		
-		System.out.println(dist);
-		System.out.println(curPath);
-		/*
-		System.out.println(dist);
-		System.out.print(queue);
-		*/
-		
-		
-		return null;
+
+		curPath.setTotalCost(dist.get(end));
+		return curPath;
 	}
 	
 

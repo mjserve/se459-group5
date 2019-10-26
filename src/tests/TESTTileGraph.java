@@ -12,6 +12,7 @@ import navitagion.Coordinates;
 import navitagion.Direction;
 import robotics.RobotSimulation;
 import robotics.Mocks.MockActivityLog;
+import robotics.map.InternalPath;
 import robotics.map.TileGraph;
 import robotics.map.TileVertex;
 import sensorSimulator.OutOfFloorMapBoundsException;
@@ -50,11 +51,13 @@ class TESTTileGraph {
     	//Testing for different tile version
     	assertEquals(2.5, (internalGraph.getVertex(new Coordinates(2,0)).getTileEdge(Direction.East).getEdgeCost()));
     	
-    	System.out.print(internalGraph.toString());
+    	System.out.print("Internal Graph Representation \n" + internalGraph.toString());
     	
     	Coordinates start = new Coordinates(0,1);
     	Coordinates end = new Coordinates(5,1);
-    	internalGraph.pathTo(start,end);
+    	InternalPath ourPath = internalGraph.pathTo(start,end);
+    	System.out.println("Total Cost: " + ourPath.getTotalCost());
+    	System.out.print(ourPath.dirHistory());
     	
 	}
 
