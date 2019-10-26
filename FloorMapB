@@ -1,0 +1,17 @@
+  [
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "0", "yPos" :  "0", "northSide" :  "PASSABLE", "southSide" :  "WALL", "eastSide" :  "PASSABLE", "westSide" :  "WALL"},
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "1", "yPos" :  "0", "northSide" :  "PASSABLE", "southSide" :  "WALL", "eastSide" :  "PASSABLE", "westSide" :  "PASSABLE"},
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "2", "yPos" :  "0", "northSide" :  "PASSABLE", "southSide" :  "WALL", "eastSide" :  "PASSABLE", "westSide" :  "PASSABLE"},
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "3", "yPos" :  "0", "northSide" :  "PASSABLE", "southSide" :  "WALL", "eastSide" :  "PASSABLE", "westSide" :  "PASSABLE"},
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "4", "yPos" :  "0", "northSide" :  "PASSABLE", "southSide" :  "WALL", "eastSide" :  "PASSABLE", "westSide" :  "PASSABLE"},
+	 {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "5", "yPos" :  "0", "northSide" :  "PASSABLE", "southSide" :  "WALL", "eastSide" :  "WALL", "westSide" :  "PASSABLE"},
+	 
+	 
+	 
+	 {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "0", "yPos" :  "1", "northSide" :  "WALL", "southSide" :  "PASSABLE", "eastSide" :  "PASSABLE", "westSide" :  "WALL"},
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "1", "yPos" :  "1", "northSide" :  "WALL", "southSide" :  "PASSABLE", "eastSide" :  "PASSABLE", "westSide" :  "PASSABLE"},
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "2", "yPos" :  "1", "northSide" :  "WALL", "southSide" :  "PASSABLE", "eastSide" :  "WALL", "westSide" :  "PASSABLE"},
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "3", "yPos" :  "1", "northSide" :  "WALL", "southSide" :  "PASSABLE", "eastSide" :  "PASSABLE", "westSide" :  "WALL"},
+     {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "4", "yPos" :  "1", "northSide" :  "WALL", "southSide" :  "PASSABLE", "eastSide" :  "PASSABLE", "westSide" :  "PASSABLE"},
+	 {"dirtVal" : "0", "TileType":  "BARE", "xPos" :  "5", "yPos" :  "1", "northSide" :  "WALL", "southSide" :  "PASSABLE", "eastSide" :  "PASSABLE", "westSide" :  "PASSABLE"},
+  ]

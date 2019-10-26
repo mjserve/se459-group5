@@ -1,9 +1,16 @@
 package sensorSimulator;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import navitagion.Coordinates;
 import navitagion.Direction;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 public class SensorSim {
@@ -20,6 +27,76 @@ public class SensorSim {
             instance = new SensorSim();
         }
         return instance;
+    }
+
+    public void loadJSONFloorPlan(String fileName)
+    {
+        ArrayList<Tile> tileList11 = new ArrayList<Tile>();
+        JSONParser parser = new JSONParser();
+
+       // JSONObject oo = new JSONObject("testJson.json");
+        try
+        {
+            Object obj = parser.parse(new FileReader(fileName));
+            JSONArray jArr = (JSONArray) obj;
+
+            int max_x = 0;
+            int max_y = 0;
+            int dirt_val;
+            TileType tType;
+            int xPos;
+            int yPos;
+            TileSide northSide;
+            TileSide southSide;
+            TileSide eastSide;
+            TileSide westSide;
+
+            for (int i=0; i < jArr.size(); i++)
+            {
+                JSONObject tmpObj = (JSONObject) jArr.get(i);
+                String dirt = (String) tmpObj.get("dirtVal");
+                String typeOfTile = (String) tmpObj.get("TileType");
+                String xPosition = (String) tmpObj.get("xPos");
+                String yPosition = (String) tmpObj.get("yPos");
+                String nSide = (String) tmpObj.get("northSide");
+                String sSide = (String) tmpObj.get("southSide");
+                String eSide = (String) tmpObj.get("eastSide");
+                String wSide = (String) tmpObj.get("westSide");
+
+                dirt_val = Integer.parseInt(dirt);
+                tType = resolveTileType(typeOfTile);
+                xPos = Integer.parseInt(xPosition);
+                yPos = Integer.parseInt(yPosition);
+                northSide = resolveTileSide(nSide);
+                southSide = resolveTileSide(sSide);
+                eastSide = resolveTileSide(eSide);
+                westSide = resolveTileSide(wSide);
+
+                Tile tmp = new Tile(dirt_val, tType, xPos, yPos, northSide, southSide, eastSide, westSide);
+                tileList11.add(tmp);
+
+                if (xPos > max_x)
+                {
+                    max_x = xPos;
+                }
+                if (yPos > max_y)
+                {
+                    max_y = yPos;
+                }
+
+            }
+
+            loadedMap = new Tile[max_x + 1][max_y + 1];
+
+            for (int j=0; j < tileList11.size(); j++)
+            {
+                loadedMap[tileList11.get(j).getXCoordinate()][tileList11.get(j).getYCoordinate()] = tileList11.get(j);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     //incorporate json file here
@@ -43,7 +120,6 @@ public class SensorSim {
             loadedMap[listOfTiles.get(i).getXCoordinate()][listOfTiles.get(i).getYCoordinate()] = listOfTiles.get(i);
             i++;
         }
-
     }
 
     //Robot can ask if tile is valid at (x, y)
@@ -85,6 +161,46 @@ public class SensorSim {
             return loadedMap[x][y].getTypeTile();
 
         }
+    }
+
+    private TileType resolveTileType(String type)
+    {
+        if (type.equals("OBSTACLE"))
+        {
+            return TileType.OBSTACLE;
+        }
+        if (type.equals("HIGH"))
+        {
+            return TileType.HIGH;
+        }
+        if (type.equals("LOW"))
+        {
+            return TileType.LOW;
+        }
+        if (type.equals("BARE"))
+        {
+            return TileType.BARE;
+        }
+
+        return null;
+    }
+
+    private TileSide resolveTileSide(String side)
+    {
+        if (side.equals("PASSABLE"))
+        {
+            return TileSide.PASSABLE;
+        }
+        if (side.equals("WALL"))
+        {
+            return TileSide.WALL;
+        }
+        if (side.equals("DOOR"))
+        {
+            return TileSide.DOOR;
+        }
+
+        return null;
     }
 
     //Creates a 10x10 default map
