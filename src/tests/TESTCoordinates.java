@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import navitagion.Coordinates;
+import navitagion.Direction;
 
 public class TESTCoordinates {
 
@@ -48,6 +49,26 @@ public class TESTCoordinates {
 		assertEquals(origin.southOf(), new Coordinates(0,-1));
 		assertEquals(origin.westOf(), new Coordinates(-1,0));
 		assertEquals(origin.northOf(), new Coordinates(0,1));
+	}
+	
+	@Test
+	public void testGetSide() {
+		Coordinates origin = new Coordinates(0,0);
+		Coordinates east = new Coordinates(1,0);
+		Coordinates wast = new Coordinates(-1,0);
+		Coordinates north = new Coordinates(0,1);
+		Coordinates south = new Coordinates(0,-1);
+		
+		assertEquals(Direction.East, origin.getSide(east));
+		assertEquals(Direction.West, east.getSide(origin));
+		assertEquals(Direction.North, origin.getSide(north));
+		assertEquals(Direction.West, origin.getSide(wast));
+		assertEquals(Direction.South, origin.getSide(south));
+		
+		assertTrue(origin.isAdjacent(east));
+		assertTrue(origin.isAdjacent(wast));
+		assertTrue(origin.isAdjacent(north));
+		assertTrue(origin.isAdjacent(south));
 	}
 
 }
