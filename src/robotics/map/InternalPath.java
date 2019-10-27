@@ -24,6 +24,14 @@ public class InternalPath {
 		this.totalCost = cost;
 	}
 	
+	public boolean isEmpty() {
+		return this.path.isEmpty();
+	}
+	
+	public Coordinates peek() {
+		return this.path.peek();
+	}
+	
 	/**
 	 * Returns to total energy cost to traverse from point a to point b
 	 * <b> WITHOUT calculating vacuum costs </b>

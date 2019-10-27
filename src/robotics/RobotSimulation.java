@@ -21,7 +21,6 @@ public class RobotSimulation {
 	protected Coordinates coord;
 	protected Direction dir = Direction.North;
 	protected List <Coordinates> stations;
-	protected InternalMap map;
 	
 	//Constructor
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
