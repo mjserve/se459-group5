@@ -15,13 +15,13 @@ public class RobotSimulation {
 	final static int DUSTCAP = 150;
 	final static int POWERCAP = 250;
 	
-	IActivityLog log;
-	ISensorPackage sensors;
-	SweeperHardware hardware;
-	Coordinates coord;
-	Direction dir = Direction.North;
-	List <Coordinates> stations;
-	InternalMap map;
+	protected IActivityLog log;
+	protected ISensorPackage sensors;
+	protected SweeperHardware hardware;
+	protected Coordinates coord;
+	protected Direction dir = Direction.North;
+	protected List <Coordinates> stations;
+	protected InternalMap map;
 	
 	//Constructor
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
@@ -145,7 +145,7 @@ public class RobotSimulation {
 	
 	//Clean at the current tile until battery reserve or dust capacity is critical. return code indicates how to proceed when returning
 	// 0 = Cleaning successful, 1 = low power , 2 = dust capacity reached
-	private int cleaningLoop(int allowance) {
+	protected int cleaningLoop(int allowance) {
 
 		while (sensors.dirtDetector(coord)) {
 			if (allowance <= 0) return 1;
@@ -165,7 +165,7 @@ public class RobotSimulation {
 	}
 	
 	//move along a provided path returns true if pathing is successful returns false if issue is encountered
-	private boolean moveOnPath(InternalPath path) throws Exception{
+	protected boolean moveOnPath(InternalPath path) throws Exception{
 		
 		//Validate Path
 		if (path.isEmpty()) 
