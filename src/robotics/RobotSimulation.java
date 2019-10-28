@@ -6,7 +6,6 @@ import java.util.ListIterator;
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;
-import robotics.map.InternalMap;
 import robotics.map.InternalPath;
 import sensors.ISensorPackage;
 
