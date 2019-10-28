@@ -174,7 +174,7 @@ public class RobotSimulation {
 			throw new Exception("Path does not connect to current tile");
 		
 		//Move on path feeling for walls & dirt
-		ListIterator<Direction> instructions = path.history().listIterator();
+		ListIterator<Direction> instructions = path.dirHistory().listIterator();
 		
 		if(sensors.dirtDetector(coord)) {
 			//TODO: switch to cleaning mode until tile is clean then re assess power situation.
@@ -186,28 +186,28 @@ public class RobotSimulation {
 			switch (next) {
 			case North:
 				if (sensors.collisionNorth(coord)) {
-					map.updateCollision(Direction.North, coord);
+					//map.updateCollision(Direction.North, coord);
 					return false;
 				}
 				coord.y++;
 				break;
 			case East:
 				if (sensors.collisionEast(coord)) {
-					map.updateCollision(Direction.East, coord);
+					//map.updateCollision(Direction.East, coord);
 					return false;
 				}
 				coord.x++;
 				break;
 			case South:
 				if (sensors.collisionSouth(coord)) {
-					map.updateCollision(Direction.South, coord);
+					//map.updateCollision(Direction.South, coord);
 					return false;
 				}
 				coord.y--;
 				break;
 			case West:
 				if (sensors.collisionWest(coord)) {
-					map.updateCollision(Direction.West, coord);
+					//map.updateCollision(Direction.West, coord);
 					return false;
 				}
 				coord.x--;
