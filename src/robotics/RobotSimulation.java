@@ -14,6 +14,8 @@ public class RobotSimulation {
 	final static int DUSTCAP = 150;
 	final static int POWERCAP = 250;
 	
+	private RobotState state = RobotState.Cleaning;
+	
 	protected IActivityLog log;
 	protected ISensorPackage sensors;
 	protected SweeperHardware hardware;
@@ -50,6 +52,33 @@ public class RobotSimulation {
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
 	}
 
+	public int stateRun() {
+	
+		while (state != RobotState.Exit) {
+			switch (state) {
+			case Startup:
+				break;
+			case Aquiring_Target:
+				break;
+			case Charging:
+				break;
+			case Cleaning:
+				break;
+			case Moving:
+				break;
+			case Returning_Home:
+				break;
+			case Returning_to_Charge:
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected State reached");
+			
+			}
+		}
+		
+		return 0;
+	}
+	
 
 	public int run() {
 		
