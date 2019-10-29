@@ -11,7 +11,7 @@ import sensors.ISensorPackage;
 public class TESTMoveOnPath {
 
 	@Test
-	public void testPathingX(){
+	public void testPathing(){
 		IActivityLog log = new MockActivityLog();
 		ISensorPackage sensors = new MockSensors();
 		Coordinates start = new Coordinates(0, 0);
