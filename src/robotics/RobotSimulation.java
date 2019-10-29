@@ -168,10 +168,8 @@ public class RobotSimulation {
 		//Validate Path
 		if (path.isEmpty()) 
 			throw new Exception("Provided Interal Path object contains no instructions");
-		if (path.peek().equals(coord))
-			throw new Exception("Path starts on the current tile");
-		if (!coord.adjacentTo(path.peek()))
-			throw new Exception("Path does not connect to current tile");
+		if (!path.peek().equals(coord))
+			throw new Exception("Path does not start on the current tile");
 		
 		//Move on path feeling for walls & dirt
 		ListIterator<Direction> instructions = path.dirHistory().listIterator();

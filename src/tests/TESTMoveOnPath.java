@@ -5,26 +5,46 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 import logging.IActivityLog;
 import navitagion.Coordinates;
+import navitagion.Direction;
 import robotics.map.InternalPath;
+import robotics.map.TileGraph;
+import sensorSimulator.OutOfFloorMapBoundsException;
+import sensorSimulator.SensorSim;
 import sensors.ISensorPackage;
+import sensors.Sensor;
 
 public class TESTMoveOnPath {
 
 	@Test
-	public void testPathing(){
-		IActivityLog log = new MockActivityLog();
-		ISensorPackage sensors = new MockSensors();
-		Coordinates start = new Coordinates(0, 0);
-		
-		MockRobotSimulation robot = new MockRobotSimulation(log, sensors, start);
-		
-		InternalPath path = new InternalPath();
-		
-		path.push(new Coordinates(5,0));
-		path.push(new Coordinates(4,0));
-		path.push(new Coordinates(3,0));
-		path.push(new Coordinates(2,0));
-		path.push(new Coordinates(1,0));
+	public void testPathing() throws OutOfFloorMapBoundsException{
+    	ISensorPackage sensors = new Sensor();
+    	IActivityLog log = new MockActivityLog();
+    	
+		SensorSim sensorSim = SensorSim.getInstance();
+    	sensorSim.loadAltFloorPlan();
+    	
+    	Coordinates robotStartCoord = new Coordinates(0,1);
+    	
+    	MockRobotSimulation robot = new MockRobotSimulation(log, sensors, robotStartCoord);
+    	
+    	
+    	TileGraph internalGraph = new TileGraph(robotStartCoord, sensors);
+    	//Note, when we move, this is when we populate surroundings
+    	
+    	
+    	//THIS IS A CHEAT WAY TO FILL OUT THE GRAPH, DO NOT DO IN FINAL VERSION:
+    	Coordinates[] unvisited = internalGraph.getUnknownCoordinates().toArray(new Coordinates[0]);
+    	while(unvisited.length != 0) {
+    		for(int i = 0; i < unvisited.length; i++) {
+    			internalGraph.populateSurroundings(unvisited[i]);
+    		}
+    		unvisited = internalGraph.getUnknownCoordinates().toArray(new Coordinates[0]);
+    	}
+    	
+
+    	Coordinates end = new Coordinates(5,1);
+    	
+    	InternalPath path = internalGraph.pathTo(robotStartCoord,end);
 		
 		try {
 			robot.runPath(path);
@@ -32,7 +52,7 @@ public class TESTMoveOnPath {
 			fail("Pathing Failed on Exception: " + e.toString());
 		}
 		
-		assertTrue(new Coordinates(5,0).equals(robot.position()));
+		assertTrue(end.equals(robot.position()));
 	}
 
 	
