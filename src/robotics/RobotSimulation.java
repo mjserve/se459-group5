@@ -52,6 +52,11 @@ public class RobotSimulation {
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
 	}
 
+	
+	/**
+	 * New behavior simulator that utilizing changing states to manage decision flow
+	 * @return
+	 */
 	public int stateRun() {
 	
 		while (state != RobotState.Exit) {
@@ -86,6 +91,12 @@ public class RobotSimulation {
 		return 0;
 	}
 
+	
+	/**
+	 * Old Behavior pattern that changes directions only when collsiions are detected. 
+	 * No pathfinding enabled
+	 * @return return code
+	 */
 	public int run() {
 		
 		
@@ -177,30 +188,9 @@ public class RobotSimulation {
 	}
 	
 	/**
-	 * Charge until battery is full
-	 * @return RobotState - Aquiring_Target
-	 */
-	protected RobotState charging() {
-		return null;
-	}
-	
-	protected RobotState returnToCharge() {
-		return null;
-	}
-	
-	/**
-	 * Clean at the current tile until battery reserve or dust capacity is critical. return code indicates how to proceed when returning
-	 * @param allowance
-	 * @return RobotState
-	 */
-	protected RobotState cleaning() {
-		return null;
-	}
-	
-	/**
 	 * move along a provided path
 	 * @param path
-	 * @return RobotState
+	 * @return true - successfully walked path, false - issue encountered walking path
 	 * @throws Exception"Invalid inputs"
 	 */
 	protected boolean moveOnPath(InternalPath path) throws Exception{
@@ -258,6 +248,27 @@ public class RobotSimulation {
 		
 		//Successful execution
 		return true;
+	}
+	
+	/**
+	 * Charge until battery is full
+	 * @return RobotState - Aquiring_Target
+	 */
+	protected RobotState charging() {
+		return null;
+	}
+	
+	protected RobotState returnToCharge() {
+		return null;
+	}
+	
+	/**
+	 * Clean at the current tile until battery reserve or dust capacity is critical. return code indicates how to proceed when returning
+	 * @param allowance
+	 * @return RobotState
+	 */
+	protected RobotState cleaning() {
+		return null;
 	}
 	
 	/**
