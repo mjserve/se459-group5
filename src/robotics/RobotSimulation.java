@@ -14,6 +14,8 @@ public class RobotSimulation {
 	final static int DUSTCAP = 150;
 	final static int POWERCAP = 250;
 	
+	private RobotState state = RobotState.Cleaning;
+	
 	protected IActivityLog log;
 	protected ISensorPackage sensors;
 	protected SweeperHardware hardware;
@@ -50,7 +52,51 @@ public class RobotSimulation {
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
 	}
 
+	
+	/**
+	 * New behavior simulator that utilizing changing states to manage decision flow
+	 * @return
+	 */
+	public int stateRun() {
+	
+		while (state != RobotState.Exit) {
+			switch (state) {
+			case Startup:
+				state = startUp();
+				break;
+			case Aquiring_Target:
+				state = aquiringTarget();
+				break;
+			case Charging:
+				state = charging();
+				break;
+			case Cleaning:
+				state = cleaning();
+				break;
+			case Moving:
+				//TODO: figure out how to move on path
+				break;
+			case Returning_Home:
+				state = returnHome();
+				break;
+			case Returning_to_Charge:
+				state = returnToCharge();
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected State reached");
+			
+			}
+		}
+		
+		return 0;
+	}
 
+	
+	/**
+	 * Old Behavior pattern that changes directions only when collsiions are detected. 
+	 * No pathfinding enabled
+	 * @return return code
+	 */
 	public int run() {
 		
 		
@@ -141,28 +187,12 @@ public class RobotSimulation {
 		
 	}
 	
-	//Clean at the current tile until battery reserve or dust capacity is critical. return code indicates how to proceed when returning
-	// 0 = Cleaning successful, 1 = low power , 2 = dust capacity reached
-	protected int cleaningLoop(int allowance) {
-
-		while (sensors.dirtDetector(coord)) {
-			if (allowance <= 0) return 1;
-			else {
-				//clean 1 unit of dirt & check capacity
-				if (hardware.incrimentDust(1)) {
-					log.update("Dirt capacity reached - Powering Down");
-					return 2;
-				}
-				
-				log.update("1 unit of dust cleaned");
-				sensors.cleanTile(coord);
-			}
-		}
-		
-		return 0;
-	}
-	
-	//move along a provided path returns true if pathing is successful returns false if issue is encountered
+	/**
+	 * move along a provided path
+	 * @param path
+	 * @return true - successfully walked path, false - issue encountered walking path
+	 * @throws Exception"Invalid inputs"
+	 */
 	protected boolean moveOnPath(InternalPath path) throws Exception{
 		
 		//Validate Path
@@ -219,5 +249,53 @@ public class RobotSimulation {
 		//Successful execution
 		return true;
 	}
+	
+	/**
+	 * Charge until battery is full
+	 * @return RobotState - Aquiring_Target
+	 */
+	protected RobotState charging() {
+		return null;
+	}
+	
+	protected RobotState returnToCharge() {
+		return null;
+	}
+	
+	/**
+	 * Clean at the current tile until battery reserve or dust capacity is critical. return code indicates how to proceed when returning
+	 * @param allowance
+	 * @return RobotState
+	 */
+	protected RobotState cleaning() {
+		return null;
+	}
+	
+	/**
+	 * Acquire a new candidate tile & determine if tile is reachable
+	 * @return
+	 */
+	protected RobotState aquiringTarget(){
+		
+		return null;
+	}
+	
+	/**
+	 * Return to the nearest charging station and power down
+	 * @return
+	 */
+	protected RobotState returnHome() {
+		return null;
+	}
+	
+	/**
+	 * Startup sequence
+	 * @return
+	 */
+	protected RobotState startUp() {
+		return null;
+	}
+	
+	
 	
 }
