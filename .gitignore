@@ -3,4 +3,5 @@
 .classpath
 .settings/org.eclipse.jdt.core.prefs
 .settings/org.eclipse.jdt.core.prefs
-.classpath
+.idea/
+*.iml
