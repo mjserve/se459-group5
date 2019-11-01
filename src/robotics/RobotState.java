@@ -8,5 +8,6 @@ public enum RobotState {
 	Aquiring_Target,
 	Returning_Home,
 	Startup,
+	Explore,
 	Exit
 }

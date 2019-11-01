@@ -76,6 +76,7 @@ public class RobotSimulation {
 			case Moving:
 				//TODO: figure out how to move on path
 				break;
+				//
 			case Returning_Home:
 				state = returnHome();
 				break;
