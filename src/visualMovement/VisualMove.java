@@ -3,7 +3,6 @@ package visualMovement;
 import activityLog.ActivityLog;
 import sensorSimulator.SensorSim;
 
-
 import java.util.Arrays;
 
 public class VisualMove {
