@@ -84,7 +84,7 @@ public class VisualMove {
       }
 
       printFloor(copy);
-      Thread.sleep(1000);
+      Thread.sleep(1500);
 
       //7,8.wall
     }
