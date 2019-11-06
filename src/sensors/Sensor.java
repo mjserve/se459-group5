@@ -4,6 +4,7 @@ import navitagion.Coordinates;
 import navitagion.Direction;
 import sensorSimulator.OutOfFloorMapBoundsException;
 import sensorSimulator.SensorSim;
+import sensorSimulator.Tile;
 import sensorSimulator.TileType;
 
 import static sensorSimulator.TileType.OBSTACLE;
@@ -12,6 +13,7 @@ public class Sensor implements ISensorPackage {
     private int x, y;
     private Coordinates temp = new Coordinates(x, y);
     private TileType currentTile;
+    private Tile tile;
 
 
     @Override
@@ -36,7 +38,12 @@ public class Sensor implements ISensorPackage {
 
     @Override
     public boolean dirtDetector(Coordinates coord) {
-        return false;
+        tile = SensorSim.getInstance().getCurrentTile(coord);
+        if (tile.getDirtVal() != 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
@@ -51,6 +58,13 @@ public class Sensor implements ISensorPackage {
 
     @Override
     public void cleanTile(Coordinates coord) {
-
+        /*
+        tile = SensorSim.getInstance().getCurrentTile(coord);
+        int currentDirtVal = tile.getDirtVal();
+        int newDirtVal;
+        if(currentDirtVal != 0){
+            currentDirtVal--;
+        }
+        */
     }
 }

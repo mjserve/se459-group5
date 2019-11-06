@@ -2,6 +2,7 @@ package sensors;
 
 import navitagion.Coordinates;
 import sensorSimulator.OutOfFloorMapBoundsException;
+import sensorSimulator.Tile;
 import sensorSimulator.TileType;
 
 public interface ISensorPackage {
@@ -29,5 +30,5 @@ public interface ISensorPackage {
 	
 	//Inform the sensor's Map that the current tile has been cleaned for 1 unit of dirt
 	void cleanTile(Coordinates coord);
-	
+
 }
