@@ -247,13 +247,18 @@ public class RobotSimulation {
 	}
 	
 	/**
-	 * Charge until battery is full
-	 * @return RobotState - Aquiring_Target
+	 * Move to the next tile while cleaning
+	 * @return RobotState - CleanDestination, AquireTarget, ReturnHome, 
 	 */
 	protected RobotState moveToTile() {
 		return null;
 	}
 	
+	
+	/**
+	 * Return to a charger and charge to full
+	 * @return AquireTarget
+	 */
 	protected RobotState returnToCharge() {
 		return null;
 	}
@@ -261,7 +266,7 @@ public class RobotSimulation {
 	/**
 	 * Clean at the current tile until battery reserve or dust capacity is critical. return code indicates how to proceed when returning
 	 * @param allowance
-	 * @return RobotState
+	 * @return RobotState - AquireTarget, ReturnToCharger, ReturnHome
 	 */
 	protected RobotState cleanDestination() {
 		return null;
@@ -269,7 +274,7 @@ public class RobotSimulation {
 	
 	/**
 	 * Acquire a new candidate tile & determine if tile is reachable
-	 * @return
+	 * @return RobotState - ReturnToCharger, MoveToTile, ReturnHome
 	 */
 	protected RobotState aquiringTarget(){
 		
@@ -278,15 +283,15 @@ public class RobotSimulation {
 	
 	/**
 	 * Return to the nearest charging station and power down
-	 * @return
+	 * @return RobotState - Exit
 	 */
 	protected RobotState returnHome() {
 		return null;
 	}
 	
 	/**
-	 * Startup sequence
-	 * @return
+	 * Startup sequence for robot. Does hardware checks and populates home tile
+	 * @return RobotSTate - Exit, AquireTarget
 	 */
 	protected RobotState startUp() {
 		return null;
