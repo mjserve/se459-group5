@@ -62,22 +62,25 @@ public class RobotSimulation {
 		while (state != RobotState.Exit) {
 			switch (state) {
 			case AquireTarget:
+				state = aquiringTarget();
 				break;
 			case CleanDestination:
-				break;
-			case Exit:
+				state = cleanDestination();
 				break;
 			case MoveToTile:
+				state = moveToTile();
 				break;
 			case ReturnHome:
+				state = returnHome();
 				break;
 			case ReturnToCharger:
+				state = returnToCharge();
 				break;
 			case Startup:
+				state = startUp();
 				break;
 			default:
-				break;
-			
+				throw new IllegalArgumentException("Unknown State Reached");
 			}
 		}
 		
@@ -247,7 +250,7 @@ public class RobotSimulation {
 	 * Charge until battery is full
 	 * @return RobotState - Aquiring_Target
 	 */
-	protected RobotState charging() {
+	protected RobotState moveToTile() {
 		return null;
 	}
 	
@@ -260,7 +263,7 @@ public class RobotSimulation {
 	 * @param allowance
 	 * @return RobotState
 	 */
-	protected RobotState cleaning() {
+	protected RobotState cleanDestination() {
 		return null;
 	}
 	
