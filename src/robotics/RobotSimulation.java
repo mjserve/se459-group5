@@ -14,7 +14,7 @@ public class RobotSimulation {
 	final static int DUSTCAP = 150;
 	final static int POWERCAP = 250;
 	
-	private RobotState state = RobotState.Cleaning;
+	private RobotState state = RobotState.Startup;
 	
 	protected IActivityLog log;
 	protected ISensorPackage sensors;
@@ -61,30 +61,22 @@ public class RobotSimulation {
 	
 		while (state != RobotState.Exit) {
 			switch (state) {
+			case AquireTarget:
+				break;
+			case CleanDestination:
+				break;
+			case Exit:
+				break;
+			case MoveToTile:
+				break;
+			case ReturnHome:
+				break;
+			case ReturnToCharger:
+				break;
 			case Startup:
-				state = startUp();
-				break;
-			case Aquiring_Target:
-				state = aquiringTarget();
-				break;
-			case Charging:
-				state = charging();
-				break;
-			case Cleaning:
-				state = cleaning();
-				break;
-			case Moving:
-				//TODO: figure out how to move on path
-				break;
-				//
-			case Returning_Home:
-				state = returnHome();
-				break;
-			case Returning_to_Charge:
-				state = returnToCharge();
 				break;
 			default:
-				throw new IllegalArgumentException("Unexpected State reached");
+				break;
 			
 			}
 		}
@@ -95,18 +87,18 @@ public class RobotSimulation {
 	
 	/**
 	 * Old Behavior pattern that changes directions only when collsiions are detected. 
+	 * Will be obsolete once stateRun()
 	 * No pathfinding enabled
 	 * @return return code
 	 */
 	public int run() {
-		
 		
 		while (true) {
 			StringBuilder message;
 			
 			//TODO: detect current batter level & handle when critical
 
-			if (hardware.batteryCritical(3)) {
+			if (hardware.batteryCritical(3)) {	
 				message = new StringBuilder("Battery levels critical (" + hardware.getBattery()+ ") - Shutting Down");
 				log.update(message.toString());
 				return 1;
