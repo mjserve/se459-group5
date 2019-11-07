@@ -20,7 +20,7 @@ public class Main {
     	
     	RobotSimulation notRoomba = new RobotSimulation(log, sensors, new Coordinates(0,0));
     	
-    	notRoomba.run();
+    	notRoomba.stateRun();
     	
     	/*
 

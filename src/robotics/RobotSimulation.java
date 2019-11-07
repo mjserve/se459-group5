@@ -1,5 +1,7 @@
 package robotics;
 
+import java.awt.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -7,6 +9,8 @@ import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;
 import robotics.map.InternalPath;
+import robotics.map.TileGraph;
+import sensorSimulator.OutOfFloorMapBoundsException;
 import sensors.ISensorPackage;
 
 public class RobotSimulation {
@@ -15,14 +19,18 @@ public class RobotSimulation {
 	final static int POWERCAP = 250;
 	
 	private RobotState state = RobotState.Startup;
-	
+
 	protected IActivityLog log;
 	protected ISensorPackage sensors;
 	protected SweeperHardware hardware;
 	protected Coordinates coord;
+	protected Coordinates nextCoord;
 	protected Direction dir = Direction.North;
+	protected Direction prevDir;
 	protected List <Coordinates> stations;
-	
+	protected TileGraph internalGraph;
+	protected HashMap<Direction, Coordinates> adjacentTiles;
+
 	//Constructor
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
 		super();
@@ -35,7 +43,7 @@ public class RobotSimulation {
 		for (int i = 0; i < stations.length; i++) {
 			this.stations.add(stations[i]);
 		}
-		
+
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
 	}
 	
@@ -50,6 +58,17 @@ public class RobotSimulation {
 		this.stations.add(start);
 		
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
+
+		try
+		{
+			this.internalGraph = new TileGraph(coord, sensors);
+		}
+		catch(OutOfFloorMapBoundsException e)
+		{
+			e.printStackTrace();
+		}
+
+		adjacentTiles = new HashMap<Direction, Coordinates>();
 	}
 
 	
@@ -276,8 +295,78 @@ public class RobotSimulation {
 	 * Acquire a new candidate tile & determine if tile is reachable
 	 * @return RobotState - ReturnToCharger, MoveToTile, ReturnHome
 	 */
-	protected RobotState aquiringTarget(){
-		
+	protected RobotState aquiringTarget()
+	{
+		for (int i=0; i < this.internalGraph.getUnknownCoordinates().size(); i++)
+		{
+			if (adjacentTiles.size() == 4)
+			{
+				break;
+			}
+			if (this.internalGraph.getUnknownCoordinates().get(i).x == this.coord.x)
+			{
+				if (this.internalGraph.getUnknownCoordinates().get(i).y == (this.coord.y+1))
+				{
+					adjacentTiles.put(Direction.North, this.internalGraph.getUnknownCoordinates().get(i));
+				}
+				if (this.internalGraph.getUnknownCoordinates().get(i).y == (this.coord.y-1))
+				{
+					adjacentTiles.put(Direction.South, this.internalGraph.getUnknownCoordinates().get(i));
+				}
+			}
+			if (this.internalGraph.getUnknownCoordinates().get(i).y == this.coord.y)
+			{
+				if (this.internalGraph.getUnknownCoordinates().get(i).x == (this.coord.x+1))
+				{
+					adjacentTiles.put(Direction.East, this.internalGraph.getUnknownCoordinates().get(i));
+				}
+				if (this.internalGraph.getUnknownCoordinates().get(i).x == (this.coord.x-1))
+				{
+					adjacentTiles.put(Direction.West, this.internalGraph.getUnknownCoordinates().get(i));
+				}
+			}
+		}
+
+		if (adjacentTiles.isEmpty())
+		{
+			//Case where all adjacent tiles have been visited already
+			//acquire target via Dijkstra's
+		}
+		else
+		{
+			//Startup condition
+			//Finds any available direction for initial movement
+			if (prevDir == null)
+			{
+				if (adjacentTiles.containsKey(Direction.North))
+				{
+					prevDir = Direction.North;
+					nextCoord = new Coordinates(this.coord.x, this.coord.y+1);
+				}
+				else if (adjacentTiles.containsKey(Direction.South))
+				{
+					prevDir = Direction.South;
+					nextCoord = new Coordinates(this.coord.x, this.coord.y-1);
+				}
+				else if (adjacentTiles.containsKey(Direction.East))
+				{
+					prevDir = Direction.East;
+					nextCoord = new Coordinates(this.coord.x+1, this.coord.y);
+				}
+				else if (adjacentTiles.containsKey(Direction.West))
+				{
+					prevDir = Direction.West;
+					nextCoord = new Coordinates(this.coord.x-1, this.coord.y);
+				}
+
+			}
+			//Case where robot can continue moving the direction it last moved
+			else if (adjacentTiles.containsKey(prevDir))
+			{
+				//adjust future coordinates based on direction
+			}
+		}
+
 		return null;
 	}
 	
@@ -294,7 +383,15 @@ public class RobotSimulation {
 	 * @return RobotSTate - Exit, AquireTarget
 	 */
 	protected RobotState startUp() {
-		return null;
+		try
+		{
+			this.internalGraph.populateSurroundings(this.coord);
+		}
+		catch(OutOfFloorMapBoundsException e)
+		{
+			e.printStackTrace();
+		}
+		return RobotState.AquireTarget;
 	}
 	
 	
