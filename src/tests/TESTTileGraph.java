@@ -2,15 +2,14 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import WorldSimulator.WorldSim;
 import org.junit.jupiter.api.Test;
 import logging.IActivityLog;
 import navitagion.Coordinates;
 import navitagion.Direction;
-import tests.MockActivityLog;
 import robotics.map.InternalPath;
 import robotics.map.TileGraph;
-import sensorSimulator.OutOfFloorMapBoundsException;
-import sensorSimulator.SensorSim;
+import WorldSimulator.OutOfFloorMapBoundsException;
 import sensors.ISensorPackage;
 import sensors.Sensor;
 
@@ -20,13 +19,13 @@ class TESTTileGraph {
 	void floorBuildingTest() throws OutOfFloorMapBoundsException {
     	ISensorPackage sensors = new Sensor();
     	IActivityLog log = new MockActivityLog();
-    	SensorSim sensorSim = SensorSim.getInstance();
-    	sensorSim.loadAltFloorPlan();
+    	WorldSim worldSim = WorldSim.getInstance();
+    	worldSim.loadAltFloorPlan();
     	
     	//Testing simple conditionals
-    	assertTrue(sensorSim.checkForBarrier(new Coordinates(0,1), Direction.North));
-    	assertTrue(sensorSim.checkForBarrier(new Coordinates(2,1), Direction.North));
-    	assertTrue(sensorSim.checkForBarrier(new Coordinates(2,1), Direction.East));
+    	assertTrue(worldSim.checkForBarrier(new Coordinates(0,1), Direction.North));
+    	assertTrue(worldSim.checkForBarrier(new Coordinates(2,1), Direction.North));
+    	assertTrue(worldSim.checkForBarrier(new Coordinates(2,1), Direction.East));
     	Coordinates robotStartCoord = new Coordinates(0,1);
     	
     	TileGraph internalGraph = new TileGraph(robotStartCoord, sensors);

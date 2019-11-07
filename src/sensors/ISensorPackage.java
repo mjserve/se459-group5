@@ -1,8 +1,8 @@
 package sensors;
 
 import navitagion.Coordinates;
-import sensorSimulator.OutOfFloorMapBoundsException;
-import sensorSimulator.TileType;
+import WorldSimulator.OutOfFloorMapBoundsException;
+import WorldSimulator.TileType;
 
 public interface ISensorPackage {
 

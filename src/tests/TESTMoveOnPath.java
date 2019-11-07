@@ -5,11 +5,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 import logging.IActivityLog;
 import navitagion.Coordinates;
-import navitagion.Direction;
 import robotics.map.InternalPath;
 import robotics.map.TileGraph;
-import sensorSimulator.OutOfFloorMapBoundsException;
-import sensorSimulator.SensorSim;
+import WorldSimulator.OutOfFloorMapBoundsException;
+import WorldSimulator.WorldSim;
 import sensors.ISensorPackage;
 import sensors.Sensor;
 
@@ -20,8 +19,8 @@ public class TESTMoveOnPath {
     	ISensorPackage sensors = new Sensor();
     	IActivityLog log = new MockActivityLog();
     	
-		SensorSim sensorSim = SensorSim.getInstance();
-    	sensorSim.loadAltFloorPlan();
+		WorldSim worldSim = WorldSim.getInstance();
+    	worldSim.loadAltFloorPlan();
     	
     	Coordinates robotStartCoord = new Coordinates(0,1);
     	

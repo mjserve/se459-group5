@@ -5,7 +5,7 @@ import java.util.List;
 
 import navitagion.Coordinates;
 import navitagion.Direction;
-import sensorSimulator.TileType;
+import WorldSimulator.TileType;
 
 public class TileVertex {
 	final double DEFAULTCOST = 3;

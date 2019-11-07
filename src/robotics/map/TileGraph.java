@@ -11,7 +11,7 @@ import java.util.Queue;
 
 import navitagion.Coordinates;
 import navitagion.Direction;
-import sensorSimulator.OutOfFloorMapBoundsException;
+import WorldSimulator.OutOfFloorMapBoundsException;
 import sensors.ISensorPackage;
 
 public class TileGraph {

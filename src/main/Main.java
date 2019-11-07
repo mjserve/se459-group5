@@ -4,19 +4,19 @@ import logging.IActivityLog;
 import sensors.ISensorPackage;
 import sensors.Sensor;
 import tests.MockActivityLog;
-import sensorSimulator.SensorSim;
+import WorldSimulator.WorldSim;
 import navitagion.Coordinates;
 import robotics.RobotSimulation;
 
 public class Main {
 
     public static void main(String[] args){
-        //Sample call of how using SensorSim will be used to implement ISensorPackage Interface
+        //Sample call of how using WorldSim will be used to implement ISensorPackage Interface
     	ISensorPackage sensors = new Sensor();
     	IActivityLog log = new MockActivityLog();
 
     	//Loads default map. Change map used here
-		SensorSim.getInstance().loadJSONFloorPlan("FloorMapA");
+		WorldSim.getInstance().loadJSONFloorPlan("FloorMapA");
     	
     	RobotSimulation notRoomba = new RobotSimulation(log, sensors, new Coordinates(0,0));
     	
@@ -24,14 +24,14 @@ public class Main {
     	
     	/*
 
-        SensorSim.getInstance().loadFloorPlan();
+        WorldSim.getInstance().loadFloorPlan();
         Sensor sensor = new Sensor();
         System.out.print(sensor.collisionBelow(new Coordinates(0, 0)));
     	 */
 
         /*
         try{
-            typeHolder = SensorSim.getInstance().retrieveTileType(new Coordinates(3, 1));
+            typeHolder = WorldSim.getInstance().retrieveTileType(new Coordinates(3, 1));
             System.out.println(typeHolder);
         }
         catch(OutOfFloorMapBoundsException e){

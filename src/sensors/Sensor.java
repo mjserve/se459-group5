@@ -1,12 +1,10 @@
 package sensors;
 
+import WorldSimulator.WorldSim;
 import navitagion.Coordinates;
 import navitagion.Direction;
-import sensorSimulator.OutOfFloorMapBoundsException;
-import sensorSimulator.SensorSim;
-import sensorSimulator.TileType;
-
-import static sensorSimulator.TileType.OBSTACLE;
+import WorldSimulator.OutOfFloorMapBoundsException;
+import WorldSimulator.TileType;
 
 public class Sensor implements ISensorPackage {
     private int x, y;
@@ -16,22 +14,22 @@ public class Sensor implements ISensorPackage {
 
     @Override
     public boolean collisionWest(Coordinates coord) {
-        return SensorSim.getInstance().checkForBarrier(coord, Direction.West);
+        return WorldSim.getInstance().checkForBarrier(coord, Direction.West);
     }
 
     @Override
     public boolean collisionNorth(Coordinates coord) {
-        return SensorSim.getInstance().checkForBarrier(coord, Direction.North);
+        return WorldSim.getInstance().checkForBarrier(coord, Direction.North);
     }
 
     @Override
     public boolean collisionEast(Coordinates coord) {
-        return SensorSim.getInstance().checkForBarrier(coord, Direction.East);
+        return WorldSim.getInstance().checkForBarrier(coord, Direction.East);
     }
 
     @Override
     public boolean collisionSouth(Coordinates coord) {
-        return SensorSim.getInstance().checkForBarrier(coord, Direction.South);
+        return WorldSim.getInstance().checkForBarrier(coord, Direction.South);
     }
 
     @Override
@@ -41,7 +39,7 @@ public class Sensor implements ISensorPackage {
 
     @Override
     public TileType terrainType(Coordinates coord) throws OutOfFloorMapBoundsException{
-        return SensorSim.getInstance().retrieveTileType(coord);
+        return WorldSim.getInstance().retrieveTileType(coord);
     }
 
     @Override

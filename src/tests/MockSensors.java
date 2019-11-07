@@ -1,7 +1,7 @@
 package tests;
 
 import navitagion.Coordinates;
-import sensorSimulator.TileType;
+import WorldSimulator.TileType;
 import sensors.ISensorPackage;
 
 

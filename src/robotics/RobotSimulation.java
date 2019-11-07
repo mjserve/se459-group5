@@ -1,6 +1,5 @@
 package robotics;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +9,7 @@ import navitagion.Coordinates;
 import navitagion.Direction;
 import robotics.map.InternalPath;
 import robotics.map.TileGraph;
-import sensorSimulator.OutOfFloorMapBoundsException;
+import WorldSimulator.OutOfFloorMapBoundsException;
 import sensors.ISensorPackage;
 
 public class RobotSimulation {
@@ -297,12 +296,31 @@ public class RobotSimulation {
 	 */
 	protected RobotState aquiringTarget()
 	{
+		/*
+		* Here is what I'm thinking about 'smart' movement...
+		* The robot starts with a list of unknown adjacent tiles. Even though we could continuously move
+		* by calculating shortest path on the unknown tiles for every movement but that would be really expensive.
+		* So an alternative is this...
+		*
+		* The robot begins with the list of unknown adjacent tiles, it then chooses any one of them and
+		* moves in the direction to it.  Once on this tile, the robot again calls populateSurroundings() to
+		* get the unknown adjacent tiles.  If there is an unknown tile in same direction in which the robot last moved,
+		* the robot moves to this tile.  The robot would keep moving in the same direction until an obstacle in that
+		* direction is met.  Upon hitting the obstacle the robot will again look at adjacent, unknown tiles and choose
+		* to move to one of them and continue moving in that direction as long as tiles in that direction are unknown.
+		* Eventually the case where all adjacent tiles to the robot are known will occur.  In this case the robot can
+		* calculate shortest path to an unknown tile on its global list of unknown tiles that its been building up as it
+		* moves. The robot then moves to that unknown tile and repeats the pattern above until all tiles are known.
+		*
+		* Now I'm not totally sure this will work but it seems to make sense to me.  The stuff I've implemented was super
+		* hasty and I don't want to refactor or really continue with it unless it makes sense to you guys.
+		*
+		* */
+
+		//Populate AdjacentTiles with all unknown, adjacent tiles
+		//Used to determine if robot can move in particular direction
 		for (int i=0; i < this.internalGraph.getUnknownCoordinates().size(); i++)
 		{
-			if (adjacentTiles.size() == 4)
-			{
-				break;
-			}
 			if (this.internalGraph.getUnknownCoordinates().get(i).x == this.coord.x)
 			{
 				if (this.internalGraph.getUnknownCoordinates().get(i).y == (this.coord.y+1))
@@ -383,6 +401,8 @@ public class RobotSimulation {
 	 * @return RobotSTate - Exit, AquireTarget
 	 */
 	protected RobotState startUp() {
+		//Don't even need to call populateSurroundings on start up
+		//Just implemented to get to AcquireTarget
 		try
 		{
 			this.internalGraph.populateSurroundings(this.coord);
