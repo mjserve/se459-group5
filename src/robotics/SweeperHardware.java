@@ -7,7 +7,7 @@ public class SweeperHardware {
 	
 	public final int BUFFER = 5;
 	
-	private int battery;
+	private double battery;
 	private int dust;
 	
 	//Constructor
@@ -29,7 +29,7 @@ public class SweeperHardware {
 	}
 	
 	//Getters & Setters
-	public int getBattery() {
+	public double getBattery() {
 		return battery;
 	}
 	
@@ -48,7 +48,7 @@ public class SweeperHardware {
 	//Other Methods
 	
 	//Increment the battery level & return the new value
-	public int incrimentBattery(int delta) {
+	public double incrimentBattery(double delta) {
 		return this.battery += delta;
 	}
 	

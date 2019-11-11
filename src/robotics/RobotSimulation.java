@@ -1,6 +1,7 @@
 package robotics;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -26,10 +27,12 @@ public class RobotSimulation {
 	protected Coordinates nextCoord;
 	protected Direction dir = Direction.North;
 	protected Direction prevDir;
-	protected List <Coordinates> stations;
+	protected LinkedList <Coordinates> stations;
 	protected TileGraph internalGraph;
 	protected HashMap<Direction, Coordinates> adjacentTiles;
-
+	protected InternalPath path;
+	
+	
 	//Constructor
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
 		super();
@@ -266,9 +269,34 @@ public class RobotSimulation {
 	
 	/**
 	 * Move to the next tile while cleaning
+	 * Assumes path has already been set in current path & nextCoord
 	 * @return RobotState - CleanDestination, AquireTarget, ReturnHome, 
 	 */
 	protected RobotState moveToTile() {
+		
+		//Determine lowest cost to move from destination to nearest charging station.
+		double moveCost = internalGraph.pathTo(nextCoord, stations.getFirst()).getTotalCost();
+		
+		if (stations.size() > 1) {
+			Iterator <Coordinates> it = stations.iterator();
+			
+			do {
+				InternalPath path = internalGraph.pathTo(nextCoord, it.next());
+				
+				if (path.getTotalCost() < moveCost)
+					moveCost = path.getTotalCost();
+				
+			} while (it.hasNext());
+		}
+		
+		//Add together for total cost of movement only
+		moveCost += internalGraph.pathTo(coord, nextCoord).getTotalCost();
+		
+		//Get total allowance of additional batter life that can be used for cleaning - minimum tolerance.
+		double allowance = hardware.getBattery() - moveCost - 4;
+		
+		
+		
 		return null;
 	}
 	
