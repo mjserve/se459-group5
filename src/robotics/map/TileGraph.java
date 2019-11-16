@@ -29,17 +29,21 @@ public class TileGraph {
 	//Main graph object
 	Map<Coordinates, TileVertex> Graph;
 	List<Coordinates> unknownCoordinates;
+	Map<Coordinates, Boolean> cleanStatus;
+	
 	ISensorPackage sensor;
 	
 	//Initializer
 	public TileGraph(Coordinates start, ISensorPackage sense) throws OutOfFloorMapBoundsException {
 		Graph = new HashMap<Coordinates, TileVertex>();
 		unknownCoordinates = new ArrayList<Coordinates>();
+		cleanStatus = new HashMap<Coordinates,Boolean>();
 		this.sensor = sense;
 		
 		TileVertex startVertex = new TileVertex(start);
 		
 		Graph.put(start, startVertex);
+		cleanStatus.put(start, false);
 		populateSurroundings(start);
 	}
 	
@@ -62,7 +66,7 @@ public class TileGraph {
 			center.setTileType(sensor.terrainType(pointer));
 			//Since we're populating, we remove the pointer from unknownCoordinates.
 			unknownCoordinates.remove(pointer);
-			
+			cleanStatus.put(pointer, false);
 			
 			//IF no collision on northern side...
 			if(!sensor.collisionNorth(pointer)) {
@@ -122,7 +126,7 @@ public class TileGraph {
 	 * @param existingCoord The current coordinate
 	 * @param newCoord		The coordinate you want to bind to
 	 */
-	public void updateEdge(Coordinates existingCoord, Coordinates newCoord) {
+	private void updateEdge(Coordinates existingCoord, Coordinates newCoord) {
 		//Check if coordinates are next to each other.
 		if(!existingCoord.isAdjacent(newCoord)) {
 			throw new IllegalArgumentException("Coordinates are not adjacent");
@@ -190,6 +194,58 @@ public class TileGraph {
 	
 	public boolean hasUnknownCoordinates() {
 		return !unknownCoordinates.isEmpty();
+	}
+	
+	public void markAsClean(Coordinates pointer) {
+		cleanStatus.put(pointer, true);
+	}
+	
+	public void markAsDirty(Coordinates pointer) {
+		cleanStatus.put(pointer, false);
+	}
+	
+	public List<Coordinates> getAllDirty(){
+		List<Coordinates> dirty = new ArrayList<Coordinates>();
+		cleanStatus.forEach((k,v) -> {if(v != true) dirty.add(k);});
+		return dirty;
+	}
+	
+	public Coordinates getClosestUnknown(Coordinates curPosition) {
+		Iterator<Coordinates> ourList = unknownCoordinates.iterator();
+		double min = Double.MAX_VALUE;
+		Coordinates minCoord = new Coordinates(0,0);
+		while(ourList.hasNext()) {
+			Coordinates next = ourList.next();
+			double dist = curPosition.getDistanceTo(next);
+			if( dist < min) {
+				min = dist;
+				minCoord = next;
+			}
+		}
+		return minCoord;
+	}
+	
+	public Coordinates getClosestDirty(Coordinates curPosition) {
+		Iterator<Coordinates> ourList = getAllDirty().iterator();
+		double min = Double.MAX_VALUE;
+		Coordinates minCoord = new Coordinates(0,0);
+		while(ourList.hasNext()) {
+			Coordinates next = ourList.next();
+			double dist = curPosition.getDistanceTo(next);
+			if( dist < min) {
+				min = dist;
+				minCoord = next;
+			}
+		}
+		return minCoord;
+	}
+	
+	public void markAllDirty() {
+		cleanStatus.forEach((k,v)-> {v= false;});
+	}
+	
+	public boolean hasDirtyTiles() {
+		return cleanStatus.values().contains(false);
 	}
 	
 	/**

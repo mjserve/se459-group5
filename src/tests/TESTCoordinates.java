@@ -70,5 +70,13 @@ public class TESTCoordinates {
 		assertTrue(origin.isAdjacent(north));
 		assertTrue(origin.isAdjacent(south));
 	}
+	
+	@Test
+	public void testDistance() {
+		Coordinates origin = new Coordinates(0,1);
+		Coordinates next = new Coordinates(5,12);
+		assertEquals(origin.getDistanceTo(next), Math.sqrt(146), 1);
+	
+	}
 
 }
