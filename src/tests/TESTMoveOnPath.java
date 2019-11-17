@@ -2,6 +2,9 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+
 import org.junit.jupiter.api.Test;
 import logging.IActivityLog;
 import navitagion.Coordinates;
@@ -14,7 +17,8 @@ import sensors.ISensorPackage;
 import sensors.Sensor;
 
 public class TESTMoveOnPath {
-
+	//setup
+	MockRobotSimulation mockRobotSim = mock(MockRobotSimulation.class);
 	@Test
 	public void testPathing() throws OutOfFloorMapBoundsException{
     	ISensorPackage sensors = new Sensor();
@@ -26,6 +30,8 @@ public class TESTMoveOnPath {
     	Coordinates robotStartCoord = new Coordinates(0,1);
     	
     	MockRobotSimulation robot = new MockRobotSimulation(log, sensors, robotStartCoord);
+
+
     	
     	
     	TileGraph internalGraph = new TileGraph(robotStartCoord, sensors);
@@ -43,16 +49,19 @@ public class TESTMoveOnPath {
     	
 
     	Coordinates end = new Coordinates(5,1);
+
+    	//checks position method in MockRobotSimulation
+		doReturn(end).when(mockRobotSim).position();
     	
     	InternalPath path = internalGraph.pathTo(robotStartCoord,end);
 		
 		try {
-			robot.runPath(path);
+			mockRobotSim.runPath(path);
 		} catch (Exception e) {
 			fail("Pathing Failed on Exception: " + e.toString());
 		}
-		
-		assertTrue(end.equals(robot.position()));
+		//position mock
+		assertTrue(end.equals(mockRobotSim.position()));
 	}
 
 	
