@@ -221,10 +221,6 @@ public class RobotSimulation {
 		//Move on path feeling for walls & dirt
 		ListIterator<Direction> instructions = path.dirHistory().listIterator();
 		
-		if(sensors.dirtDetector(coord)) {
-			//TODO: switch to cleaning mode until tile is clean then re assess power situation.
-		}
-		
 		while (instructions.hasNext()) {
 			Direction next = instructions.next();
 			
@@ -267,6 +263,67 @@ public class RobotSimulation {
 		return true;
 	}
 	
+	protected RobotState CleanNMove(InternalPath path, double allowance) throws Exception {
+		
+		//Validate Path
+		if (path.isEmpty()) 
+			throw new Exception("Provided Interal Path object contains no instructions");
+		if (!path.peek().equals(coord))
+			throw new Exception("Path does not start on the current tile");
+		
+		//Base state not enough power.
+		if (allowance < 1) return RobotState.ReturnToCharger;
+				
+		//Move on path feeling for walls & dirt
+		ListIterator<Direction> instructions = path.dirHistory().listIterator();
+				
+		while (instructions.hasNext()) {
+					
+			//Clean while enough power.
+					
+					
+					
+			Direction next = instructions.next();
+			
+			switch (next) {
+			case North:
+				if (sensors.collisionNorth(coord)) {
+					//map.updateCollision(Direction.North, coord);
+					return RobotState.AquireTarget;
+				}
+				coord.y++;
+				break;
+			case East:
+				if (sensors.collisionEast(coord)) {
+					//map.updateCollision(Direction.East, coord);
+					return RobotState.AquireTarget;
+				}
+				coord.x++;
+				break;
+			case South:
+				if (sensors.collisionSouth(coord)) {
+					//map.updateCollision(Direction.South, coord);
+					return RobotState.AquireTarget;
+				}
+				coord.y--;
+				break;
+			case West:
+				if (sensors.collisionWest(coord)) {
+					//map.updateCollision(Direction.West, coord);
+					return RobotState.AquireTarget;
+				}
+				coord.x--;
+				break;
+			default:
+				throw new IllegalArgumentException("Illegal argument given in instructions");		
+			}
+			
+		}
+				
+		//Successful execution
+		return RobotState.CleanDestination;
+	}
+	
 	/**
 	 * Move to the next tile while cleaning
 	 * Assumes path has already been set in current path & nextCoord
@@ -292,7 +349,7 @@ public class RobotSimulation {
 		//Add together for total cost of movement only
 		moveCost += internalGraph.pathTo(coord, nextCoord).getTotalCost();
 		
-		//Get total allowance of additional batter life that can be used for cleaning - minimum tolerance.
+		//Get total allowance of additional battery life that can be used for cleaning - minimum tolerance.
 		double allowance = hardware.getBattery() - moveCost - 4;
 		
 		
