@@ -145,28 +145,28 @@ public class RobotSimulation {
 			switch (next) {
 			case North:
 				if (sensors.collisionNorth(currentPosition)) {
-					//map.updateCollision(Direction.North, coord);
+					//add wall for North edge 
 					return false;
 				}
 				currentPosition.y++;
 				break;
 			case East:
 				if (sensors.collisionEast(currentPosition)) {
-					//map.updateCollision(Direction.East, coord);
+					//add wall for East edge 
 					return false;
 				}
 				currentPosition.x++;
 				break;
 			case South:
 				if (sensors.collisionSouth(currentPosition)) {
-					//map.updateCollision(Direction.South, coord);
+					//add wall for South edge 
 					return false;
 				}
 				currentPosition.y--;
 				break;
 			case West:
 				if (sensors.collisionWest(currentPosition)) {
-					//map.updateCollision(Direction.West, coord);
+					//add wall for West edge 
 					return false;
 				}
 				currentPosition.x--;
@@ -185,7 +185,7 @@ public class RobotSimulation {
 	 * Move along provided path while cleaning. Will clean all tiles along path with the given energy allowance.
 	 * @param path - path of directions that the robot follows to get to it's location.
 	 * @param allowance - The amount of energy the robot is allowed to use to clean tiles.
-	 * @return Successful unsuccessful run. True - Success : False - out of power/collision detected
+	 * @return Successful or unsuccessful run| True - Success | False - out of power/collision detected
 	 * @throws Exception
 	 */
 	protected boolean moveOnPath(InternalPath path, double allowance) throws Exception {
@@ -205,8 +205,15 @@ public class RobotSimulation {
 				
 		while (instructions.hasNext()) {
 					
-			//Clean while enough power.
-					
+			//Clean the current tile and move once done. returns false if energy allowance is exceeded.
+			while(sensors.dirtDetector(currentPosition)) {
+				
+				sensors.cleanTile(currentPosition);
+				allowance--;
+				if (allowance < 1)
+					return false;
+				
+			}
 					
 					
 			Direction next = instructions.next();
@@ -214,34 +221,34 @@ public class RobotSimulation {
 			switch (next) {
 			case North:
 				if (sensors.collisionNorth(currentPosition)) {
-					//map.updateCollision(Direction.North, coord);
+					//Add wall for North Edge
 					return false;
 				}
 				currentPosition.y++;
 				break;
 			case East:
 				if (sensors.collisionEast(currentPosition)) {
-					//map.updateCollision(Direction.East, coord);
+					//Add wall for East Edge
 					return false;
 				}
 				currentPosition.x++;
 				break;
 			case South:
 				if (sensors.collisionSouth(currentPosition)) {
-					//map.updateCollision(Direction.South, coord);
+					//Add wall for South Edge
 					return false;
 				}
 				currentPosition.y--;
 				break;
 			case West:
 				if (sensors.collisionWest(currentPosition)) {
-					//map.updateCollision(Direction.West, coord);
+					//Add wall for West Edge
 					return false;
 				}
 				currentPosition.x--;
 				break;
 			default:
-				throw new IllegalArgumentException("Illegal argument given in instructions");		
+				throw new IllegalArgumentException("Illegal argument given in instructions: " + next.toString());		
 			}
 			
 		}

@@ -49,6 +49,6 @@ public class Sensor implements ISensorPackage {
 
     @Override
     public void cleanTile(Coordinates coord) {
-
+    	WorldSim.getInstance().removeDirt(coord);
     }
 }
