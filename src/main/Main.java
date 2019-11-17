@@ -1,5 +1,6 @@
 package main;
 
+import WorldSimulator.OutOfFloorMapBoundsException;
 import logging.IActivityLog;
 import sensors.ISensorPackage;
 import sensors.Sensor;
@@ -19,8 +20,16 @@ public class Main {
 		WorldSim.getInstance().loadJSONFloorPlan("FloorMapA");
     	
     	RobotSimulation notRoomba = new RobotSimulation(log, sensors, new Coordinates(0,0));
-    	
-    	notRoomba.run();
+
+    	try
+		{
+			notRoomba.run();
+		}
+    	catch (OutOfFloorMapBoundsException e)
+		{
+			e.printStackTrace();
+		}
+
     	
     	/*
 

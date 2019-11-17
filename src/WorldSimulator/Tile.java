@@ -127,6 +127,13 @@ public class Tile{
 		this.westSide = westSide;
 	}
 
+	//Removes a single unit of dirt from the Tile
+	public int removeDirt()
+    {
+        --dirtVal;
+        return dirtVal;
+    }
+
 	public boolean hasObstacle(Direction d)
     {
         if (d == Direction.North)
@@ -160,4 +167,5 @@ public class Tile{
 
         return false;
     }
+
 }
