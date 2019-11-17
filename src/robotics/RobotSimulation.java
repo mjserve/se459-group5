@@ -15,8 +15,6 @@ public class RobotSimulation {
 
 	final static int DUSTCAP = 150;
 	final static int POWERCAP = 250;
-	
-	private RobotState state = RobotState.Startup;
 
 	protected IActivityLog log;
 	protected ISensorPackage sensors;
@@ -125,7 +123,7 @@ public class RobotSimulation {
 	}
 	
 	/**
-	 * move along a provided path
+	 * move along a provided path. No cleaning enabled.
 	 * @param path
 	 * @return true - successfully walked path, false - issue encountered walking path
 	 * @throws Exception"Invalid inputs"
@@ -183,6 +181,13 @@ public class RobotSimulation {
 		return true;
 	}
 	
+	/**
+	 * Move along provided path while cleaning. Will clean all tiles along path with the given energy allowance.
+	 * @param path - path of directions that the robot follows to get to it's location.
+	 * @param allowance - The amount of energy the robot is allowed to use to clean tiles.
+	 * @return Successful unsuccessful run. True - Success : False - out of power/collision detected
+	 * @throws Exception
+	 */
 	protected boolean moveOnPath(InternalPath path, double allowance) throws Exception {
 		
 		//Validate Path
@@ -192,7 +197,8 @@ public class RobotSimulation {
 			throw new Exception("Path does not start on the current tile");
 		
 		//Base state not enough power.
-		if (allowance < 1) return false;
+		if (allowance < 1) 
+			throw new Exception ("Not enough power provided for cleaning.");
 				
 		//Move on path feeling for walls & dirt
 		ListIterator<Direction> instructions = path.dirHistory().listIterator();
