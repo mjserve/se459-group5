@@ -183,7 +183,7 @@ public class RobotSimulation {
 		return true;
 	}
 	
-	protected RobotState CleanNMove(InternalPath path, double allowance) throws Exception {
+	protected boolean moveOnPath(InternalPath path, double allowance) throws Exception {
 		
 		//Validate Path
 		if (path.isEmpty()) 
@@ -192,7 +192,7 @@ public class RobotSimulation {
 			throw new Exception("Path does not start on the current tile");
 		
 		//Base state not enough power.
-		if (allowance < 1) return RobotState.ReturnToCharger;
+		if (allowance < 1) return false;
 				
 		//Move on path feeling for walls & dirt
 		ListIterator<Direction> instructions = path.dirHistory().listIterator();
@@ -209,28 +209,28 @@ public class RobotSimulation {
 			case North:
 				if (sensors.collisionNorth(currentPosition)) {
 					//map.updateCollision(Direction.North, coord);
-					return RobotState.AquireTarget;
+					return false;
 				}
 				currentPosition.y++;
 				break;
 			case East:
 				if (sensors.collisionEast(currentPosition)) {
 					//map.updateCollision(Direction.East, coord);
-					return RobotState.AquireTarget;
+					return false;
 				}
 				currentPosition.x++;
 				break;
 			case South:
 				if (sensors.collisionSouth(currentPosition)) {
 					//map.updateCollision(Direction.South, coord);
-					return RobotState.AquireTarget;
+					return false;
 				}
 				currentPosition.y--;
 				break;
 			case West:
 				if (sensors.collisionWest(currentPosition)) {
 					//map.updateCollision(Direction.West, coord);
-					return RobotState.AquireTarget;
+					return false;
 				}
 				currentPosition.x--;
 				break;
@@ -241,7 +241,7 @@ public class RobotSimulation {
 		}
 				
 		//Successful execution
-		return RobotState.CleanDestination;
+		return true;
 	}
 	
 	
