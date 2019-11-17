@@ -182,7 +182,7 @@ public class RobotSimulation {
 	}
 	
 	/**
-	 * Move along provided path while cleaning. Will clean all tiles along path with the given energy allowance.
+	 * Move along provided path while cleaning. Will clean all tiles along path using the given energy allowance.
 	 * @param path - path of directions that the robot follows to get to it's location.
 	 * @param allowance - The amount of energy the robot is allowed to use to clean tiles.
 	 * @return Successful or unsuccessful run| True - Success | False - out of power/collision detected
