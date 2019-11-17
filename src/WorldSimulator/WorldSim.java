@@ -145,6 +145,25 @@ public class WorldSim {
         }
     }
 
+    //Used to find if Tile at coords has any dirt present
+    public boolean isTileDirty(Coordinates coords)
+    {
+        if (loadedMap[coords.x][coords.y].getDirtVal() > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //Returns the dirt value from Tile at coords decremented by 1
+    public int removeDirt(Coordinates coords)
+    {
+        return loadedMap[coords.x][coords.y].removeDirt();
+    }
+
 
     public boolean checkForBarrier(Coordinates coords, Direction d)
     {

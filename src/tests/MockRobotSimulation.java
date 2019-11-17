@@ -22,12 +22,12 @@ public class MockRobotSimulation extends RobotSimulation{
 	//Test running of robot along specified path.	
 		moveOnPath(path);
 		
-		return coord;
+		return currentPosition;
 		
 	}
 	
 	public Coordinates position() {
-		return coord;
+		return currentPosition;
 	}
 
 }

@@ -1,4 +1,5 @@
 package navitagion;
+import java.lang.Math;
 
 public class Coordinates {
 
@@ -64,6 +65,11 @@ public class Coordinates {
 		}
 		return null;
 		
+	}
+	
+	public double getDistanceTo(Coordinates other) {
+		double dist = Math.pow((other.x - this.x), 2) + Math.pow((other.y - this.y), 2);
+		return Math.sqrt(dist);
 	}
 	
 	@Override

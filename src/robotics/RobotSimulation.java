@@ -1,9 +1,7 @@
 package robotics;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ListIterator;
 import logging.IActivityLog;
 import navitagion.Coordinates;
@@ -23,14 +21,13 @@ public class RobotSimulation {
 	protected IActivityLog log;
 	protected ISensorPackage sensors;
 	protected SweeperHardware hardware;
-	protected Coordinates coord;
+	protected Coordinates currentPosition;
 	protected Coordinates nextCoord;
-	protected Direction dir = Direction.North;
-	protected Direction prevDir;
 	protected LinkedList <Coordinates> stations;
 	protected TileGraph internalGraph;
 	protected HashMap<Direction, Coordinates> adjacentTiles;
 	protected InternalPath path;
+	protected Direction prevDir;
 	
 	
 	//Constructor
@@ -38,22 +35,28 @@ public class RobotSimulation {
 		super();
 		this.log = log;
 		this.sensors = sensors;
-		this.coord = start.clone();
+		this.currentPosition = start.clone();
 		
 		this.stations = new LinkedList <Coordinates> ();
 		
 		for (int i = 0; i < stations.length; i++) {
 			this.stations.add(stations[i]);
 		}
-
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
+		
+		try {
+			//Initialize TileGraph
+			this.internalGraph = new TileGraph(start, sensors);
+		} catch (OutOfFloorMapBoundsException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start) {
 		super();
 		this.log = log;
 		this.sensors = sensors;
-		this.coord = start.clone();
+		this.currentPosition = start.clone();
 		
 		this.stations = new LinkedList <Coordinates> ();
 		
@@ -63,145 +66,62 @@ public class RobotSimulation {
 
 		try
 		{
-			this.internalGraph = new TileGraph(coord, sensors);
+			this.internalGraph = new TileGraph(currentPosition, sensors);
 		}
 		catch(OutOfFloorMapBoundsException e)
 		{
+			e.printStackTrace();
+		}
+		
+		try {
+			//Initialize TileGraph
+			this.internalGraph = new TileGraph(start, sensors);
+		} catch (OutOfFloorMapBoundsException e) {
 			e.printStackTrace();
 		}
 
 		adjacentTiles = new HashMap<Direction, Coordinates>();
 	}
 
-	
-	/**
-	 * New behavior simulator that utilizing changing states to manage decision flow
-	 * @return
-	 */
-	public int stateRun() {
-	
-		while (state != RobotState.Exit) {
-			switch (state) {
-			case AquireTarget:
-				state = aquiringTarget();
-				break;
-			case CleanDestination:
-				state = cleanDestination();
-				break;
-			case MoveToTile:
-				state = moveToTile();
-				break;
-			case ReturnHome:
-				state = returnHome();
-				break;
-			case ReturnToCharger:
-				state = returnToCharge();
-				break;
-			case Startup:
-				state = startUp();
-				break;
-			default:
-				throw new IllegalArgumentException("Unknown State Reached");
-			}
-		}
-		
-		return 0;
-	}
 
 	
 	/**
-	 * Old Behavior pattern that changes directions only when collsiions are detected. 
+	 * Old Behavior pattern that changes directions only when collsions are detected. 
 	 * Will be obsolete once stateRun()
 	 * No pathfinding enabled
 	 * @return return code
+	 * @throws OutOfFloorMapBoundsException 
 	 */
-	public int run() {
-		
-		while (true) {
-			StringBuilder message;
-			
-			//TODO: detect current batter level & handle when critical
+	public int run() throws OutOfFloorMapBoundsException {
+		boolean running = true;
+		boolean needToCharge = false;
+		Coordinates target = currentPosition;
+		while(running) {
+			//Check if there are unknown tiles:
 
-			if (hardware.batteryCritical(3)) {	
-				message = new StringBuilder("Battery levels critical (" + hardware.getBattery()+ ") - Shutting Down");
-				log.update(message.toString());
-				return 1;
+			if(internalGraph.hasUnknownCoordinates()) {
+				target = internalGraph.getClosestUnknown(currentPosition);
+			} else if(internalGraph.hasDirtyTiles()) {
+				target = internalGraph.getClosestDirty(currentPosition);
+			} else {
+				running = false;
 			}
 			
-			//Note if current tile is dirty
-			if (sensors.dirtDetector(coord)) {
-				//Log result
-				message = new StringBuilder("Dirt at Location (").append(coord.x).append(", ").append(coord.y).append(") - POSITIVE");
-				log.update(message.toString());
-				
-				//TODO: log dirt flag on personal map
-				
-				log.update("1 unit of dust cleaned");
-				sensors.cleanTile(coord);
-				
-				//clean 1 unit of dirt & check capacity
-				if (hardware.incrimentDust(1)) {
-					log.update("Dirt capacity reached - Powering Down");
-					return 2;
-				}
-				hardware.incrimentBattery(-1);
-				
-				continue;
-			} 
-			else {
-				//Log result
-				message = new StringBuilder("Dirt at Location (").append(coord.x).append(", ").append(coord.y).append(") - NEGATIVE");
-				log.update(message.toString());
-				
-				//TODO: log dirt flag on personal map
-
+			if(running) {
+				//This is where we use the target value;
+				/*
+				 * This is where movement, and cleaning should take place. 
+				 * You can also just change the target if you set the tag, needToCharge, so you set the target coordinate to like
+				 * the closest charging station
+				 * 
+				 * ALSO now, its even more important to 
+				 * 			internalGraph.populateSurroundings(currentPosition);
+				 */
+				internalGraph.pathTo(currentPosition, target);			//This can get the path
+				internalGraph.populateSurroundings(currentPosition);	//This is a necessary step!
 			}
-			
-			
-			//TODO: acquire location of new candidate tile. move one unit in current direction until implemented, rotate on collision
-			switch (dir) {
-			case North:
-				if (!sensors.collisionNorth(coord))	
-					coord.y++;
-				else {
-					dir = Direction.East;
-					log.update("Collision Detected... Changing Direction (East)");
-				}
-				break;
-			case East:
-				if (!sensors.collisionEast(coord))	
-					coord.x++;
-				else {
-					dir = Direction.South;
-					log.update("Collision Detected... Changing Direction (South)");
-				}
-				break;
-			case South:
-				if (!sensors.collisionSouth(coord))
-					coord.y--;
-				else {
-					dir = Direction.West;
-					log.update("Collision Detected... Changing Direction (West)");
-				}
-				break;
-			case West:
-				if (!sensors.collisionWest(coord))
-					coord.x--;
-				else {
-					dir = Direction.North;
-					log.update("Collision Detected... Changing Direction (North)");
-				}
-				break;
-			default:
-				break;
-			}
-			
-			hardware.incrimentBattery(-3);
-			message = new StringBuilder("Robot moved to Location (" + coord.x +  ", " + coord.y + ") - 3 power spent");
-			log.update(message.toString());
-			
 		}
-		
+		return 1; //This needs to be changed
 	}
 	
 	/**
@@ -215,7 +135,7 @@ public class RobotSimulation {
 		//Validate Path
 		if (path.isEmpty()) 
 			throw new Exception("Provided Interal Path object contains no instructions");
-		if (!path.peek().equals(coord))
+		if (!path.peek().equals(currentPosition))
 			throw new Exception("Path does not start on the current tile");
 		
 		//Move on path feeling for walls & dirt
@@ -226,32 +146,32 @@ public class RobotSimulation {
 			
 			switch (next) {
 			case North:
-				if (sensors.collisionNorth(coord)) {
+				if (sensors.collisionNorth(currentPosition)) {
 					//map.updateCollision(Direction.North, coord);
 					return false;
 				}
-				coord.y++;
+				currentPosition.y++;
 				break;
 			case East:
-				if (sensors.collisionEast(coord)) {
+				if (sensors.collisionEast(currentPosition)) {
 					//map.updateCollision(Direction.East, coord);
 					return false;
 				}
-				coord.x++;
+				currentPosition.x++;
 				break;
 			case South:
-				if (sensors.collisionSouth(coord)) {
+				if (sensors.collisionSouth(currentPosition)) {
 					//map.updateCollision(Direction.South, coord);
 					return false;
 				}
-				coord.y--;
+				currentPosition.y--;
 				break;
 			case West:
-				if (sensors.collisionWest(coord)) {
+				if (sensors.collisionWest(currentPosition)) {
 					//map.updateCollision(Direction.West, coord);
 					return false;
 				}
-				coord.x--;
+				currentPosition.x--;
 				break;
 			default:
 				throw new IllegalArgumentException("Illegal argument given in instructions");		
@@ -268,7 +188,7 @@ public class RobotSimulation {
 		//Validate Path
 		if (path.isEmpty()) 
 			throw new Exception("Provided Interal Path object contains no instructions");
-		if (!path.peek().equals(coord))
+		if (!path.peek().equals(currentPosition))
 			throw new Exception("Path does not start on the current tile");
 		
 		//Base state not enough power.
@@ -287,32 +207,32 @@ public class RobotSimulation {
 			
 			switch (next) {
 			case North:
-				if (sensors.collisionNorth(coord)) {
+				if (sensors.collisionNorth(currentPosition)) {
 					//map.updateCollision(Direction.North, coord);
 					return RobotState.AquireTarget;
 				}
-				coord.y++;
+				currentPosition.y++;
 				break;
 			case East:
-				if (sensors.collisionEast(coord)) {
+				if (sensors.collisionEast(currentPosition)) {
 					//map.updateCollision(Direction.East, coord);
 					return RobotState.AquireTarget;
 				}
-				coord.x++;
+				currentPosition.x++;
 				break;
 			case South:
-				if (sensors.collisionSouth(coord)) {
+				if (sensors.collisionSouth(currentPosition)) {
 					//map.updateCollision(Direction.South, coord);
 					return RobotState.AquireTarget;
 				}
-				coord.y--;
+				currentPosition.y--;
 				break;
 			case West:
-				if (sensors.collisionWest(coord)) {
+				if (sensors.collisionWest(currentPosition)) {
 					//map.updateCollision(Direction.West, coord);
 					return RobotState.AquireTarget;
 				}
-				coord.x--;
+				currentPosition.x--;
 				break;
 			default:
 				throw new IllegalArgumentException("Illegal argument given in instructions");		
@@ -322,39 +242,6 @@ public class RobotSimulation {
 				
 		//Successful execution
 		return RobotState.CleanDestination;
-	}
-	
-	/**
-	 * Move to the next tile while cleaning
-	 * Assumes path has already been set in current path & nextCoord
-	 * @return RobotState - CleanDestination, AquireTarget, ReturnHome, 
-	 */
-	protected RobotState moveToTile() {
-		
-		//Determine lowest cost to move from destination to nearest charging station.
-		double moveCost = internalGraph.pathTo(nextCoord, stations.getFirst()).getTotalCost();
-		
-		if (stations.size() > 1) {
-			Iterator <Coordinates> it = stations.iterator();
-			
-			do {
-				InternalPath path = internalGraph.pathTo(nextCoord, it.next());
-				
-				if (path.getTotalCost() < moveCost)
-					moveCost = path.getTotalCost();
-				
-			} while (it.hasNext());
-		}
-		
-		//Add together for total cost of movement only
-		moveCost += internalGraph.pathTo(coord, nextCoord).getTotalCost();
-		
-		//Get total allowance of additional battery life that can be used for cleaning - minimum tolerance.
-		double allowance = hardware.getBattery() - moveCost - 4;
-		
-		
-		
-		return null;
 	}
 	
 	
@@ -406,24 +293,24 @@ public class RobotSimulation {
 		//Used to determine if robot can move in particular direction
 		for (int i=0; i < this.internalGraph.getUnknownCoordinates().size(); i++)
 		{
-			if (this.internalGraph.getUnknownCoordinates().get(i).x == this.coord.x)
+			if (this.internalGraph.getUnknownCoordinates().get(i).x == this.currentPosition.x)
 			{
-				if (this.internalGraph.getUnknownCoordinates().get(i).y == (this.coord.y+1))
+				if (this.internalGraph.getUnknownCoordinates().get(i).y == (this.currentPosition.y+1))
 				{
 					adjacentTiles.put(Direction.North, this.internalGraph.getUnknownCoordinates().get(i));
 				}
-				if (this.internalGraph.getUnknownCoordinates().get(i).y == (this.coord.y-1))
+				if (this.internalGraph.getUnknownCoordinates().get(i).y == (this.currentPosition.y-1))
 				{
 					adjacentTiles.put(Direction.South, this.internalGraph.getUnknownCoordinates().get(i));
 				}
 			}
-			if (this.internalGraph.getUnknownCoordinates().get(i).y == this.coord.y)
+			if (this.internalGraph.getUnknownCoordinates().get(i).y == this.currentPosition.y)
 			{
-				if (this.internalGraph.getUnknownCoordinates().get(i).x == (this.coord.x+1))
+				if (this.internalGraph.getUnknownCoordinates().get(i).x == (this.currentPosition.x+1))
 				{
 					adjacentTiles.put(Direction.East, this.internalGraph.getUnknownCoordinates().get(i));
 				}
-				if (this.internalGraph.getUnknownCoordinates().get(i).x == (this.coord.x-1))
+				if (this.internalGraph.getUnknownCoordinates().get(i).x == (this.currentPosition.x-1))
 				{
 					adjacentTiles.put(Direction.West, this.internalGraph.getUnknownCoordinates().get(i));
 				}
@@ -444,22 +331,22 @@ public class RobotSimulation {
 				if (adjacentTiles.containsKey(Direction.North))
 				{
 					prevDir = Direction.North;
-					nextCoord = new Coordinates(this.coord.x, this.coord.y+1);
+					nextCoord = new Coordinates(this.currentPosition.x, this.currentPosition.y+1);
 				}
 				else if (adjacentTiles.containsKey(Direction.South))
 				{
 					prevDir = Direction.South;
-					nextCoord = new Coordinates(this.coord.x, this.coord.y-1);
+					nextCoord = new Coordinates(this.currentPosition.x, this.currentPosition.y-1);
 				}
 				else if (adjacentTiles.containsKey(Direction.East))
 				{
 					prevDir = Direction.East;
-					nextCoord = new Coordinates(this.coord.x+1, this.coord.y);
+					nextCoord = new Coordinates(this.currentPosition.x+1, this.currentPosition.y);
 				}
 				else if (adjacentTiles.containsKey(Direction.West))
 				{
 					prevDir = Direction.West;
-					nextCoord = new Coordinates(this.coord.x-1, this.coord.y);
+					nextCoord = new Coordinates(this.currentPosition.x-1, this.currentPosition.y);
 				}
 
 			}
@@ -490,7 +377,7 @@ public class RobotSimulation {
 		//Just implemented to get to AcquireTarget
 		try
 		{
-			this.internalGraph.populateSurroundings(this.coord);
+			this.internalGraph.populateSurroundings(this.currentPosition);
 		}
 		catch(OutOfFloorMapBoundsException e)
 		{
@@ -498,7 +385,5 @@ public class RobotSimulation {
 		}
 		return RobotState.AquireTarget;
 	}
-	
-	
 	
 }
