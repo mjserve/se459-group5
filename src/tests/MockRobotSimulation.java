@@ -14,7 +14,7 @@ public class MockRobotSimulation extends RobotSimulation{
 	}
 
 	public MockRobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
-		super(log, sensors, start, stations);
+		super(log, sensors, start);
 	}
 	
 	

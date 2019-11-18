@@ -14,14 +14,14 @@ import sensors.ISensorPackage;
 public class RobotSimulation {
 
 	final static int DUSTCAP = 150;
-	final static int POWERCAP = 250;
+	final static int POWERCAP = 150;
 
 	protected IActivityLog log;
 	protected ISensorPackage sensors;
 	protected SweeperHardware hardware;
 	protected Coordinates currentPosition;
 	protected Coordinates nextCoord;
-	protected LinkedList <Coordinates> stations;
+	protected Coordinates station;
 	protected TileGraph internalGraph;
 	protected HashMap<Direction, Coordinates> adjacentTiles;
 	protected InternalPath path;
@@ -29,36 +29,14 @@ public class RobotSimulation {
 	
 	
 	//Constructor
-	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start, Coordinates[] stations) {
-		super();
-		this.log = log;
-		this.sensors = sensors;
-		this.currentPosition = start.clone();
-		
-		this.stations = new LinkedList <Coordinates> ();
-		
-		for (int i = 0; i < stations.length; i++) {
-			this.stations.add(stations[i]);
-		}
-		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
-		
-		try {
-			//Initialize TileGraph
-			this.internalGraph = new TileGraph(start, sensors);
-		} catch (OutOfFloorMapBoundsException e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	public RobotSimulation(IActivityLog log, ISensorPackage sensors, Coordinates start) {
 		super();
 		this.log = log;
 		this.sensors = sensors;
 		this.currentPosition = start.clone();
 		
-		this.stations = new LinkedList <Coordinates> ();
-		
-		this.stations.add(start);
+		this.station = start;
 		
 		this.hardware = new SweeperHardware(DUSTCAP, POWERCAP);
 
@@ -90,20 +68,24 @@ public class RobotSimulation {
 	 * @return return code
 	 * @throws OutOfFloorMapBoundsException 
 	 */
-	public int run() throws OutOfFloorMapBoundsException {
+	public int run() throws OutOfFloorMapBoundsException, Exception {
 		boolean running = true;
 		boolean needToCharge = false;
 		Coordinates target = currentPosition;
 		while(running) {
 			//Check if there are unknown tiles:
 
-			if(internalGraph.hasUnknownCoordinates()) {
-				target = internalGraph.getClosestUnknown(currentPosition);
-			} else if(internalGraph.hasDirtyTiles()) {
-				target = internalGraph.getClosestDirty(currentPosition);
-			} else {
-				running = false;
+			if (!needToCharge) {
+				if (internalGraph.hasUnknownCoordinates()) {
+					target = internalGraph.getClosestUnknown(currentPosition);
+				} else if (internalGraph.hasDirtyTiles()) {
+					target = internalGraph.getClosestDirty(currentPosition);
+				} else {
+					running = false;
+				} 
 			}
+			else 
+				target = station;
 			
 			if(running) {
 				//This is where we use the target value;
@@ -115,10 +97,56 @@ public class RobotSimulation {
 				 * ALSO now, its even more important to 
 				 * 			internalGraph.populateSurroundings(currentPosition);
 				 */
-				internalGraph.pathTo(currentPosition, target);			//This can get the path
-				internalGraph.populateSurroundings(currentPosition);	//This is a necessary step!
+
+				//Charging
+				if (needToCharge) {
+					
+					System.out.println("\nCharging at: " + target.toString() + " Power: " + hardware.getBattery() + " #Unknown: " 
+					+ internalGraph.getUnknownCoordinates().size() + " #dirty: " + internalGraph.getAllDirty().size());
+					
+					if (currentPosition.equals(target)) {
+						hardware.setBattery(POWERCAP);
+						needToCharge = false;
+					}
+					else {
+						moveOnPath(internalGraph.pathTo(currentPosition, target));
+					}
+				}
+				
+				//Cleaning
+				else {
+					
+					System.out.println("\nCleaning: " + target.toString() + " Power: " + hardware.getBattery() + " #Unknown: " 
+							+ internalGraph.getUnknownCoordinates().size() + " #dirty: " + internalGraph.getAllDirty().size());
+					
+					//move to dirty/unknown
+					double allowance = internalGraph.pathTo(currentPosition, target).getTotalCost()
+						+ internalGraph.pathTo(target, station).getTotalCost();
+	
+					allowance = hardware.getBattery() - allowance;
+					
+					if (allowance >= 1) {
+						needToCharge = !moveOnPath(internalGraph.pathTo(currentPosition, target), allowance);
+						
+						if (!needToCharge) {
+							
+							while(sensors.dirtDetector(currentPosition)) {
+								sensors.cleanTile(currentPosition);
+							}
+							internalGraph.markAsClean(currentPosition);
+							
+						}
+						
+					}
+					else {
+						needToCharge = true;
+					}
+				}
+				
 			}
 		}
+		
+		System.out.println("System Terminated");
 		return 1; //This needs to be changed
 	}
 	
@@ -148,6 +176,7 @@ public class RobotSimulation {
 					//add wall for North edge 
 					return false;
 				}
+				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.North).getEdgeCost());			
 				currentPosition.y++;
 				break;
 			case East:
@@ -155,6 +184,7 @@ public class RobotSimulation {
 					//add wall for East edge 
 					return false;
 				}
+				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.East).getEdgeCost());
 				currentPosition.x++;
 				break;
 			case South:
@@ -162,6 +192,7 @@ public class RobotSimulation {
 					//add wall for South edge 
 					return false;
 				}
+				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.South).getEdgeCost());
 				currentPosition.y--;
 				break;
 			case West:
@@ -169,6 +200,7 @@ public class RobotSimulation {
 					//add wall for West edge 
 					return false;
 				}
+				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.West).getEdgeCost());
 				currentPosition.x--;
 				break;
 			default:
@@ -192,7 +224,7 @@ public class RobotSimulation {
 		
 		//Validate Path
 		if (path.isEmpty()) 
-			throw new Exception("Provided Interal Path object contains no instructions");
+			return true;
 		if (!path.peek().equals(currentPosition))
 			throw new Exception("Path does not start on the current tile");
 		
@@ -214,42 +246,53 @@ public class RobotSimulation {
 					return false;
 				
 			}
-					
+			
+			internalGraph.markAsClean(currentPosition);
 					
 			Direction next = instructions.next();
 			
 			switch (next) {
 			case North:
 				if (sensors.collisionNorth(currentPosition)) {
-					//Add wall for North Edge
+					//add wall for North edge 
 					return false;
 				}
+				System.out.print("N>");
+				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.North).getEdgeCost());			
 				currentPosition.y++;
 				break;
 			case East:
 				if (sensors.collisionEast(currentPosition)) {
-					//Add wall for East Edge
+					//add wall for East edge 
 					return false;
 				}
+				System.out.print("E>");
+				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.East).getEdgeCost());
 				currentPosition.x++;
 				break;
 			case South:
 				if (sensors.collisionSouth(currentPosition)) {
-					//Add wall for South Edge
+					//add wall for South edge 
 					return false;
 				}
+				System.out.print("S>");
+				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.South).getEdgeCost());
 				currentPosition.y--;
 				break;
 			case West:
 				if (sensors.collisionWest(currentPosition)) {
-					//Add wall for West Edge
+					//add wall for West edge 
 					return false;
 				}
+				System.out.print("W>");
+				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.West).getEdgeCost());
 				currentPosition.x--;
 				break;
 			default:
-				throw new IllegalArgumentException("Illegal argument given in instructions: " + next.toString());		
+				throw new IllegalArgumentException("Illegal argument given in instructions");		
 			}
+			
+			internalGraph.populateSurroundings(currentPosition);
 			
 		}
 				

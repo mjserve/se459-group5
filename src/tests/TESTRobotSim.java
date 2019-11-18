@@ -22,7 +22,12 @@ public class TESTRobotSim {
 		
 		RobotSimulation robot = new RobotSimulation(log, sensors, start);
 		
-		assertEquals(robot.run(), 1);
+		try {
+			assertEquals(robot.run(), 1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -33,7 +38,12 @@ public class TESTRobotSim {
 		
 		RobotSimulation robot = new RobotSimulation(log, sensors, start);
 		
-		System.out.println("Robot runtime ended with condition (" + robot.run() + ")");
+		try {
+			System.out.println("Robot runtime ended with condition (" + robot.run() + ")");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

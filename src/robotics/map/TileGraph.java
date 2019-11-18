@@ -82,6 +82,7 @@ public class TileGraph {
 					//Add the coordinate to list of available to reach, but unknown
 					unknownCoordinates.add(pointer.northOf());
 					Graph.put(pointer.northOf(), new TileVertex(pointer.northOf()));
+					cleanStatus.put(pointer.northOf(), false);
 				}
 			};
 			if(!sensor.collisionEast(pointer)) {
@@ -93,6 +94,7 @@ public class TileGraph {
 					center.newTileEdge(Direction.East);
 					unknownCoordinates.add(pointer.eastOf());
 					Graph.put(pointer.eastOf(), new TileVertex(pointer.eastOf()));
+					cleanStatus.put(pointer.eastOf(), false);
 				}
 			};
 			if(!sensor.collisionWest(pointer)) {
@@ -104,6 +106,7 @@ public class TileGraph {
 					center.newTileEdge(Direction.West);
 					unknownCoordinates.add(pointer.westOf());
 					Graph.put(pointer.westOf(), new TileVertex(pointer.westOf()));
+					cleanStatus.put(pointer.westOf(), false);
 				}
 			};
 			if(!sensor.collisionSouth(pointer)) {
@@ -115,6 +118,7 @@ public class TileGraph {
 					center.newTileEdge(Direction.South);
 					unknownCoordinates.add(pointer.southOf());
 					Graph.put(pointer.southOf(), new TileVertex(pointer.southOf()));
+					cleanStatus.put(pointer.southOf(), false);
 				}
 			};
 			i++;
