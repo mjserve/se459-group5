@@ -123,7 +123,7 @@ public class RobotSimulation {
 					double allowance = internalGraph.pathTo(currentPosition, target).getTotalCost()
 						+ internalGraph.pathTo(target, station).getTotalCost();
 	
-					allowance = hardware.getBattery() - allowance;
+					allowance = hardware.getBattery() - allowance - 10;
 					
 					if (allowance >= 1) {
 						needToCharge = !moveOnPath(internalGraph.pathTo(currentPosition, target), allowance);

@@ -14,7 +14,6 @@ import sensors.ISensorPackage;
 
 public class TESTRobotSim {
 
-	@Test
 	public void completeRun() throws OutOfFloorMapBoundsException{
 		IActivityLog log = new MockActivityLog();
 		ISensorPackage sensors = new MockSensors();
