@@ -154,6 +154,11 @@ public class RobotSimulation {
 			}
 		}
 		
+		System.out.println(new StringBuilder().append("Returning Home...").append(currentPosition.toString()).append("->").append(station.toString()));
+		
+		moveOnPath(internalGraph.pathTo(currentPosition, station));
+		
+		
 		System.out.println("\nSystem Terminated");
 		return 1; //This needs to be changed
 	}
