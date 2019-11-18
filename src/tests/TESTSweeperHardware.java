@@ -39,10 +39,10 @@ public class TESTSweeperHardware {
 		//SweeperHardware mockSweeper = new SweeperHardware(250, 150);
 
 		//getBattery mock test
-		when(mockSweep.getBattery()).thenReturn(150);
+		when(mockSweep.getBattery()).thenReturn((double) 150);
 		assertEquals(mockSweep.getBattery(), 150);
 
-		when(mockSweep.getBattery()).thenReturn(100);
+		when(mockSweep.getBattery()).thenReturn((double) 100);
 
 		assertEquals(mockSweep.getBattery(), 100);
 		when(mockSweep.incrimentDust(255)).thenReturn(true);
@@ -50,7 +50,7 @@ public class TESTSweeperHardware {
 		//incrimentDust mock
 		assertTrue(mockSweep.incrimentDust(255));
 
-		when(mockSweep.incrimentBattery(40)).thenReturn(140);
+		when(mockSweep.incrimentBattery(40)).thenReturn((double) 140);
 		assertEquals(mockSweep.incrimentBattery(40), 140);
 
 		//batteryCritical mock
