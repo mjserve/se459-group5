@@ -81,6 +81,7 @@ public class RobotSimulation {
 				} else if (internalGraph.hasDirtyTiles()) {
 					target = internalGraph.getClosestDirty(currentPosition);
 				} else {
+					System.out.println("\nAll reachable Tiles Mapped & Cleaned...");
 					running = false;
 				} 
 			}
@@ -101,8 +102,12 @@ public class RobotSimulation {
 				//Charging
 				if (needToCharge) {
 					
-					System.out.println("\nCharging at: " + target.toString() + " Power: " + hardware.getBattery() + " #Unknown: " 
-					+ internalGraph.getUnknownCoordinates().size() + " #dirty: " + internalGraph.getAllDirty().size());
+					//System.out.println("\nCharging at: " + target.toString() + " Power: " + hardware.getBattery() + " #Unknown: " 
+					//+ internalGraph.getUnknownCoordinates().size() + " #dirty: " + internalGraph.getAllDirty().size());
+					
+					System.out.println(new StringBuilder("\nCharging at: ").append(target.toString()).append(" Power: ").append(hardware.getBattery())
+							.append(" Dust: ").append(hardware.getDust()).append(" #Unknown: ").append(internalGraph.getUnknownCoordinates().size())
+							.append(" #dirty: ").append(internalGraph.getAllDirty().size()));
 					
 					if (currentPosition.equals(target)) {
 						hardware.setBattery(POWERCAP);
@@ -116,8 +121,9 @@ public class RobotSimulation {
 				//Cleaning
 				else {
 					
-					System.out.println("\nCleaning: " + target.toString() + " Power: " + hardware.getBattery() + " #Unknown: " 
-							+ internalGraph.getUnknownCoordinates().size() + " #dirty: " + internalGraph.getAllDirty().size());
+					System.out.println(new StringBuilder("\nCharging at: ").append(target.toString()).append(" Power: ").append(hardware.getBattery())
+							.append(" Dust: ").append(hardware.getDust()).append(" #Unknown: ").append(internalGraph.getUnknownCoordinates().size())
+							.append(" #dirty: ").append(internalGraph.getAllDirty().size()));
 					
 					//move to dirty/unknown
 					double allowance = internalGraph.pathTo(currentPosition, target).getTotalCost()
