@@ -34,7 +34,7 @@ public class Sensor implements ISensorPackage {
 
     @Override
     public boolean dirtDetector(Coordinates coord) {
-        return false;
+        return WorldSim.getInstance().isTileDirty(coord);
     }
 
     @Override

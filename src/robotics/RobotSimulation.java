@@ -81,6 +81,7 @@ public class RobotSimulation {
 				} else if (internalGraph.hasDirtyTiles()) {
 					target = internalGraph.getClosestDirty(currentPosition);
 				} else {
+					System.out.println("\nAll reachable Tiles Mapped & Cleaned...");
 					running = false;
 				} 
 			}
@@ -101,8 +102,12 @@ public class RobotSimulation {
 				//Charging
 				if (needToCharge) {
 					
-					System.out.println("\nCharging at: " + target.toString() + " Power: " + hardware.getBattery() + " #Unknown: " 
-					+ internalGraph.getUnknownCoordinates().size() + " #dirty: " + internalGraph.getAllDirty().size());
+					//System.out.println("\nCharging at: " + target.toString() + " Power: " + hardware.getBattery() + " #Unknown: " 
+					//+ internalGraph.getUnknownCoordinates().size() + " #dirty: " + internalGraph.getAllDirty().size());
+					
+					System.out.println(new StringBuilder("\nCharging at: ").append(target.toString()).append(" Power: ").append(hardware.getBattery())
+							.append(" Dust: ").append(hardware.getDust()).append(" #Unknown: ").append(internalGraph.getUnknownCoordinates().size())
+							.append(" #dirty: ").append(internalGraph.getAllDirty().size()));
 					
 					if (currentPosition.equals(target)) {
 						hardware.setBattery(POWERCAP);
@@ -116,8 +121,9 @@ public class RobotSimulation {
 				//Cleaning
 				else {
 					
-					System.out.println("\nCleaning: " + target.toString() + " Power: " + hardware.getBattery() + " #Unknown: " 
-							+ internalGraph.getUnknownCoordinates().size() + " #dirty: " + internalGraph.getAllDirty().size());
+					System.out.println(new StringBuilder("\nCharging at: ").append(target.toString()).append(" Power: ").append(hardware.getBattery())
+							.append(" Dust: ").append(hardware.getDust()).append(" #Unknown: ").append(internalGraph.getUnknownCoordinates().size())
+							.append(" #dirty: ").append(internalGraph.getAllDirty().size()));
 					
 					//move to dirty/unknown
 					double allowance = internalGraph.pathTo(currentPosition, target).getTotalCost()
@@ -132,6 +138,8 @@ public class RobotSimulation {
 							
 							while(sensors.dirtDetector(currentPosition)) {
 								sensors.cleanTile(currentPosition);
+								System.out.println("\nCleaning...");
+								hardware.incrimentDust(1);
 							}
 							internalGraph.markAsClean(currentPosition);
 							
@@ -146,7 +154,12 @@ public class RobotSimulation {
 			}
 		}
 		
-		System.out.println("System Terminated");
+		System.out.println(new StringBuilder().append("Returning Home...").append(currentPosition.toString()).append("->").append(station.toString()));
+		
+		moveOnPath(internalGraph.pathTo(currentPosition, station));
+		
+		
+		System.out.println("\nSystem Terminated");
 		return 1; //This needs to be changed
 	}
 	
@@ -176,6 +189,7 @@ public class RobotSimulation {
 					//add wall for North edge 
 					return false;
 				}
+				System.out.print("N>");
 				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.North).getEdgeCost());			
 				currentPosition.y++;
 				break;
@@ -184,6 +198,7 @@ public class RobotSimulation {
 					//add wall for East edge 
 					return false;
 				}
+				System.out.print("E>");
 				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.East).getEdgeCost());
 				currentPosition.x++;
 				break;
@@ -192,6 +207,7 @@ public class RobotSimulation {
 					//add wall for South edge 
 					return false;
 				}
+				System.out.print("S>");
 				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.South).getEdgeCost());
 				currentPosition.y--;
 				break;
@@ -200,6 +216,7 @@ public class RobotSimulation {
 					//add wall for West edge 
 					return false;
 				}
+				System.out.print("W>");
 				hardware.incrimentBattery(-internalGraph.getVertex(currentPosition).getTileEdge(Direction.West).getEdgeCost());
 				currentPosition.x--;
 				break;
@@ -239,8 +256,9 @@ public class RobotSimulation {
 					
 			//Clean the current tile and move once done. returns false if energy allowance is exceeded.
 			while(sensors.dirtDetector(currentPosition)) {
-				
+				System.out.println("\nCleaning...");
 				sensors.cleanTile(currentPosition);
+				hardware.incrimentDust(1);
 				allowance--;
 				if (allowance < 1)
 					return false;
